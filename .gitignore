@@ -1,0 +1,17 @@
+.venv/
+env/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.DS_Store
+.idea/
+.vscode/
+
+# NASA snapshots and generated tables are local working files
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/uploads/*
+!data/uploads/.gitkeep

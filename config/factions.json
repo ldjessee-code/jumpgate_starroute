@@ -1,0 +1,124 @@
+{
+  "hub_percentile": 0.05,
+  "hub_extra_link_ly": 20,
+  "human_root": "Sol",
+  "human_root_group": "Turquenish Empire",
+  "multi_route_groups": [
+    "Methan",
+    "Crystomorphs",
+    "Turquenish Empire",
+    "Mardat Coalition"
+  ],
+  "species": [
+    {
+      "name": "Methan",
+      "count": 100,
+      "prefix": "ME",
+      "filters": [{ "column": "gas_giant_count", "op": "gt", "value": 0 }],
+      "sort": { "column": "gas_giant_count", "ascending": false }
+    },
+    {
+      "name": "Crystomorphs",
+      "count": 101,
+      "prefix": "CR",
+      "filters": [{ "column": "dec", "op": "abs_gt", "value": 45 }],
+      "sort": { "column": "dec", "ascending": false, "key": "abs" }
+    },
+    {
+      "name": "Echryon & Echtol",
+      "count": 61,
+      "prefix": "EC",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 0 },
+        { "column": "ra", "op": "lt", "value": 90 },
+        { "column": "dec", "op": "gt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "name": "Aboreals",
+      "count": 25,
+      "prefix": "AB",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 90 },
+        { "column": "ra", "op": "lt", "value": 180 },
+        { "column": "dec", "op": "lt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "name": "Bazzar",
+      "count": 25,
+      "prefix": "BA",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 180 },
+        { "column": "ra", "op": "lt", "value": 270 },
+        { "column": "dec", "op": "lt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "name": "Schettel",
+      "count": 12,
+      "prefix": "SC",
+      "filters": [
+        {
+          "any": [
+            { "column": "combined_score", "op": "lt_quantile", "value": 0.25 },
+            { "column": "distance_from_sol_ly", "op": "gt", "value": 900 }
+          ]
+        }
+      ],
+      "sort": { "column": "combined_score", "ascending": true }
+    }
+  ],
+  "nations": [
+    {
+      "name": "Turquenish Empire",
+      "count": 39,
+      "prefix": "TU",
+      "filters": [
+        { "column": "ra", "op": "gte", "value": 0 },
+        { "column": "ra", "op": "lt", "value": 120 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+    },
+    {
+      "name": "Mardat Coalition",
+      "count": 38,
+      "prefix": "MA",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 120 },
+        { "column": "ra", "op": "lt", "value": 240 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "name": "Industrial Hegemony",
+      "count": 11,
+      "prefix": "IN",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 240 },
+        { "column": "ra", "op": "lt", "value": 300 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "name": "League of The Faithful",
+      "count": 3,
+      "prefix": "LE",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 300 },
+        { "column": "ra", "op": "lt", "value": 360 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "name": "Other Human",
+      "count": 9,
+      "prefix": "OH",
+      "filters": [],
+      "sort": { "column": "combined_score", "ascending": false }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "max_jump_ly": 50,
+  "preferred_ly": 16,
+  "max_neighbors": 8,
+  "hard_rank": 0.2,
+  "soft_rank": 0.3,
+  "max_linked_nodes": 101,
+  "min_stellar_mass": 0.25,
+  "root_hostname": "Sol",
+  "ingest_max_distance_ly": 1000
+}

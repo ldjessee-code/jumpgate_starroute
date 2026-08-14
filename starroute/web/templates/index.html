@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jumpgate Starroute</title>
+  <link rel="stylesheet" href="/static/css/app.css" />
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+</head>
+<body>
+  <header class="masthead">
+    <div class="masthead-copy">
+      <p class="eyebrow">GM / author tool</p>
+      <h1>Jumpgate Starroute</h1>
+      <p class="lede">Confirm NASA exoplanet tables, place Sol at the origin, then grow a jump or gate network you can steer with range, ranking, and faction rules.</p>
+    </div>
+    <nav class="tabs" role="tablist">
+      <button class="tab is-active" data-screen="ingest" type="button">1. Ingest</button>
+      <button class="tab" data-screen="map" type="button">2. Network &amp; map</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="screen-ingest" class="screen is-active">
+      <article class="card">
+        <h2>Confirm source files</h2>
+        <p class="hint">NASA Exoplanet Archive snapshots: Planetary Systems Composite Parameters and Stellar Hosts. Comment lines starting with <code>#</code> are ignored.</p>
+        <div class="file-grid">
+          <label>
+            <span>Planet table (PSCompPars)</span>
+            <input id="planet-path" type="text" spellcheck="false" placeholder="data/raw/PSCompPars_….csv" />
+            <input id="planet-file" type="file" accept=".csv" />
+          </label>
+          <label>
+            <span>Stellar hosts (STELLARHOSTS)</span>
+            <input id="host-path" type="text" spellcheck="false" placeholder="data/raw/STELLARHOSTS_….csv" />
+            <input id="host-file" type="file" accept=".csv" />
+          </label>
+        </div>
+        <div class="row-actions">
+          <button id="btn-preview" class="btn" type="button">Preview files</button>
+          <span id="detect-note" class="muted"></span>
+        </div>
+        <pre id="preview-box" class="output hidden"></pre>
+      </article>
+
+      <article class="card">
+        <h2>Convert &amp; add Sol</h2>
+        <p class="hint"><code>sy_dist</code> is converted from parsecs to light-years. Sol is inserted at the Cartesian origin. Systems farther than the sphere, or below the mass floor, are dropped.</p>
+        <div class="param-grid">
+          <label>Max distance from Sol (ly)
+            <input id="ingest-max-ly" type="number" min="10" step="10" value="1000" />
+          </label>
+          <label>Minimum stellar mass (M☉)
+            <input id="ingest-min-mass" type="number" min="0" step="0.05" value="0.25" />
+          </label>
+        </div>
+        <div class="row-actions">
+          <button id="btn-ingest" class="btn primary" type="button">Generate systems table</button>
+          <a class="link" href="/api/download/systems.csv">Download systems.csv</a>
+        </div>
+        <pre id="ingest-box" class="output hidden"></pre>
+      </article>
+    </section>
+
+    <section id="screen-map" class="screen">
+      <div class="map-layout">
+        <aside class="card controls">
+          <h2>Network parameters</h2>
+          <label>Jump / gate range (ly)
+            <input id="max-jump" type="number" min="1" step="1" value="50" />
+          </label>
+          <label>Preferred link (ly)
+            <input id="pref-ly" type="number" min="1" step="1" value="16" />
+          </label>
+          <label>Max neighbors per system
+            <input id="max-neighbors" type="number" min="1" max="16" step="1" value="8" />
+          </label>
+          <label>Linked systems cap
+            <input id="max-linked" type="number" min="2" step="1" value="101" />
+          </label>
+          <label>Hard rank floor
+            <input id="hard-rank" type="number" min="0" max="1" step="0.05" value="0.2" />
+          </label>
+          <label>Soft rank (extra links)
+            <input id="soft-rank" type="number" min="0" max="1" step="0.05" value="0.3" />
+          </label>
+          <label>Min stellar mass (M☉)
+            <input id="net-min-mass" type="number" min="0" step="0.05" value="0.25" />
+          </label>
+          <label>Root system
+            <input id="root-host" type="text" value="Sol" />
+          </label>
+          <label class="check">
+            <input id="assign-factions" type="checkbox" checked />
+            Assign species &amp; nations
+          </label>
+          <details>
+            <summary>Faction counts &amp; prefixes</summary>
+            <p class="hint">Counts apply to systems on this map. Leave a count at 0 to skip that group.</p>
+            <div id="faction-list"></div>
+          </details>
+          <div class="row-actions">
+            <button id="btn-network" class="btn primary" type="button">Generate network</button>
+          </div>
+          <pre id="network-box" class="output hidden"></pre>
+          <div class="downloads">
+            <a class="link" href="/api/download/sol_network.csv">sol_network.csv</a>
+            <a class="link" href="/api/download/route_table.csv">route_table.csv</a>
+            <a class="link" href="/api/download/factions.json">factions.json</a>
+          </div>
+        </aside>
+
+        <article class="card map-card">
+          <div class="map-toolbar">
+            <label>From
+              <select id="path-start"></select>
+            </label>
+            <label>To
+              <select id="path-end"></select>
+            </label>
+            <label class="check">
+              <input id="color-faction" type="checkbox" checked />
+              Color by faction
+            </label>
+          </div>
+          <div id="path-readout" class="path-readout"></div>
+          <div id="star-map"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden" role="status"></div>
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

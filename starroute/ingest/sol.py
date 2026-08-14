@@ -1,0 +1,60 @@
+"""Hand-authored Sol row.
+
+NASA tables do not include the Solar System. Sol is the coordinate origin and
+the default root of the jump/gate network.
+"""
+
+from __future__ import annotations
+
+SOL_ROW = {
+    "sy_name": "Sol",
+    "hostname": "Sol",
+    "hd_name": None,
+    "hip_name": None,
+    "ra": 0.0,
+    "dec": 0.0,
+    "glon": 0.0,
+    "glat": 0.0,
+    "sy_dist": 0.0,
+    "sy_snum": 1.0,
+    "sy_pnum": 8.0,
+    "sy_mnum": 421.0,
+    "cb_flag": 0,
+    "st_spectype": "G2 V",
+    "st_teff": 5772.0,
+    "st_mass": 1.0,
+    "st_rad": 1.0,
+    "st_met": 0.0,
+    "st_metratio": "Fe/H",
+    "st_lum": 0.0,  # NASA st_lum is log10(L/Lsun); Sun = 0
+    "st_logg": 4.44,
+    "st_age": 4.6,
+    "st_dens": 1.41,
+    "st_vsin": 1.997,
+    "st_rotp": 25.0,
+    "sy_vmag": -26.74,
+    "sy_gaiamag": -26.8,
+    "rocky_count": 4,
+    "gas_giant_count": 4,
+    "ice_giant_count": 2,
+    "has_rocky_planet": 1,
+    "has_gas_giant": 1,
+    "has_ice_giant": 1,
+    "has_rocky_planet_in_carbon_zone": 1,
+    "has_rocky_planet_in_sulfur_zone": 1,
+    "has_rocky_planet_in_silicon_zone": 1,
+    "has_gas_planet_in_carbon_zone": 1,
+    "has_gas_planet_in_sulfur_zone": 1,
+    "has_gas_planet_in_silicon_zone": 1,
+    "carbon_ranking": 3.0,
+    "sulfur_ranking": 3.0,
+    "silicon_ranking": 3.0,
+    "combined_score": 3.0,
+    "distance_from_sol_ly": 0.0,
+    "calculated_x": 0.0,
+    "calculated_y": 0.0,
+    "calculated_z": 0.0,
+    "stability_score": 0,
+    "stability_symbol": "circle",
+    "manual_entry": 1,
+}
