@@ -1,0 +1,146 @@
+{
+  "hub_percentile": 0.05,
+  "hub_extra_link_ly": 20,
+  "human_root": "Sol",
+  "human_root_group": "Turquenish Empire",
+  "multi_route_groups": [
+    "Methan",
+    "Crystomorphs",
+    "Turquenish Empire",
+    "Mardat Coalition"
+  ],
+  "species": [
+    {
+      "name": "Methan",
+      "count": 100,
+      "prefix": "ME",
+      "preset": "methan",
+      "description": "Methane-breathers. They live in stations and structures inside or around Jupiter-like gas giants, not on rocky ground.",
+      "filters": [{ "column": "gas_giant_count", "op": "gt", "value": 0 }],
+      "sort": { "column": "gas_giant_count", "ascending": false }
+    },
+    {
+      "name": "Crystomorphs",
+      "count": 101,
+      "prefix": "CR",
+      "preset": "crystomorphs",
+      "description": "Beings that look like living crystal. They prefer stars far from the celestial equator (high north or south on the sky).",
+      "filters": [{ "column": "dec", "op": "abs_gt", "value": 45 }],
+      "sort": { "column": "dec", "ascending": false, "key": "abs" }
+    },
+    {
+      "name": "Echryon & Echtol",
+      "count": 61,
+      "prefix": "EC",
+      "preset": "echryon",
+      "description": "Defined by starting location: the first quarter of the sky (east of Sol’s zero line and north).",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 0 },
+        { "column": "ra", "op": "lt", "value": 90 },
+        { "column": "dec", "op": "gt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "name": "Aboreals",
+      "count": 25,
+      "prefix": "AB",
+      "preset": "aboreals",
+      "description": "Defined by starting location: the next sky quarter, south of the celestial equator.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 90 },
+        { "column": "ra", "op": "lt", "value": 180 },
+        { "column": "dec", "op": "lt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "name": "Bazzar",
+      "count": 25,
+      "prefix": "BA",
+      "preset": "bazzar",
+      "description": "Defined by starting location: the third sky quarter, south of the equator.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 180 },
+        { "column": "ra", "op": "lt", "value": 270 },
+        { "column": "dec", "op": "lt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "name": "Schettel",
+      "count": 12,
+      "prefix": "SC",
+      "preset": "schettel",
+      "description": "Edge-of-the-sphere people. They take leftover, low-score systems or stars far from Sol — the rim of human-explored space.",
+      "filters": [
+        {
+          "any": [
+            { "column": "combined_score", "op": "lt_quantile", "value": 0.25 },
+            { "column": "distance_from_sol_ly", "op": "gt", "value": 900 }
+          ]
+        }
+      ],
+      "sort": { "column": "combined_score", "ascending": true }
+    }
+  ],
+  "nations": [
+    {
+      "name": "Turquenish Empire",
+      "count": 39,
+      "prefix": "TU",
+      "preset": "turquenish",
+      "description": "The human polity that starts at Sol and claims the first third of the sky around it.",
+      "filters": [
+        { "column": "ra", "op": "gte", "value": 0 },
+        { "column": "ra", "op": "lt", "value": 120 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+    },
+    {
+      "name": "Mardat Coalition",
+      "count": 38,
+      "prefix": "MA",
+      "preset": "mardat",
+      "description": "Human nation on the next slice of sky after the Empire.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 120 },
+        { "column": "ra", "op": "lt", "value": 240 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "name": "Industrial Hegemony",
+      "count": 11,
+      "prefix": "IN",
+      "preset": "hegemony",
+      "description": "A smaller human bloc on a later sky wedge.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 240 },
+        { "column": "ra", "op": "lt", "value": 300 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "name": "League of The Faithful",
+      "count": 3,
+      "prefix": "LE",
+      "preset": "faithful",
+      "description": "A tiny human league on the last sky wedge.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 300 },
+        { "column": "ra", "op": "lt", "value": 360 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "name": "Other Human",
+      "count": 9,
+      "prefix": "OH",
+      "preset": "other_human",
+      "description": "Independent or mixed human holdings. Takes whatever good systems remain after the other cultures pick.",
+      "filters": [],
+      "sort": { "column": "combined_score", "ascending": false }
+    }
+  ]
+}

@@ -14,8 +14,18 @@ from fastapi.staticfiles import StaticFiles
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 from pydantic import BaseModel, Field
 
-from starroute.ingest.pipeline import build_systems_dataset, detect_default_sources, preview_sources
-from starroute.mapgen.factions import assign_factions, load_faction_config, save_faction_config
+from starroute.ingest.pipeline import (
+    build_systems_dataset,
+    detect_default_sources,
+    preview_sources,
+    search_hostnames,
+)
+from starroute.mapgen.factions import (
+    assign_factions,
+    load_faction_config,
+    preview_faction_matches,
+    save_faction_config,
+)
 from starroute.mapgen.network import (
     DEFAULT_NETWORK,
     generate_network,
@@ -26,9 +36,13 @@ from starroute.paths import (
     DATA_PROCESSED,
     DATA_RAW,
     DATA_UPLOADS,
+    FACTION_PRESETS_JSON,
+    FACTIONS_DEFAULT_JSON,
     FACTIONS_JSON,
     NETWORK_CSV,
     NETWORK_JSON,
+    ORIGIN_JSON,
+    SNAPSHOT_JSON,
     SYSTEMS_CSV,
     ensure_data_dirs,
 )
@@ -45,6 +59,17 @@ class IngestRequest(BaseModel):
     host_path: str
     max_distance_ly: float = 1000.0
     min_stellar_mass: float = 0.25
+    origin_hostname: str = "Sol"
+
+
+class HostSearchRequest(BaseModel):
+    query: str = ""
+    host_path: Optional[str] = None
+    limit: int = 20
+
+
+class FactionSaveRequest(BaseModel):
+    factions: Dict[str, Any]
 
 
 class PreviewRequest(BaseModel):
@@ -54,7 +79,9 @@ class PreviewRequest(BaseModel):
 
 class NetworkRequest(BaseModel):
     max_jump_ly: float = 50.0
-    preferred_ly: float = 16.0
+    medium_start_pct: float = 50.0
+    long_start_pct: float = 75.0
+    preferred_ly: float = 25.0
     max_neighbors: int = 8
     hard_rank: float = 0.2
     soft_rank: float = 0.3
@@ -78,7 +105,7 @@ def _load_network_defaults() -> dict[str, Any]:
 
 def create_app() -> FastAPI:
     ensure_data_dirs()
-    app = FastAPI(title="Jumpgate Starroute", version="0.2.0")
+    app = FastAPI(title="Jumpgate Starroute", version="1.4.0")
     app.mount("/static", StaticFiles(directory=WEB_DIR / "static"), name="static")
 
     @app.get("/", response_class=HTMLResponse)
@@ -97,9 +124,13 @@ def create_app() -> FastAPI:
             "network_path": str(NETWORK_CSV) if network else None,
         }
         if systems:
-            df = pd.read_csv(SYSTEMS_CSV, usecols=lambda c: c in {"hostname", "distance_from_sol_ly"})
+            df = pd.read_csv(SYSTEMS_CSV, usecols=lambda c: c in {"hostname", "distance_from_sol_ly", "origin_hostname"})
             summary["systems_count"] = int(len(df))
             summary["includes_sol"] = bool((df["hostname"] == "Sol").any())
+            if "origin_hostname" in df.columns and len(df):
+                summary["origin_hostname"] = str(df["origin_hostname"].iloc[0])
+        if ORIGIN_JSON.exists():
+            summary.update(json.loads(ORIGIN_JSON.read_text(encoding="utf-8")))
         if network:
             ndf = pd.read_csv(NETWORK_CSV, usecols=lambda c: c in {"hostname", "gate_distance"})
             summary["network_count"] = int(len(ndf))
@@ -147,15 +178,44 @@ def create_app() -> FastAPI:
                 req.host_path,
                 max_distance_ly=req.max_distance_ly,
                 min_stellar_mass=req.min_stellar_mass,
+                origin_hostname=req.origin_hostname,
             )
         except FileNotFoundError as exc:
             raise HTTPException(status_code=404, detail=str(exc)) from exc
         except Exception as exc:  # noqa: BLE001
             raise HTTPException(status_code=400, detail=str(exc)) from exc
 
+    @app.post("/api/hosts/search")
+    def hosts_search(req: HostSearchRequest) -> dict[str, Any]:
+        names = search_hostnames(req.query, host_path=req.host_path, limit=req.limit)
+        return {"query": req.query, "matches": names}
+
     @app.get("/api/factions")
     def factions_get() -> dict[str, Any]:
         return load_faction_config()
+
+    @app.get("/api/factions/defaults")
+    def factions_defaults() -> dict[str, Any]:
+        path = FACTIONS_DEFAULT_JSON if FACTIONS_DEFAULT_JSON.exists() else FACTIONS_JSON
+        return load_faction_config(path)
+
+    @app.get("/api/factions/presets")
+    def factions_presets() -> dict[str, Any]:
+        if not FACTION_PRESETS_JSON.exists():
+            return {"max_cultures": 16, "presets": []}
+        return json.loads(FACTION_PRESETS_JSON.read_text(encoding="utf-8"))
+
+    @app.post("/api/factions")
+    def factions_save(req: FactionSaveRequest) -> dict[str, Any]:
+        path = save_faction_config(req.factions)
+        return {"saved": str(path)}
+
+    @app.post("/api/factions/preview")
+    def factions_preview(req: FactionSaveRequest) -> dict[str, Any]:
+        if not SYSTEMS_CSV.exists():
+            raise HTTPException(status_code=400, detail="Generate the catalog on the first tab first.")
+        df = pd.read_csv(SYSTEMS_CSV)
+        return {"catalog_systems": int(len(df)), "groups": preview_faction_matches(df, req.factions)}
 
     @app.get("/api/network/defaults")
     def network_defaults() -> dict[str, Any]:
@@ -184,6 +244,22 @@ def create_app() -> FastAPI:
         result["payload"] = network_payload(pd.read_csv(NETWORK_CSV))
         return result
 
+    @app.get("/api/network/snapshot")
+    def network_snapshot() -> dict[str, Any]:
+        if not NETWORK_CSV.exists():
+            raise HTTPException(status_code=404, detail="Generate a network before saving a snapshot.")
+        payload = {
+            "starroute": "1.0",
+            "kind": "network_snapshot",
+            "payload": network_payload(pd.read_csv(NETWORK_CSV)),
+            "factions": load_faction_config(),
+            "params": _load_network_defaults(),
+        }
+        if ORIGIN_JSON.exists():
+            payload["origin"] = json.loads(ORIGIN_JSON.read_text(encoding="utf-8"))
+        SNAPSHOT_JSON.write_text(json.dumps(payload), encoding="utf-8")
+        return payload
+
     @app.get("/api/network")
     def network_get() -> dict[str, Any]:
         if not NETWORK_CSV.exists():
@@ -207,6 +283,7 @@ def create_app() -> FastAPI:
             "assigned_systems.csv": DATA_PROCESSED / "assigned_systems.csv",
             "route_table.csv": DATA_PROCESSED / "route_table.csv",
             "factions.json": FACTIONS_JSON,
+            "map_snapshot.json": SNAPSHOT_JSON,
         }
         path = allowed.get(name)
         if not path or not path.exists():

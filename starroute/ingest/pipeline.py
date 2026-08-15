@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -17,7 +18,7 @@ from starroute.ingest.classify import (
     ranking_columns,
 )
 from starroute.ingest.sol import SOL_ROW
-from starroute.paths import DATA_RAW, SYSTEMS_CSV, ensure_data_dirs
+from starroute.paths import DATA_RAW, ORIGIN_JSON, SYSTEMS_CSV, ensure_data_dirs
 
 HOST_KEEP = [
     "sy_name",
@@ -129,6 +130,62 @@ def preview_sources(planet_path: str | Path, host_path: str | Path) -> dict[str,
     }
 
 
+def search_hostnames(
+    query: str,
+    host_path: str | Path | None = None,
+    limit: int = 20,
+) -> list[str]:
+    """Typeahead list: Sol plus NASA hostnames matching ``query``."""
+    needle = (query or "").strip().lower()
+    names = ["Sol"]
+    if host_path and Path(host_path).is_file():
+        hosts = pd.read_csv(host_path, comment="#", usecols=["hostname"], dtype="string")
+        names.extend(hosts["hostname"].dropna().astype(str).unique().tolist())
+    elif SYSTEMS_CSV.exists():
+        hosts = pd.read_csv(SYSTEMS_CSV, usecols=["hostname"])
+        names.extend(hosts["hostname"].dropna().astype(str).tolist())
+    seen = set()
+    unique = []
+    for name in names:
+        if name in seen:
+            continue
+        seen.add(name)
+        unique.append(name)
+    if needle:
+        unique = [name for name in unique if needle in name.lower()]
+        unique.sort(key=lambda name: (
+            0 if name.lower() == needle else
+            1 if name.lower().startswith(needle) else
+            2,
+            len(name),
+            name.lower(),
+        ))
+    return unique[:limit]
+
+
+def _recenter(systems: pd.DataFrame, origin_hostname: str) -> pd.DataFrame:
+    """Translate XYZ so ``origin_hostname`` sits at (0, 0, 0)."""
+    out = systems.copy()
+    origin_hostname = origin_hostname or "Sol"
+    match = out[out["hostname"] == origin_hostname]
+    if match.empty:
+        raise ValueError(
+            f"Origin '{origin_hostname}' is not in the catalog. "
+            "Pick Sol or a host that has RA, Dec, and distance."
+        )
+    ox = float(match.iloc[0]["calculated_x"])
+    oy = float(match.iloc[0]["calculated_y"])
+    oz = float(match.iloc[0]["calculated_z"])
+    out["calculated_x"] = out["calculated_x"] - ox
+    out["calculated_y"] = out["calculated_y"] - oy
+    out["calculated_z"] = out["calculated_z"] - oz
+    out["distance_from_origin_ly"] = (
+        out["calculated_x"] ** 2 + out["calculated_y"] ** 2 + out["calculated_z"] ** 2
+    ) ** 0.5
+    out["origin_hostname"] = origin_hostname
+    return out
+
+
 def _dedupe_hosts(hosts: pd.DataFrame) -> pd.DataFrame:
     """STELLARHOSTS has one row per literature reference; keep the richest row."""
     work = hosts.copy()
@@ -148,6 +205,7 @@ def build_systems_dataset(
     output_path: str | Path | None = None,
     max_distance_ly: float = 1000.0,
     min_stellar_mass: float = 0.25,
+    origin_hostname: str = "Sol",
 ) -> dict[str, Any]:
     """Ingest NASA tables → one row per host, plus Sol, written to CSV."""
     ensure_data_dirs()
@@ -174,14 +232,7 @@ def build_systems_dataset(
     systems = add_stability(systems)
     systems["manual_entry"] = 0
 
-    before_filter = len(systems)
-    keep = (systems["distance_from_sol_ly"] <= max_distance_ly) & (
-        pd.to_numeric(systems["st_mass"], errors="coerce") >= min_stellar_mass
-    )
-    systems = systems[keep].copy()
-
     sol = pd.DataFrame([SOL_ROW])
-    # Align Sol to whatever columns survived.
     for col in systems.columns:
         if col not in sol.columns:
             sol[col] = pd.NA
@@ -193,9 +244,23 @@ def build_systems_dataset(
     systems = systems[systems["hostname"] != "Sol"]
     systems = pd.concat([sol, systems], ignore_index=True)
 
+    origin_hostname = (origin_hostname or "Sol").strip() or "Sol"
+    systems = _recenter(systems, origin_hostname)
+
+    before_filter = len(systems)
+    mass_ok = pd.to_numeric(systems["st_mass"], errors="coerce") >= min_stellar_mass
+    keep = (systems["distance_from_origin_ly"] <= max_distance_ly) & mass_ok
+    keep = keep | systems["hostname"].eq(origin_hostname)
+    systems = systems[keep].copy()
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     systems.to_csv(output_path, index=False)
+    ORIGIN_JSON.write_text(
+        json.dumps({"origin_hostname": origin_hostname, "max_distance_ly": max_distance_ly}, indent=2),
+        encoding="utf-8",
+    )
 
+    nearest_cols = [c for c in ("hostname", "distance_from_origin_ly", "distance_from_sol_ly", "st_spectype", "sy_pnum") if c in systems.columns]
     return {
         "output_path": str(output_path),
         "planet_rows": int(len(planets)),
@@ -204,9 +269,8 @@ def build_systems_dataset(
         "systems_before_distance_filter": int(before_filter),
         "systems_written": int(len(systems)),
         "includes_sol": bool((systems["hostname"] == "Sol").any()),
+        "origin_hostname": origin_hostname,
         "max_distance_ly": max_distance_ly,
         "min_stellar_mass": min_stellar_mass,
-        "nearest": systems.nsmallest(6, "distance_from_sol_ly")[
-            ["hostname", "distance_from_sol_ly", "st_spectype", "sy_pnum"]
-        ].to_dict(orient="records"),
+        "nearest": systems.nsmallest(6, "distance_from_origin_ly")[nearest_cols].to_dict(orient="records"),
     }

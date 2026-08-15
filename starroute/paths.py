@@ -19,7 +19,11 @@ NETWORK_CSV = DATA_PROCESSED / "sol_network.csv"
 ASSIGNED_CSV = DATA_PROCESSED / "assigned_systems.csv"
 ROUTES_CSV = DATA_PROCESSED / "route_table.csv"
 FACTIONS_JSON = CONFIG_DIR / "factions.json"
+FACTIONS_DEFAULT_JSON = CONFIG_DIR / "factions.default.json"
+FACTION_PRESETS_JSON = CONFIG_DIR / "faction_presets.json"
 NETWORK_JSON = CONFIG_DIR / "network.json"
+SNAPSHOT_JSON = DATA_PROCESSED / "map_snapshot.json"
+ORIGIN_JSON = DATA_PROCESSED / "origin.json"
 
 
 def ensure_data_dirs() -> None:

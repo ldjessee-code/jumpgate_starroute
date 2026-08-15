@@ -1,11 +1,12 @@
 {
-  "max_jump_ly": 50,
-  "preferred_ly": 16,
-  "max_neighbors": 8,
-  "hard_rank": 0.2,
-  "soft_rank": 0.3,
-  "max_linked_nodes": 101,
+  "max_jump_ly": 25,
+  "medium_start_pct": 40,
+  "long_start_pct": 60,
+  "max_neighbors": 6,
+  "hard_rank": 0.15,
+  "soft_rank": 0.25,
+  "max_linked_nodes": 80,
   "min_stellar_mass": 0.25,
   "root_hostname": "Sol",
-  "ingest_max_distance_ly": 1000
+  "ingest_max_distance_ly": 60
 }

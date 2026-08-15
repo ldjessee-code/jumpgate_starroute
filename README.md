@@ -1,46 +1,46 @@
 # Jumpgate Starroute
 
-A local GM / author tool that turns NASA Exoplanet Archive tables into a
-**Sol-centered jump or star-gate network**, then draws it in the browser.
+**Version 1.4** — August 2026
 
-You confirm the source CSVs, convert them (and insert Sol), then grow a network
-with range, ranking, and optional species/nation rules.
+A local tool for GMs and authors. It takes real NASA exoplanet catalog data
+and builds a **Sol-centered jump-drive or star-gate network** you can steer
+with range, ranking, and optional species/nation rules, then shows the map
+in a browser.
 
-This is **not** the sibling analytics-platform project
-(`../analytics-platform`).
+This is not the sibling analytics-platform project (`../analytics-platform`).
+How the project got here is in [HISTORY.md](HISTORY.md). Future releases
+increment the version number there and here.
 
-## UI stack (why not Dash)
+## Current state (v1.4)
 
-The previous visualizer was a Dash + Plotly 3D app. It broke on a Plotly API
-change (`marker.colorbar.titleside` was removed) and the default Dash chrome
-was hard to restyle.
+Opens on a **ready-made 3D map**. No Python for looking around. Settings hide
+in a side drawer so the map can fill the window.
 
-Options considered:
+Shipped preview (60 ly around Sol):
 
-| Approach | Verdict |
-| --- | --- |
-| **FastAPI + Plotly.js** (this repo) | Best fit. Python still owns ingest and network math. The browser draws a real-space 3D scatter with hover, path highlight, and no Dash callbacks. |
-| Dash / Plotly Python | Works again if the colorbar title is updated, but you inherit Dash layout and the old callback errors. |
-| Three.js / 3d-force-graph | Prettier metal, but force layout **destroys real star positions**. A custom Three.js scene with fixed XYZ is more code than this first pass needs. |
-| deck.gl / Cesium | Built for Earth maps and globes, not a heliocentric jump graph. |
+- Longest jump **25 ly**; short/medium **40%**, medium/long **60%** of that
+- Smallest star **0.25** Suns
+- **Human** (Sol and leftover rocky systems) and **Kessari** (sulfur-band /
+  gas-giant worlds). A little overlap where a star has both.
 
-The page styling follows the same parchment / navy / gold language as the
-Avatar Legends character sheet (serif titles, dark header, card sections)
-without copying that sheet’s layout.
+Rotate, zoom, highlight a culture, and trace a jump path in the browser.
+Rebuilding from NASA files still uses the Python engine (FastAPI). A WASM
+engine is a possible later path; it is not in this release.
 
-## Units (important)
+This release is **v1.4**. See [HISTORY.md](HISTORY.md).
 
-NASA `sy_dist` is **parsecs**. Older scripts in this folder treated those
-numbers as light-years, so a “50 ly” network was really ~163 ly. This rewrite
-converts parsecs → light-years (`× 3.26156`) before filtering or linking.
+## Open the map (no install)
 
-Confirmed exoplanet hosts inside a true 50 ly sphere are sparse. Raise
-**Jump / gate range** (150–200 ly is a good first explore) if the map looks
-thin.
+Need a web connection once (Plotly). Then double-click:
 
-## Setup
+`starroute/web/static/app.html`
 
-Needs Python 3.9+ (3.11+ if you have it).
+or `preview/index.html`
+
+## Setup (only to rebuild your own map)
+
+Python 3.9+ (3.11+ preferred). **uv** is the lightest modern installer if
+you do not already have a venv.
 
 ```bash
 cd ~/Projects/exoplanet/jumpgate_starroute
@@ -49,15 +49,14 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Put NASA snapshots in `data/raw/`:
+Place NASA snapshots in `data/raw/` (gitignored; ~100 MB together):
 
 - `PSCompPars_YYYY.MM.DD_….csv`
 - `STELLARHOSTS_YYYY.MM.DD_….csv`
 
-Those files are gitignored (they are ~100 MB together). The Aug 2026 pair used
-to build this version lives locally in `data/raw/`.
+The August 2026 pair used for v1.0 lives locally in `data/raw/`.
 
-## Run the UI
+## Run
 
 ```bash
 python -m starroute serve
@@ -65,13 +64,7 @@ python -m starroute serve
 
 Open http://127.0.0.1:8050
 
-1. **Ingest** — confirm the two file paths (or upload), preview row counts,
-   generate `data/processed/systems.csv` with Sol at the origin.
-2. **Network & map** — set jump range, neighbor cap, ranking floors, and
-   faction counts. Generate the network and click two systems to highlight the
-   shortest gate path.
-
-## CLI
+CLI equivalents:
 
 ```bash
 python -m starroute ingest --preview
@@ -87,29 +80,36 @@ starroute/ingest/     NASA CSV → classified systems + Sol
 starroute/mapgen/     ranking, Sol-rooted network, faction assignment
 starroute/web/        FastAPI app + Plotly.js map
 config/               default network + faction JSON
-data/raw/             NASA snapshots (local)
+data/raw/             NASA snapshots (local, not committed)
 data/processed/       systems.csv, sol_network.csv, route_table.csv
 ```
 
-Faction names, counts, prefixes, and filters are in `config/factions.json`.
-The map screen can edit counts and prefixes; the JSON remains the full rule
-set (RA wedges, gas-giant preference, and so on).
+Faction names, counts, prefixes, and filters live in `config/factions.json`.
+The map screen can edit counts and prefixes; the JSON is the full rule set
+(RA wedges, gas-giant preference, and so on). Sol is always assigned to the
+configured human root nation (Turquenish Empire by default).
 
-## What was archived
+## Units and coordinates
 
-A frozen copy of the old script pile (including the previous `archived/`
-folder) is at:
-
-`/Users/ldjessee/Projects/Archive/starmap`
-
-That snapshot is outside this git repo. The 444 MB Python 3.9 `env/` was not
-copied; recreate a venv if you ever need the old Dash scripts.
+- NASA `sy_dist` is parsecs. v1.0 converts with `× 3.26156` before filtering
+  or linking.
+- Sol is stored at RA/Dec `0, 0` and Cartesian `(0, 0, 0)`. That is a
+  coordinate origin, not the Sun’s catalog position.
+- Systems within the preferred link distance (default 16 ly) are always
+  eligible for a gate from their parent. Longer jumps still use ranking
+  floors.
 
 ## Known limitations
 
 - Only hosts that already appear in the NASA tables can be mapped. Nearby
   stars with no confirmed planets are absent unless you add them by hand.
-- Sol’s RA/Dec are stored as `0, 0` so it sits at the Cartesian origin. That
-  is a coordinate convention, not the Sun’s catalog position.
-- Faction counts from the original setting (hundreds of systems) will saturate
-  a small local network; turn counts down for a 50 ly map.
+- Default faction counts come from a large setting (hundreds of systems) and
+  will saturate a small local network. Turn counts down for a 50 ly map.
+- The machine this was built on had system Python 3.9.6; libraries are
+  current for that line.
+
+## Versioning
+
+This release is **v1.4**. Earlier experimental scripts were **v0.1–v0.9**;
+the first cleaned release was **v1.0**. The next change increments this
+number. See [HISTORY.md](HISTORY.md).

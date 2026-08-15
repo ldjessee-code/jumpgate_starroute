@@ -14,7 +14,9 @@ from starroute.paths import NETWORK_CSV, SYSTEMS_CSV, ensure_data_dirs
 
 DEFAULT_NETWORK = {
     "max_jump_ly": 50.0,
-    "preferred_ly": 16.0,
+    "medium_start_pct": 50.0,
+    "long_start_pct": 75.0,
+    "preferred_ly": 25.0,
     "max_neighbors": 8,
     "hard_rank": 0.20,
     "soft_rank": 0.30,
@@ -24,15 +26,24 @@ DEFAULT_NETWORK = {
 }
 
 
-def _valid_row(row: pd.Series, min_mass: float) -> bool:
+def _band_limits(max_jump: float, medium_pct: float, long_pct: float) -> tuple[float, float]:
+    """Short ends / medium starts at medium_pct of max jump; long starts at long_pct."""
+    medium_pct = min(max(float(medium_pct), 1.0), 99.0)
+    long_pct = min(max(float(long_pct), medium_pct + 1.0), 100.0)
+    short_end = max_jump * (medium_pct / 100.0)
+    long_start = max_jump * (long_pct / 100.0)
+    return short_end, long_start
+
+
+def _valid_row(row: pd.Series, min_mass: float, origin: str) -> bool:
     coords = (row["calculated_x"], row["calculated_y"], row["calculated_z"])
     if not all(np.isfinite(c) for c in coords):
         return False
-    if coords == (0, 0, 0) and row["hostname"] != "Sol":
+    if coords == (0, 0, 0) and row["hostname"] != origin:
         return False
-    mass = row.get("st_mass")
-    if row["hostname"] == "Sol":
+    if row["hostname"] == origin:
         return True
+    mass = row.get("st_mass")
     if pd.isna(mass) or float(mass) < min_mass:
         return False
     return True
@@ -61,6 +72,7 @@ def _select_neighbors(
     current: str,
     connections: dict[str, set[str]],
     max_neighbors: int,
+    hard_rank: float,
     soft_rank: float,
     linked_count: int,
     max_linked: int,
@@ -71,8 +83,10 @@ def _select_neighbors(
     for neighbor in candidates:
         if len(chosen) >= max_neighbors:
             break
-        local = neighbor.get("near") or neighbor["hostname"] == parent
-        if not local and chosen and neighbor["ranking"] < soft_rank:
+        band = neighbor.get("band") or ("short" if neighbor.get("near") else "long")
+        if band == "medium" and neighbor["ranking"] < hard_rank and neighbor["hostname"] != parent:
+            continue
+        if band == "long" and neighbor["ranking"] < soft_rank and neighbor["hostname"] != parent:
             continue
         chosen.append(neighbor)
     for neighbor in chosen:
@@ -99,7 +113,7 @@ def generate_network(
     if missing:
         raise ValueError(f"systems table missing columns: {sorted(missing)}")
 
-    df = df[df.apply(lambda r: _valid_row(r, cfg["min_stellar_mass"]), axis=1)].reset_index(drop=True)
+    df = df[df.apply(lambda r: _valid_row(r, cfg["min_stellar_mass"], cfg["root_hostname"]), axis=1)].reset_index(drop=True)
     if df["hostname"].duplicated().any():
         df = df.drop_duplicates(subset="hostname", keep="first").reset_index(drop=True)
 
@@ -123,7 +137,13 @@ def generate_network(
     max_linked = int(cfg["max_linked_nodes"])
     hard_rank = float(cfg["hard_rank"])
     soft_rank = float(cfg["soft_rank"])
-    preferred = float(cfg["preferred_ly"])
+    short_end, long_start = _band_limits(
+        max_jump,
+        cfg.get("medium_start_pct", 50),
+        cfg.get("long_start_pct", 75),
+    )
+    preferred = short_end
+    cfg["preferred_ly"] = round(preferred, 4)
 
     while queue:
         idx, parent = queue.popleft()
@@ -137,8 +157,9 @@ def generate_network(
 
         neighbors: list[dict] = []
         if process_order <= max_linked:
-            near: list[dict] = []
-            far: list[dict] = []
+            short: list[dict] = []
+            medium: list[dict] = []
+            long: list[dict] = []
             for j in tree.query_ball_point(coords[idx], max_jump):
                 if j == idx:
                     continue
@@ -150,29 +171,35 @@ def generate_network(
                     continue
                 other_row = df.iloc[j]
                 score = _score_row(other_row, dist, preferred, weights)
+                if dist <= short_end or other == parent:
+                    band = "short"
+                elif dist <= long_start:
+                    band = "medium"
+                else:
+                    band = "long"
                 item = {
                     "hostname": other,
                     "distance_ly": round(dist, 4),
                     "ranking": round(score, 4),
-                    "near": dist <= preferred,
+                    "near": band == "short",
+                    "band": band,
                 }
-                # Local stars always get a gate. Beyond preferred_ly, ranking is the filter.
-                if dist <= preferred or other == parent or score >= hard_rank:
-                    (near if dist <= preferred or other == parent else far).append(item)
-            near.sort(key=lambda item: item["distance_ly"])
-            far.sort(key=lambda item: item["ranking"], reverse=True)
-            # Ranking-only selection skipped Alpha Cen / ε Eri from Sol. Local
-            # systems (≤ preferred_ly) are always eligible; longer jumps still
-            # need the ranking floors.
-            ranked_pool = near + [n for n in far if n["ranking"] >= soft_rank] + [
-                n for n in far if n["ranking"] < soft_rank
-            ]
+                if band == "short":
+                    short.append(item)
+                elif band == "medium" and (score >= hard_rank or other == parent):
+                    medium.append(item)
+                elif band == "long" and (score >= soft_rank or other == parent):
+                    long.append(item)
+            short.sort(key=lambda item: item["distance_ly"])
+            medium.sort(key=lambda item: item["ranking"], reverse=True)
+            long.sort(key=lambda item: item["ranking"], reverse=True)
             neighbors = _select_neighbors(
-                ranked_pool,
+                short + medium + long,
                 parent,
                 name,
                 connections,
                 max_neighbors,
+                hard_rank,
                 soft_rank,
                 process_order,
                 max_linked,
@@ -298,6 +325,12 @@ def network_payload(df: pd.DataFrame) -> dict[str, Any]:
                 "symbol": row.get("stability_symbol") if pd.notna(row.get("stability_symbol")) else "circle",
                 "spectype": row.get("st_spectype") if pd.notna(row.get("st_spectype")) else "",
                 "dist_ly": None if pd.isna(row.get("distance_from_sol_ly")) else float(row["distance_from_sol_ly"]),
+                "dist_origin_ly": (
+                    None
+                    if pd.isna(row.get("distance_from_origin_ly"))
+                    else float(row["distance_from_origin_ly"])
+                ),
+                "origin": row.get("origin_hostname") if pd.notna(row.get("origin_hostname")) else "",
                 "gate_distance": None if pd.isna(row.get("gate_distance")) else int(row["gate_distance"]),
                 "species": row.get("Species") if pd.notna(row.get("Species")) else "",
                 "nation": row.get("Nation") if pd.notna(row.get("Nation")) else "",

@@ -42,6 +42,73 @@ def save_faction_config(config: dict[str, Any], path: str | Path | None = None) 
     return path
 
 
+def _host_xyz(df: pd.DataFrame, host: str):
+    if "calculated_x" not in df.columns or host is None:
+        return None
+    match = df[df["hostname"].astype(str) == str(host)]
+    if match.empty:
+        return None
+    return match.iloc[0][["calculated_x", "calculated_y", "calculated_z"]].to_numpy(dtype=float)
+
+
+def _delta_from_host(df: pd.DataFrame, host: str):
+    origin = _host_xyz(df, host)
+    if origin is None:
+        return None, None
+    xyz = df[["calculated_x", "calculated_y", "calculated_z"]].to_numpy(dtype=float)
+    delta = xyz - origin
+    dist = np.sqrt((delta ** 2).sum(axis=1))
+    return delta, dist
+
+
+def _mask_from_host(df: pd.DataFrame, rule: dict) -> pd.Series:
+    """Stars in a 15°-multiple wedge around a chosen home star, in the map plane."""
+    delta, dist = _delta_from_host(df, rule.get("host") or "Sol")
+    if delta is None:
+        return pd.Series(False, index=df.index)
+    angles = (np.degrees(np.arctan2(delta[:, 1], delta[:, 0])) + 360.0) % 360.0
+    start = float(rule.get("bearing_deg", 0)) % 360.0
+    width = max(float(rule.get("wedge_deg", 15)), 15.0)
+    end = (start + width) % 360.0
+    if width >= 360:
+        in_wedge = np.ones(len(df), dtype=bool)
+    elif start < end:
+        in_wedge = (angles >= start) & (angles < end)
+    else:
+        in_wedge = (angles >= start) | (angles < end)
+    mask = in_wedge & (dist > 1e-6)
+    if rule.get("max_ly") is not None:
+        mask = mask & (dist <= float(rule["max_ly"]))
+    return pd.Series(mask, index=df.index)
+
+
+def _mask_near_host(df: pd.DataFrame, rule: dict) -> pd.Series:
+    _delta, dist = _delta_from_host(df, rule.get("host") or "Sol")
+    if dist is None:
+        return pd.Series(False, index=df.index)
+    max_ly = float(rule.get("max_ly", 80))
+    return pd.Series((dist > 1e-6) & (dist <= max_ly), index=df.index)
+
+
+def _mask_far_host(df: pd.DataFrame, rule: dict) -> pd.Series:
+    _delta, dist = _delta_from_host(df, rule.get("host") or "Sol")
+    if dist is None:
+        return pd.Series(False, index=df.index)
+    min_ly = float(rule.get("min_ly", 400))
+    return pd.Series(dist >= min_ly, index=df.index)
+
+
+def _apply_rule(df: pd.DataFrame, rule: dict) -> pd.Series:
+    op = rule.get("op")
+    if op == "from_host":
+        return _mask_from_host(df, rule)
+    if op == "near_host":
+        return _mask_near_host(df, rule)
+    if op == "far_host":
+        return _mask_far_host(df, rule)
+    return _single_filter(df, rule)
+
+
 def _mask_from_filters(df: pd.DataFrame, filters: list[dict] | None) -> pd.Series:
     if not filters:
         return pd.Series(True, index=df.index)
@@ -50,10 +117,10 @@ def _mask_from_filters(df: pd.DataFrame, filters: list[dict] | None) -> pd.Serie
         if "any" in rule:
             any_mask = pd.Series(False, index=df.index)
             for inner in rule["any"]:
-                any_mask = any_mask | _single_filter(df, inner)
+                any_mask = any_mask | _apply_rule(df, inner)
             mask = mask & any_mask
         else:
-            mask = mask & _single_filter(df, rule)
+            mask = mask & _apply_rule(df, rule)
     return mask
 
 
@@ -107,10 +174,14 @@ def assign_factions(
     work["is_hub"] = False
 
     for spec in cfg.get("species", []):
+        if not spec.get("name") or int(spec.get("count") or 0) <= 0:
+            continue
         _claim(work, spec, species=spec["name"], nation="")
 
     remaining = work.loc[~work["assigned"]].copy()
     for spec in cfg.get("nations", []):
+        if not spec.get("name") or int(spec.get("count") or 0) <= 0:
+            continue
         claimed = _claim(remaining, spec, species="Human", nation=spec["name"])
         work.loc[claimed.index, "assigned"] = True
         work.loc[claimed.index, "Species"] = "Human"
@@ -147,6 +218,30 @@ def assign_factions(
     work.to_csv(assigned_path, index=False)
     routes.to_csv(routes_path, index=False)
     return work, routes
+
+
+def preview_faction_matches(df: pd.DataFrame, config: dict[str, Any]) -> list[dict[str, Any]]:
+    """How many catalog systems match each faction rule (does not write files)."""
+    work = df.copy()
+    work["assigned"] = False
+    results: list[dict[str, Any]] = []
+    groups = [(spec, spec["name"], "") for spec in config.get("species", [])]
+    groups += [(spec, "Human", spec["name"]) for spec in config.get("nations", [])]
+    for spec, species, nation in groups:
+        available = work.loc[~work["assigned"]]
+        mask = _mask_from_filters(available, spec.get("filters"))
+        matching = int(mask.sum())
+        claimed = _claim(work, spec, species=species, nation=nation)
+        results.append(
+            {
+                "name": spec["name"],
+                "kind": "nation" if nation else "species",
+                "count": int(spec.get("count", 0)),
+                "matching": matching,
+                "claimed": int(len(claimed)),
+            }
+        )
+    return results
 
 
 def _claim(df: pd.DataFrame, spec: dict, species: str, nation: str) -> pd.DataFrame:
