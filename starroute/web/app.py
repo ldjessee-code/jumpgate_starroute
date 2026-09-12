@@ -32,6 +32,7 @@ from starroute.mapgen.network import (
     network_payload,
     shortest_path,
 )
+from starroute.api.v1 import create_v1_app
 from starroute.paths import (
     DATA_PROCESSED,
     DATA_RAW,
@@ -106,6 +107,7 @@ def _load_network_defaults() -> dict[str, Any]:
 def create_app() -> FastAPI:
     ensure_data_dirs()
     app = FastAPI(title="Jumpgate Starroute", version="2.0.0")
+    app.mount("/v1", create_v1_app())
     app.mount("/static", StaticFiles(directory=WEB_DIR / "static"), name="static")
 
     @app.get("/", response_class=HTMLResponse)

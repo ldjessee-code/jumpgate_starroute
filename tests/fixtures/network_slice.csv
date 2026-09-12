@@ -1,0 +1,3 @@
+hostname,calculated_x,calculated_y,calculated_z,neighbor_1_hostname,neighbor_1_distance,sy_name,sy_pnum,composite_ranking,stability_symbol,st_spectype,distance_from_sol_ly,origin_hostname,gate_distance,Species,Nation,Group,is_hub,process_order
+Sol,0.0,0.0,0.0,AU Mic,31.709212476,Sol,8.0,3.0,circle,G2 V,0.0,Sol,0,,,Human,true,1
+AU Mic,17.871020337498624,-20.348503016446646,-16.493611276324117,Sol,31.709212476,AU Mic,4.0,0.0,square,M1 V,31.709212476,Sol,1,,,Human,false,2
