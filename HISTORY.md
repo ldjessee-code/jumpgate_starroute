@@ -3,6 +3,10 @@
 Version numbers increment when a release ships. This file is the narrative;
 [README.md](README.md) is the current product.
 
+**Working title for v3.0:** **Ptah** (craftsman / stellar cartography layer). GitHub
+repo name stays `jumpgate_starroute` until a rename. See
+[docs/JUMPGATE_V3_DESIGN.md](docs/JUMPGATE_V3_DESIGN.md).
+
 A frozen copy of the pre-1.0 script pile (including an older `archived/`
 folder) sits outside the repo at `/Users/ldjessee/Projects/Archive/starmap`.
 The 444 MB Python 3.9 `env/` from that era was not copied.
@@ -138,8 +142,19 @@ experiments.
 
 ---
 
-## Unreleased / next
+## Unreleased — v3.0 / Ptah (in progress)
 
-Nothing scheduled. The next shipped change gets **v1.1** (or **v2.0** if it
-breaks the v1.0 data or UI contract). Add a dated section here when that
-happens.
+Public contract for agents, Worldstack, and Chronos. Mapgen engine stays.
+Working title **Ptah**. v2 UI on `/api/*` stays for standalone / hands-on generate.
+
+Branch `ptah-v3`. First slice: JSON schemas + `systems.csv` lift (no HTTP yet).
+
+Domain handoff: God’s Eye View owns Earth meters through geosynchronous orbit.
+Ptah owns everything outside that (heliocentric systems and the jump network).
+Stellarium export is **not** this release.
+
+---
+
+## Unreleased / next (historical note)
+
+The old “next is v1.1” line is obsolete. Shipped: v1.4 preview, v2.0 WASM.

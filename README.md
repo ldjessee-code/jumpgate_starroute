@@ -1,6 +1,7 @@
 # Jumpgate Starroute
 
-**Version 2.0** — August 2026
+**Version 2.0** — August 2026  
+**Working title for v3.0:** Ptah (see [docs/JUMPGATE_V3_DESIGN.md](docs/JUMPGATE_V3_DESIGN.md); branch `ptah-v3`).
 
 A local tool for GMs and authors. It takes real NASA exoplanet catalog data
 and builds a **Sol-centered jump-drive or star-gate network** you can steer
