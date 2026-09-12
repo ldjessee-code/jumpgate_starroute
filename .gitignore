@@ -15,3 +15,5 @@ data/processed/*
 !data/processed/.gitkeep
 data/uploads/*
 !data/uploads/.gitkeep
+data/jumpgate/*
+!data/jumpgate/.gitkeep

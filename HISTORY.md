@@ -147,7 +147,8 @@ experiments.
 Public contract for agents, Worldstack, and Chronos. Mapgen engine stays.
 Working title **Ptah**. v2 UI on `/api/*` stays for standalone / hands-on generate.
 
-Branch `ptah-v3`. First slice: JSON schemas + `systems.csv` lift (no HTTP yet).
+Branch `ptah-v3`. First slices: JSON schemas + `systems.csv` lift; JSON document
+store + strong etags (library only, no HTTP yet).
 
 Domain handoff: God’s Eye View owns Earth meters through geosynchronous orbit.
 Ptah owns everything outside that (heliocentric systems and the jump network).

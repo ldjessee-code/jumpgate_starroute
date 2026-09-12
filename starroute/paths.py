@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DATA_RAW = ROOT / "data" / "raw"
 DATA_PROCESSED = ROOT / "data" / "processed"
 DATA_UPLOADS = ROOT / "data" / "uploads"
+DATA_JUMPGATE = ROOT / "data" / "jumpgate"
 CONFIG_DIR = ROOT / "config"
 
 SYSTEMS_CSV = DATA_PROCESSED / "systems.csv"
@@ -27,5 +28,5 @@ ORIGIN_JSON = DATA_PROCESSED / "origin.json"
 
 
 def ensure_data_dirs() -> None:
-    for path in (DATA_RAW, DATA_PROCESSED, DATA_UPLOADS, CONFIG_DIR):
+    for path in (DATA_RAW, DATA_PROCESSED, DATA_UPLOADS, DATA_JUMPGATE, CONFIG_DIR):
         path.mkdir(parents=True, exist_ok=True)
