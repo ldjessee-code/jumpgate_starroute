@@ -11,9 +11,9 @@
   <header class="masthead compact">
     <div class="masthead-top">
       <div class="masthead-copy">
-        <p class="eyebrow">v1.4 · GM / author tool</p>
+        <p class="eyebrow">v2.0 · GM / author tool</p>
         <h1>Jumpgate Starroute</h1>
-        <p class="lede">A 60 ly map around Sol — Humans and the Kessari. Open the side panel to change settings or rebuild with Python later.</p>
+        <p class="lede">A 60 ly map around Sol — Humans and the Kessari. Change jump settings in the side panel and generate a new map from the same star list.</p>
       </div>
       <div class="header-actions">
         <button id="btn-drawer" class="btn header-help" type="button" aria-expanded="false">Settings</button>
@@ -22,14 +22,14 @@
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab is-active" data-screen="map" type="button">Map</button>
-      <button class="tab backend-only" data-screen="ingest" type="button">Choose the stars</button>
       <button class="tab backend-only" data-screen="factions" type="button">Who lives where</button>
+      <button class="tab is-disabled" data-screen="ingest" type="button" disabled aria-disabled="true" title="NASA catalog ingest comes later. v2.0 generates maps from the shipped star list.">Choose the stars <span class="tab-later">later</span></button>
     </nav>
   </header>
 
   <main>
     <section id="screen-ingest" class="screen">
-      <p class="tab-intro">Start here. Load NASA’s lists, pick which star is “home,” and decide how big a neighborhood to keep. This only builds a star list. Cultures and jump routes come on the next tabs.</p>
+      <p class="tab-intro">Later step. Load NASA’s lists, pick which star is “home,” and decide how big a neighborhood to keep. v2.0 generates maps from the shipped star list instead.</p>
 
       <article class="card">
         <h2>
@@ -89,7 +89,7 @@
     </section>
 
     <section id="screen-factions" class="screen">
-      <p class="tab-intro">Optional story layer. Decide which cultures prefer which kinds of worlds (warm gas giants, Earth-like temperatures, and so on). Save the rules here. They are painted onto the map only after you draw routes on the next tab.</p>
+      <p class="tab-intro">Optional story layer. Decide which cultures prefer which kinds of worlds (warm gas giants, Earth-like temperatures, and so on). Save the rules here. They are painted onto the map when you generate a new map.</p>
 
       <article class="card">
         <h2>
@@ -136,7 +136,7 @@
     <section id="screen-map" class="screen is-active">
       <div class="map-layout" id="map-layout">
         <aside class="card controls" id="settings-drawer">
-          <p class="tab-intro sidebar-intro">Draw the jump routes. Build the star list first. A jump is one hop between two stars. Save a map file if you want to open this later without rebuilding.</p>
+          <p class="tab-intro sidebar-intro">The star list is already in this page (60 ly around Sol). Change jump settings below and generate a new map. Same viewer, same JSON. NASA catalog ingest is a later step.</p>
           <h2>Route settings</h2>
           <label>
             <span class="label-row">Longest single jump <button type="button" class="info" data-term="jumpRange" aria-label="About jump range">?</button></span>
@@ -193,6 +193,11 @@
             <button id="btn-network" class="btn primary" type="button">Draw the routes</button>
             <button id="btn-reset-map" class="btn" type="button">Reset this tab</button>
           </div>
+          <div class="row-actions">
+            <button id="btn-wasm-rebuild" class="btn primary" type="button">Generate new map</button>
+            <span class="field-help">Uses the shipped star list (not a fresh NASA download). First click loads Python-in-WASM (slow once). After that, changing jump length or percents and generating again is local.</span>
+          </div>
+          <p id="wasm-status" class="field-help" aria-live="polite"></p>
           <pre id="network-box" class="output hidden"></pre>
           <div class="downloads">
             <button id="btn-snapshot" class="btn" type="button">Save this map</button>
@@ -250,6 +255,7 @@
   <div id="toast" class="toast hidden" role="status"></div>
   <script src="default-map.js"></script>
   <script src="js/glossary.js"></script>
+  <script src="js/wasm-engine.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

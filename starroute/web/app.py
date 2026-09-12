@@ -105,7 +105,7 @@ def _load_network_defaults() -> dict[str, Any]:
 
 def create_app() -> FastAPI:
     ensure_data_dirs()
-    app = FastAPI(title="Jumpgate Starroute", version="1.4.0")
+    app = FastAPI(title="Jumpgate Starroute", version="2.0.0")
     app.mount("/static", StaticFiles(directory=WEB_DIR / "static"), name="static")
 
     @app.get("/", response_class=HTMLResponse)
@@ -249,7 +249,7 @@ def create_app() -> FastAPI:
         if not NETWORK_CSV.exists():
             raise HTTPException(status_code=404, detail="Generate a network before saving a snapshot.")
         payload = {
-            "starroute": "1.0",
+            "starroute": "2.0",
             "kind": "network_snapshot",
             "payload": network_payload(pd.read_csv(NETWORK_CSV)),
             "factions": load_faction_config(),

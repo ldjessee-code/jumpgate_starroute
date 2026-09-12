@@ -1,0 +1,41 @@
+{
+  "hub_percentile": 0.08,
+  "hub_extra_link_ly": 12,
+  "human_root": "Sol",
+  "human_root_group": "Human",
+  "multi_route_groups": ["Human", "Kessari"],
+  "species": [
+    {
+      "name": "Kessari",
+      "count": 20,
+      "prefix": "KS",
+      "preset": "kessari",
+      "description": "Hot-world, high-pressure people. Prefer sulfur-band climates and Jupiter-like gas giants.",
+      "filters": [
+        {
+          "any": [
+            { "column": "sulfur_ranking", "op": "gt", "value": 0 },
+            { "column": "gas_giant_count", "op": "gt", "value": 0 }
+          ]
+        }
+      ],
+      "sort": { "column": "sulfur_ranking", "ascending": false }
+    }
+  ],
+  "nations": [
+    {
+      "name": "Human",
+      "count": 80,
+      "prefix": "HU",
+      "preset": "human",
+      "description": "Earth-like settlers around Sol.",
+      "filters": [],
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false,
+        "key": "prefer_hostname",
+        "hostname": "Sol"
+      }
+    }
+  ]
+}

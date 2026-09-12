@@ -1,6 +1,6 @@
 # Jumpgate Starroute
 
-**Version 1.4** — August 2026
+**Version 2.0** — August 2026
 
 A local tool for GMs and authors. It takes real NASA exoplanet catalog data
 and builds a **Sol-centered jump-drive or star-gate network** you can steer
@@ -11,10 +11,14 @@ This is not the sibling analytics-platform project (`../analytics-platform`).
 How the project got here is in [HISTORY.md](HISTORY.md). Future releases
 increment the version number there and here.
 
-## Current state (v1.4)
+## Current state (v2.0)
 
-Opens on a **ready-made 3D map**. No Python for looking around. Settings hide
-in a side drawer so the map can fill the window.
+Browser engine on git branch `wasm-pyodide` (see [WASM.md](WASM.md)): the
+same Python mapgen runs in the page via Pyodide. Not merged to `main` until
+you like it.
+
+Opens on a **ready-made 3D map**. Settings hide in a side drawer so the map
+can fill the window.
 
 Shipped preview (60 ly around Sol):
 
@@ -24,10 +28,13 @@ Shipped preview (60 ly around Sol):
   gas-giant worlds). A little overlap where a star has both.
 
 Rotate, zoom, highlight a culture, and trace a jump path in the browser.
-Rebuilding from NASA files still uses the Python engine (FastAPI). A WASM
-engine is a possible later path; it is not in this release.
+**Generate new map** (Settings) rebuilds from the same shipped star list with
+new jump settings, in the browser. Same viewer, same snapshot JSON.
 
-This release is **v1.4**. See [HISTORY.md](HISTORY.md).
+**Choose the stars** (NASA CSV ingest) is last and grayed out in this
+release. Hosting a processed table comes later.
+
+This release is **v2.0**. See [HISTORY.md](HISTORY.md).
 
 ## Open the map (no install)
 
@@ -110,6 +117,6 @@ configured human root nation (Turquenish Empire by default).
 
 ## Versioning
 
-This release is **v1.4**. Earlier experimental scripts were **v0.1–v0.9**;
-the first cleaned release was **v1.0**. The next change increments this
-number. See [HISTORY.md](HISTORY.md).
+This release is **v2.0**. Earlier experimental scripts were **v0.1–v0.9**;
+the first cleaned release was **v1.0**. v2.0 is the browser-engine shift.
+See [HISTORY.md](HISTORY.md).

@@ -69,6 +69,7 @@ let factionConfig = null;
 let cultureList = [];
 let factionPresets = { max_cultures: 16, presets: [] };
 let networkData = null;
+let lastSnapshot = null;
 let catalogOrigin = "Sol";
 
 const CATALOG_DEFAULTS = {
@@ -203,6 +204,8 @@ async function api(url, options) {
 }
 
 function showScreen(name) {
+  const tab = document.querySelector(`.tab[data-screen="${name}"]`);
+  if (tab && (tab.disabled || tab.getAttribute("aria-disabled") === "true")) return;
   document.body.classList.toggle("map-tab", name === "map");
   document.querySelectorAll(".screen").forEach((el) => {
     el.classList.toggle("is-active", el.id === `screen-${name}`);
@@ -269,7 +272,10 @@ function shortestPathLocal(start, end) {
 }
 
 document.querySelectorAll(".tab").forEach((btn) => {
-  btn.addEventListener("click", () => showScreen(btn.dataset.screen));
+  btn.addEventListener("click", () => {
+    if (btn.disabled || btn.getAttribute("aria-disabled") === "true") return;
+    showScreen(btn.dataset.screen);
+  });
 });
 
 function bindHostSearch(input, list, hostPathFrom) {
@@ -961,9 +967,38 @@ async function highlightPath() {
   drawMap(path);
 }
 
+function currentNetworkParams() {
+  return {
+    max_jump_ly: Number($("max-jump").value),
+    medium_start_pct: Number($("medium-pct").value),
+    long_start_pct: Number($("long-pct").value),
+    max_neighbors: Number($("max-neighbors").value),
+    max_linked_nodes: Number($("max-linked").value),
+    hard_rank: Number($("hard-rank").value),
+    soft_rank: Number($("soft-rank").value),
+    min_stellar_mass: Number($("net-min-mass").value),
+    root_hostname: $("root-host").value || catalogOrigin || "Sol",
+  };
+}
+
+function snapshotEnvelope(data) {
+  const payload = (data && data.payload && data.payload.nodes) ? data.payload : data;
+  return {
+    starroute: (data && data.starroute) || "2.0",
+    kind: "network_snapshot",
+    title: (data && data.title) || "Starroute map",
+    origin: (data && data.origin) || { origin_hostname: catalogOrigin || "Sol" },
+    params: (data && data.params) || currentNetworkParams(),
+    factions: data && data.factions,
+    payload,
+  };
+}
+
 function applyNetworkResult(data) {
-  networkData = data.payload || data;
-  if (!networkData.nodes) return;
+  const payload = data && data.payload && data.payload.nodes ? data.payload : data;
+  if (!payload || !payload.nodes) return;
+  lastSnapshot = snapshotEnvelope(data && data.payload && data.payload.nodes ? data : { payload });
+  networkData = payload;
   fillPathSelects(networkData.nodes);
   fillFocusOptions(networkData.nodes);
   highlightPath();
@@ -1017,7 +1052,10 @@ $("btn-network").addEventListener("click", async () => {
 
 $("btn-snapshot").addEventListener("click", async () => {
   try {
-    const data = await api("/api/network/snapshot");
+    if (!lastSnapshot || !lastSnapshot.payload || !lastSnapshot.payload.nodes) {
+      throw new Error("No map to save yet.");
+    }
+    const data = snapshotEnvelope(lastSnapshot);
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -1108,6 +1146,33 @@ $("btn-reset-factions").addEventListener("click", async () => {
 $("btn-reset-map").addEventListener("click", () => {
   applyNetworkDefaults();
   toast("Route settings reset. The map itself is unchanged until you draw again.");
+});
+
+let wasmEngine = null;
+$("btn-wasm-rebuild").addEventListener("click", async () => {
+  $("btn-wasm-rebuild").disabled = true;
+  try {
+    if (!wasmEngine) wasmEngine = createWasmEngine();
+    wasmEngine.onstatus = (message) => {
+      toast(message);
+      const line = $("wasm-status");
+      if (line) line.textContent = message;
+    };
+    const data = await wasmEngine.rebuild({
+      params: currentNetworkParams(),
+      assign_factions: $("assign-factions").checked,
+    });
+    applyNetworkResult(data);
+    const nodes = (data.payload && data.payload.nodes && data.payload.nodes.length) || 0;
+    const edges = (data.payload && data.payload.edges && data.payload.edges.length) || 0;
+    const line = $("wasm-status");
+    if (line) line.textContent = `New map: ${nodes} systems, ${edges} jump routes.`;
+    toast(`New map: ${nodes} systems, ${edges} jump routes.`);
+  } catch (err) {
+    toast(err.message || String(err), true);
+  } finally {
+    $("btn-wasm-rebuild").disabled = false;
+  }
 });
 
 $("path-start").addEventListener("change", highlightPath);

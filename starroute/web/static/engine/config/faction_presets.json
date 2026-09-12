@@ -1,0 +1,228 @@
+{
+  "max_cultures": 16,
+  "presets": [
+    {
+      "id": "kessari",
+      "name": "Kessari",
+      "kind": "species",
+      "count": 20,
+      "prefix": "KS",
+      "label": "Kessari — hot, high-pressure worlds (Hail Mary–style)",
+      "description": "A people at home in sulfur-band climates and around Jupiter-like gas giants. They overlap humans only where a star has both a rocky Goldilocks world and a giant.",
+      "filters": [{
+        "any": [
+          { "column": "sulfur_ranking", "op": "gt", "value": 0 },
+          { "column": "gas_giant_count", "op": "gt", "value": 0 }
+        ]
+      }],
+      "sort": { "column": "sulfur_ranking", "ascending": false }
+    },
+    {
+      "id": "methan",
+      "name": "Methan",
+      "kind": "species",
+      "count": 100,
+      "prefix": "ME",
+      "label": "Methan — gas-giant station dwellers",
+      "description": "Methane-breathers. They live in stations and structures inside or around Jupiter-like gas giants, not on rocky ground.",
+      "filters": [{ "column": "gas_giant_count", "op": "gt", "value": 0 }],
+      "sort": { "column": "gas_giant_count", "ascending": false }
+    },
+    {
+      "id": "crystomorphs",
+      "name": "Crystomorphs",
+      "kind": "species",
+      "count": 101,
+      "prefix": "CR",
+      "label": "Crystomorphs — living crystal, high on the sky",
+      "description": "Beings that look like living crystal. They prefer stars far from the celestial equator (high north or south on the sky), away from the thickest human traffic.",
+      "filters": [{ "column": "dec", "op": "abs_gt", "value": 45 }],
+      "sort": { "column": "dec", "ascending": false, "key": "abs" }
+    },
+    {
+      "id": "echryon",
+      "name": "Echryon & Echtol",
+      "kind": "species",
+      "count": 61,
+      "prefix": "EC",
+      "label": "Echryon & Echtol — one sky quarter (northeast)",
+      "description": "Defined by starting location: the first quarter of the sky (east of Sol’s zero line and north). A regional people, not a habitat type.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 0 },
+        { "column": "ra", "op": "lt", "value": 90 },
+        { "column": "dec", "op": "gt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "id": "aboreals",
+      "name": "Aboreals",
+      "kind": "species",
+      "count": 25,
+      "prefix": "AB",
+      "label": "Aboreals — sky quarter (southeast)",
+      "description": "Defined by starting location: the next sky quarter, south of the celestial equator.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 90 },
+        { "column": "ra", "op": "lt", "value": 180 },
+        { "column": "dec", "op": "lt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "id": "bazzar",
+      "name": "Bazzar",
+      "kind": "species",
+      "count": 25,
+      "prefix": "BA",
+      "label": "Bazzar — sky quarter (southwest)",
+      "description": "Defined by starting location: the third sky quarter, south of the equator.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 180 },
+        { "column": "ra", "op": "lt", "value": 270 },
+        { "column": "dec", "op": "lt", "value": 0 }
+      ],
+      "sort": { "column": "carbon_ranking", "ascending": false }
+    },
+    {
+      "id": "schettel",
+      "name": "Schettel",
+      "kind": "species",
+      "count": 12,
+      "prefix": "SC",
+      "label": "Schettel — rim / poor worlds",
+      "description": "Edge-of-the-sphere people. They take leftover, low-score systems or stars far from Sol — the rim of human-explored space.",
+      "filters": [
+        {
+          "any": [
+            { "column": "combined_score", "op": "lt_quantile", "value": 0.25 },
+            { "column": "distance_from_sol_ly", "op": "gt", "value": 900 }
+          ]
+        }
+      ],
+      "sort": { "column": "combined_score", "ascending": true }
+    },
+    {
+      "id": "turquenish",
+      "name": "Turquenish Empire",
+      "kind": "nation",
+      "count": 39,
+      "prefix": "TU",
+      "label": "Turquenish Empire — Sol’s human wedge",
+      "description": "The human polity that starts at Sol and claims the first third of the sky around it.",
+      "filters": [
+        { "column": "ra", "op": "gte", "value": 0 },
+        { "column": "ra", "op": "lt", "value": 120 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+    },
+    {
+      "id": "mardat",
+      "name": "Mardat Coalition",
+      "kind": "nation",
+      "count": 38,
+      "prefix": "MA",
+      "label": "Mardat Coalition — next human wedge",
+      "description": "Human nation on the next slice of sky after the Empire.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 120 },
+        { "column": "ra", "op": "lt", "value": 240 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "id": "hegemony",
+      "name": "Industrial Hegemony",
+      "kind": "nation",
+      "count": 11,
+      "prefix": "IN",
+      "label": "Industrial Hegemony — industrial sky slice",
+      "description": "A smaller human bloc on a later sky wedge.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 240 },
+        { "column": "ra", "op": "lt", "value": 300 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "id": "faithful",
+      "name": "League of The Faithful",
+      "kind": "nation",
+      "count": 3,
+      "prefix": "LE",
+      "label": "League of The Faithful — far-sky human slice",
+      "description": "A tiny human league on the last sky wedge.",
+      "filters": [
+        { "column": "ra", "op": "gt", "value": 300 },
+        { "column": "ra", "op": "lt", "value": 360 }
+      ],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "id": "other_human",
+      "name": "Other Human",
+      "kind": "nation",
+      "count": 9,
+      "prefix": "OH",
+      "label": "Other Human — leftovers",
+      "description": "Independent or mixed human holdings. Takes whatever good systems remain after the other cultures pick.",
+      "filters": [],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "id": "from_host",
+      "name": "Wedge from a home star",
+      "kind": "species",
+      "count": 20,
+      "prefix": "WH",
+      "label": "Direction from a home star — 15° sky slices",
+      "description": "Starts at a chosen star (not the edge of the map) and claims systems in one 15° slice around it. Widen the slice if you want a bigger nation.",
+      "filters": [{ "op": "from_host", "host": "Sol", "bearing_deg": 0, "wedge_deg": 15 }],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "id": "near_host",
+      "name": "Neighbors of a home star",
+      "kind": "nation",
+      "count": 20,
+      "prefix": "NH",
+      "label": "Near a home star — a pocket around one system",
+      "description": "Claims stars close to a chosen host. Use this for a culture that starts at Tau Ceti (or Sol) and holds the local pocket, not a far rim.",
+      "filters": [{ "op": "near_host", "host": "Sol", "max_ly": 80 }],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "id": "far_host",
+      "name": "Rim from a home star",
+      "kind": "species",
+      "count": 12,
+      "prefix": "RM",
+      "label": "Far from a home star — rim of that star’s neighborhood",
+      "description": "The old Schettel idea, but measured from any host you pick: far from that starting star, on the edge of its explored sphere.",
+      "filters": [{ "op": "far_host", "host": "Sol", "min_ly": 400 }],
+      "sort": { "column": "combined_score", "ascending": true }
+    },
+    {
+      "id": "custom_species",
+      "name": "New people",
+      "kind": "species",
+      "count": 10,
+      "prefix": "NP",
+      "label": "Custom species — you name them",
+      "description": "A new non-human culture. Rename them, then pick a placement rule (gas giants, crystal skies, a sky quarter, or the rim).",
+      "filters": [],
+      "sort": { "column": "combined_score", "ascending": false }
+    },
+    {
+      "id": "custom_nation",
+      "name": "New human nation",
+      "kind": "nation",
+      "count": 10,
+      "prefix": "NH",
+      "label": "Custom human nation — you name them",
+      "description": "A new human polity. Rename them, then pick which slice of leftover stars they prefer.",
+      "filters": [],
+      "sort": { "column": "combined_score", "ascending": false }
+    }
+  ]
+}

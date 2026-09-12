@@ -9,6 +9,21 @@ The 444 MB Python 3.9 `env/` from that era was not copied.
 
 ---
 
+## v2.0 — August 2026
+
+Browser engine. Same map viewer and snapshot JSON; maps are grown in
+WebAssembly (Pyodide runs the existing Python mapgen).
+
+- **Generate new map** rebuilds from the shipped 60 ly star list with new
+  jump settings. No FastAPI required for that path. First click downloads
+  Python-in-WASM once; later runs stay in the tab.
+- NASA CSV ingest is parked: **Choose the stars** sits last and is grayed
+  out. Hosting a processed table (Cloudflare is a candidate) is a later step.
+- Version jumps from 1.4 to 2.0 because the runtime moved: view and rebuild
+  both live in the browser. Python remains an optional native CLI.
+
+---
+
 ## v1.4 — August 2026
 
 Map-first, no Python required to look around.
