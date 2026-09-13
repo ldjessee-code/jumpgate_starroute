@@ -16,12 +16,13 @@ from starroute.api.v1.catalog import (
 )
 from starroute.api.v1.errors import Problem, problem_handler, validation_handler
 from starroute.api.v1.resolve import resolve_host
+from starroute.api.v1 import fiction as fiction_api
 from starroute.api.v1 import ingest as ingest_api
 from starroute.api.v1 import network as network_api
 from starroute.api.v1 import premise as premise_api
 from starroute.api.v1 import settings as settings_api
 from starroute.store.documents import JsonStore
-from starroute.ids import host_id
+from starroute.ids import edge_id, host_id
 from starroute.ingest.pipeline import detect_default_sources, preview_sources
 from starroute.mapgen.network import shortest_path
 
@@ -109,11 +110,56 @@ def create_v1_app() -> FastAPI:
         return {"setting_id": sid, "systems": items}
 
     @app.get("/systems/{system_id}", operation_id="get_system")
-    def get_system(system_id: str, setting_id: Optional[str] = Query(default=None)) -> dict:
+    def get_system(
+        system_id: str,
+        setting_id: Optional[str] = Query(default=None),
+        view: Optional[str] = Query(default=None),
+    ) -> dict:
         sid = require_setting_id(setting_id)
-        df = load_systems_df()
-        hostname = resolve_host(system_id, df, instance=f"/systems/{system_id}")
-        return system_document(hostname, sid)
+        store = JsonStore()
+        stored = None
+        for candidate in (system_id,):
+            try:
+                stored = store.get("systems", host_id(candidate))
+            except ValueError:
+                stored = None
+            if stored:
+                break
+        if stored:
+            doc = stored
+        else:
+            df = load_systems_df()
+            hostname = resolve_host(system_id, df, instance=f"/systems/{system_id}")
+            doc = system_document(hostname, sid)
+        if view != "catalog":
+            doc = fiction_api.apply_overrides(doc)
+        return doc
+
+    @app.post("/systems", operation_id="create_generated_host")
+    def create_generated_host(
+        body: dict = Body(...),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id or body.get("setting_id"))
+        return fiction_api.create_generated_host(body, sid)
+
+    @app.put("/systems/{system_id}/overrides", operation_id="put_override")
+    def put_override(
+        system_id: str,
+        body: dict = Body(...),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id)
+        return fiction_api.put_override(system_id, body, sid)
+
+    @app.put("/systems/{system_id}/xyz", operation_id="put_xyz")
+    def put_xyz(
+        system_id: str,
+        body: dict = Body(...),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id)
+        return fiction_api.put_xyz(system_id, body, sid)
 
     @app.get("/systems/{system_id}/bodies", operation_id="list_system_bodies")
     def list_system_bodies(system_id: str, setting_id: Optional[str] = Query(default=None)) -> dict:
@@ -162,6 +208,33 @@ def create_v1_app() -> FastAPI:
     def get_network(network_id: str, setting_id: Optional[str] = Query(default=None)) -> dict:
         sid = require_setting_id(setting_id)
         return _v3_network(sid, network_id)
+
+    @app.put("/networks/{network_id}/edges/{a}/{b}", operation_id="put_extra_edge")
+    def put_extra_edge(
+        network_id: str,
+        a: str,
+        b: str,
+        body: dict = Body(default={}),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id)
+        return fiction_api.put_extra_edge(network_id, a, b, body or {}, sid)
+
+    @app.get("/networks/{network_id}/edges/{a}/{b}", operation_id="get_edge")
+    def get_edge(
+        network_id: str,
+        a: str,
+        b: str,
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        require_setting_id(setting_id)
+        net = _v3_network(setting_id, network_id)
+        net = fiction_api.merge_extra_edges(net)
+        want = edge_id(a, b)
+        for edge in net.get("edges") or []:
+            if edge.get("id") == want:
+                return edge
+        raise Problem(404, "not_found", f"No edge {a}–{b}", instance=f"/networks/{network_id}/edges/{a}/{b}")
 
     @app.post("/networks/{network_id}/rebuild", operation_id="rebuild_network")
     def rebuild_network(

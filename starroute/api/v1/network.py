@@ -7,7 +7,7 @@ from typing import Any, Optional
 import pandas as pd
 
 from starroute.api.v1.errors import Problem
-from starroute.ids import host_id
+from starroute.ids import edge_id, host_id
 from starroute.mapgen.network import generate_network, merged_network_params, network_payload
 from starroute import paths
 from starroute.store.documents import JsonStore
@@ -42,7 +42,7 @@ def v3_network_document(
         a_id, b_id = host_id(a_host), host_id(b_host)
         edges.append(
             {
-                "id": f"{a_id}--{b_id}",
+                "id": edge_id(a_host, b_host),
                 "a": a_id,
                 "b": b_id,
                 "a_hostname": a_host,
@@ -82,7 +82,14 @@ def rebuild_network(
     except ValueError as exc:
         raise Problem(400, "validation_error", str(exc), instance=instance) from exc
     df = pd.read_csv(paths.NETWORK_CSV)
+    previous = _store().get("networks", network_id) or {}
     doc = v3_network_document(network_id, setting_id, df, result["params"])
+    preserve = body.get("preserve_overlays", True)
+    if preserve:
+        doc["extra_edges"] = list(previous.get("extra_edges") or [])
+        from starroute.api.v1.fiction import merge_extra_edges
+
+        doc = merge_extra_edges(doc)
     _store().put("networks", network_id, doc)
     return {
         "network_id": network_id,

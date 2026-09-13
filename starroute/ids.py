@@ -21,3 +21,9 @@ def body_id(hostname: str, pl_letter: str | None) -> str:
     if not letter:
         raise ValueError("pl_letter required for a confirmed body id")
     return f"{host_id(hostname)}.{letter}"
+
+
+def edge_id(a: str, b: str) -> str:
+    """Stable undirected id from two slugs or hostnames."""
+    left, right = sorted((host_id(a), host_id(b)))
+    return f"{left}--{right}"

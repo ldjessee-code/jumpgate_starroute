@@ -37,6 +37,30 @@ def _require_if_match(if_match: Optional[str], current: dict[str, Any], instance
         )
 
 
+def setting_reality(setting_id: Optional[str]) -> int:
+    if not setting_id:
+        return 0
+    try:
+        return int(get_setting(setting_id).get("reality") or 0)
+    except Problem as exc:
+        if exc.code == "not_found":
+            return 0
+        raise
+
+
+def require_reality(setting_id: Optional[str], min_stop: int, instance: str) -> int:
+    stop = setting_reality(setting_id)
+    if stop < min_stop:
+        raise Problem(
+            409,
+            "reality_forbidden",
+            f"This write requires reality >= {min_stop}",
+            instance=instance,
+            extra={"setting_id": setting_id, "reality": stop},
+        )
+    return stop
+
+
 def _actor_ok(updated_by: str, instance: str) -> None:
     if updated_by == "chronos":
         raise Problem(403, "forbidden_actor", "Chronos may not write the reality slider", instance=instance)
