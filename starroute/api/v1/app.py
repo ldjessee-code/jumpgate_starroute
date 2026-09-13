@@ -17,7 +17,9 @@ from starroute.api.v1.catalog import (
 from starroute.api.v1.errors import Problem, problem_handler, validation_handler
 from starroute.api.v1.resolve import resolve_host
 from starroute.api.v1 import ingest as ingest_api
+from starroute.api.v1 import premise as premise_api
 from starroute.api.v1 import settings as settings_api
+from starroute.store.documents import JsonStore
 from starroute.ids import host_id
 from starroute.ingest.pipeline import detect_default_sources, preview_sources
 from starroute.mapgen.network import network_payload, shortest_path
@@ -143,6 +145,44 @@ def create_v1_app() -> FastAPI:
         df = load_systems_df()
         hostname = resolve_host(system_id, df, instance=f"/systems/{system_id}")
         return system_document(hostname, sid)
+
+    @app.get("/systems/{system_id}/bodies", operation_id="list_system_bodies")
+    def list_system_bodies(system_id: str, setting_id: Optional[str] = Query(default=None)) -> dict:
+        sid = require_setting_id(setting_id)
+        df = load_systems_df()
+        hostname = resolve_host(system_id, df, instance=f"/systems/{system_id}/bodies")
+        doc = system_document(hostname, sid)
+        store = JsonStore()
+        items = [store.get("bodies", bid) for bid in doc.get("bodies") or []]
+        return {"system_id": doc["id"], "bodies": [b for b in items if b]}
+
+    @app.get("/bodies/{body_id}", operation_id="get_body_l2")
+    def get_body_l2(body_id: str) -> dict:
+        doc = JsonStore().get("bodies", body_id)
+        if not doc:
+            raise Problem(404, "not_found", f"Unknown body {body_id!r}", instance=f"/bodies/{body_id}")
+        return doc
+
+    @app.post("/systems/{system_id}/premise", operation_id="set_system_premise")
+    def set_system_premise(
+        system_id: str,
+        body: dict = Body(...),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id)
+        return premise_api.set_system_premise(system_id, body, sid)
+
+    @app.post("/systems/{system_id}/generate-l2", operation_id="generate_l2_gapfill")
+    def generate_l2_gapfill(
+        system_id: str,
+        body: dict = Body(default={}),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id)
+        need = list(body.get("need") or [])
+        return premise_api.generate_l2_gapfill(
+            system_id, setting_id=sid, need=need, seed=body.get("seed")
+        )
 
     @app.get("/stars/{star_id}", operation_id="get_star")
     def get_star(star_id: str, setting_id: Optional[str] = Query(default=None)) -> dict:
