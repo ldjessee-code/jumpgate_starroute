@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Optional
 
-from fastapi import FastAPI, Query
+from fastapi import Body, FastAPI, Header, Query
 from fastapi.exceptions import RequestValidationError
 
 from starroute import __version__
@@ -16,6 +16,7 @@ from starroute.api.v1.catalog import (
 )
 from starroute.api.v1.errors import Problem, problem_handler, validation_handler
 from starroute.api.v1.resolve import resolve_host
+from starroute.api.v1 import settings as settings_api
 from starroute.ids import host_id
 from starroute.mapgen.network import network_payload, shortest_path
 
@@ -68,6 +69,34 @@ def create_v1_app() -> FastAPI:
     )
     app.add_exception_handler(Problem, problem_handler)
     app.add_exception_handler(RequestValidationError, validation_handler)
+
+    @app.post("/settings", operation_id="create_setting")
+    def create_setting(body: dict = Body(...)) -> dict:
+        return settings_api.create_setting(body)
+
+    @app.get("/settings/{setting_id}", operation_id="get_setting")
+    def get_setting(setting_id: str) -> dict:
+        return settings_api.get_setting(setting_id)
+
+    @app.put("/settings/{setting_id}", operation_id="put_setting")
+    def put_setting(
+        setting_id: str,
+        body: dict = Body(...),
+        if_match: Optional[str] = Header(default=None, alias="If-Match"),
+    ) -> dict:
+        return settings_api.put_setting(setting_id, body, if_match)
+
+    @app.get("/settings/{setting_id}/reality", operation_id="get_reality")
+    def get_reality(setting_id: str) -> dict:
+        return settings_api.get_reality(setting_id)
+
+    @app.put("/settings/{setting_id}/reality", operation_id="put_reality")
+    def put_reality(
+        setting_id: str,
+        body: dict = Body(...),
+        if_match: Optional[str] = Header(default=None, alias="If-Match"),
+    ) -> dict:
+        return settings_api.put_reality(setting_id, body, if_match)
 
     @app.get("/provider", operation_id="get_provider")
     def get_provider() -> dict:
