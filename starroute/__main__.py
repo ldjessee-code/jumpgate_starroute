@@ -31,6 +31,10 @@ def main(argv: list[str] | None = None) -> None:
     net.add_argument("--max-jump", type=float, default=50.0)
     net.add_argument("--no-factions", action="store_true")
 
+    migrate = sub.add_parser("migrate-json", help="Lift systems.csv (+ optional planet CSV) into data/jumpgate JSON")
+    migrate.add_argument("--planets")
+    migrate.add_argument("--setting-id")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "serve":
@@ -49,6 +53,34 @@ def main(argv: list[str] | None = None) -> None:
             print(json.dumps(preview_sources(planets, hosts), indent=2))
             return
         print(json.dumps(build_systems_dataset(planets, hosts, max_distance_ly=args.max_ly, min_stellar_mass=args.min_mass), indent=2))
+        return
+
+    if args.cmd == "migrate-json":
+        import pandas as pd
+
+        from starroute.ingest.json_catalog import emit_json_catalog
+        from starroute.ingest.pipeline import PLANET_KEEP, _read_nasa_csv
+
+        if not SYSTEMS_CSV.exists():
+            raise SystemExit("Run ingest first (no data/processed/systems.csv).")
+        detected = detect_default_sources()
+        planet_path = args.planets or detected.get("planet_path")
+        planets = pd.DataFrame()
+        snapshot = None
+        if planet_path:
+            planets = _read_nasa_csv(planet_path, PLANET_KEEP)
+            snapshot = Path(planet_path).stem
+        print(
+            json.dumps(
+                emit_json_catalog(
+                    SYSTEMS_CSV,
+                    planets,
+                    setting_id=args.setting_id,
+                    planet_snapshot=snapshot,
+                ),
+                indent=2,
+            )
+        )
         return
 
     if args.cmd == "network":

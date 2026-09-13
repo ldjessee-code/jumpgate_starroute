@@ -206,6 +206,8 @@ def build_systems_dataset(
     max_distance_ly: float = 1000.0,
     min_stellar_mass: float = 0.25,
     origin_hostname: str = "Sol",
+    setting_id: str | None = None,
+    emit_json: bool = True,
 ) -> dict[str, Any]:
     """Ingest NASA tables → one row per host, plus Sol, written to CSV."""
     ensure_data_dirs()
@@ -261,7 +263,7 @@ def build_systems_dataset(
     )
 
     nearest_cols = [c for c in ("hostname", "distance_from_origin_ly", "distance_from_sol_ly", "st_spectype", "sy_pnum") if c in systems.columns]
-    return {
+    result: dict[str, Any] = {
         "output_path": str(output_path),
         "planet_rows": int(len(planets)),
         "host_rows_raw": host_rows_raw,
@@ -274,3 +276,16 @@ def build_systems_dataset(
         "min_stellar_mass": min_stellar_mass,
         "nearest": systems.nsmallest(6, "distance_from_origin_ly")[nearest_cols].to_dict(orient="records"),
     }
+    if emit_json:
+        from starroute.ingest.json_catalog import emit_json_catalog
+
+        kept = set(systems["hostname"].astype(str))
+        planet_kept = planets[planets["hostname"].astype(str).isin(kept)]
+        result["json"] = emit_json_catalog(
+            output_path,
+            planet_kept,
+            setting_id=setting_id,
+            planet_snapshot=planet_path.stem,
+            host_snapshot=host_path.stem,
+        )
+    return result

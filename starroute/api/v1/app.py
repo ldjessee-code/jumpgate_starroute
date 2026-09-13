@@ -16,8 +16,10 @@ from starroute.api.v1.catalog import (
 )
 from starroute.api.v1.errors import Problem, problem_handler, validation_handler
 from starroute.api.v1.resolve import resolve_host
+from starroute.api.v1 import ingest as ingest_api
 from starroute.api.v1 import settings as settings_api
 from starroute.ids import host_id
+from starroute.ingest.pipeline import detect_default_sources, preview_sources
 from starroute.mapgen.network import network_payload, shortest_path
 
 
@@ -97,6 +99,21 @@ def create_v1_app() -> FastAPI:
         if_match: Optional[str] = Header(default=None, alias="If-Match"),
     ) -> dict:
         return settings_api.put_reality(setting_id, body, if_match)
+
+    @app.get("/ingest/detect", operation_id="ingest_detect")
+    def ingest_detect() -> dict:
+        return detect_default_sources()
+
+    @app.post("/ingest/preview", operation_id="ingest_preview")
+    def ingest_preview(body: dict = Body(...)) -> dict:
+        try:
+            return preview_sources(body["planet_path"], body["host_path"])
+        except FileNotFoundError as exc:
+            raise Problem(404, "not_found", str(exc), instance="/ingest/preview") from exc
+
+    @app.post("/ingest/nasa", operation_id="ingest_nasa")
+    def ingest_nasa(body: dict = Body(...)) -> dict:
+        return ingest_api.ingest_nasa(body)
 
     @app.get("/provider", operation_id="get_provider")
     def get_provider() -> dict:
