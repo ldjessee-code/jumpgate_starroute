@@ -17,52 +17,21 @@ from starroute.api.v1.catalog import (
 from starroute.api.v1.errors import Problem, problem_handler, validation_handler
 from starroute.api.v1.resolve import resolve_host
 from starroute.api.v1 import ingest as ingest_api
+from starroute.api.v1 import network as network_api
 from starroute.api.v1 import premise as premise_api
 from starroute.api.v1 import settings as settings_api
 from starroute.store.documents import JsonStore
 from starroute.ids import host_id
 from starroute.ingest.pipeline import detect_default_sources, preview_sources
-from starroute.mapgen.network import network_payload, shortest_path
+from starroute.mapgen.network import shortest_path
 
 
 def _v3_network(setting_id: Optional[str], network_id: str) -> dict:
+    stored = JsonStore().get("networks", network_id)
+    if stored:
+        return stored
     df = load_network_df()
-    payload = network_payload(df)
-    nodes = []
-    for node in payload["nodes"]:
-        hostname = node["hostname"]
-        nodes.append(
-            {
-                "id": host_id(hostname),
-                "hostname": hostname,
-                "xyz_ly": [node.get("x"), node.get("y"), node.get("z")],
-                "gate_distance": node.get("gate_distance"),
-                "group": node.get("group") or "",
-            }
-        )
-    edges = []
-    for edge in payload["edges"]:
-        a_host, b_host = edge["a"], edge["b"]
-        a_id, b_id = host_id(a_host), host_id(b_host)
-        edges.append(
-            {
-                "id": f"{a_id}--{b_id}",
-                "a": a_id,
-                "b": b_id,
-                "a_hostname": a_host,
-                "b_hostname": b_host,
-                "distance_ly": edge.get("distance"),
-            }
-        )
-    return {
-        "schema": "jumpgate.network.v1",
-        "layer": "L11",
-        "id": network_id,
-        "setting_id": setting_id,
-        "starroute": "3.0",
-        "nodes": nodes,
-        "edges": edges,
-    }
+    return network_api.v3_network_document(network_id, setting_id, df, {})
 
 
 def create_v1_app() -> FastAPI:
@@ -193,6 +162,15 @@ def create_v1_app() -> FastAPI:
     def get_network(network_id: str, setting_id: Optional[str] = Query(default=None)) -> dict:
         sid = require_setting_id(setting_id)
         return _v3_network(sid, network_id)
+
+    @app.post("/networks/{network_id}/rebuild", operation_id="rebuild_network")
+    def rebuild_network(
+        network_id: str,
+        body: dict = Body(default={}),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id or (body or {}).get("setting_id"))
+        return network_api.rebuild_network(network_id, body or {}, sid)
 
     @app.get("/networks/{network_id}/route", operation_id="get_route")
     def get_route(

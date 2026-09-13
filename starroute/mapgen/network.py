@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 from collections import deque
 from typing import Any
 
@@ -9,8 +10,8 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree
 
+from starroute import paths
 from starroute.mapgen.ranking import composite_ranking
-from starroute.paths import NETWORK_CSV, SYSTEMS_CSV, ensure_data_dirs
 
 DEFAULT_NETWORK = {
     "max_jump_ly": 50.0,
@@ -24,6 +25,29 @@ DEFAULT_NETWORK = {
     "min_stellar_mass": 0.25,
     "root_hostname": "Sol",
 }
+
+
+def merged_network_params(overrides: dict | None = None) -> dict[str, Any]:
+    """DEFAULT_NETWORK, then config/network.json, then request overrides.
+
+    v1 rebuild uses this. Do not use NetworkRequest pydantic field defaults.
+    """
+    cfg = dict(DEFAULT_NETWORK)
+    if paths.NETWORK_JSON.exists():
+        cfg.update(json.loads(paths.NETWORK_JSON.read_text(encoding="utf-8")))
+    if overrides:
+        for key, value in overrides.items():
+            if value is not None:
+                cfg[key] = value
+    return cfg
+
+
+def edge_band(distance: float, short_end: float, long_start: float) -> str:
+    if distance <= short_end:
+        return "short"
+    if distance < long_start:
+        return "medium"
+    return "long"
 
 
 def _band_limits(max_jump: float, medium_pct: float, long_pct: float) -> tuple[float, float]:
@@ -102,10 +126,10 @@ def generate_network(
     weights: dict | None = None,
 ) -> dict[str, Any]:
     """Walk outward from Sol, attaching highly ranked neighbors within jump range."""
-    ensure_data_dirs()
-    cfg = {**DEFAULT_NETWORK, **(params or {})}
-    systems_path = systems_path or str(SYSTEMS_CSV)
-    output_path = output_path or str(NETWORK_CSV)
+    paths.ensure_data_dirs()
+    cfg = merged_network_params(params)
+    systems_path = systems_path or str(paths.SYSTEMS_CSV)
+    output_path = output_path or str(paths.NETWORK_CSV)
 
     df = pd.read_csv(systems_path)
     required = {"hostname", "calculated_x", "calculated_y", "calculated_z"}
@@ -308,8 +332,14 @@ def shortest_path(df: pd.DataFrame, start: str, end: str) -> list[str]:
     return []
 
 
-def network_payload(df: pd.DataFrame) -> dict[str, Any]:
-    """JSON for the Plotly.js map."""
+def network_payload(df: pd.DataFrame, params: dict | None = None) -> dict[str, Any]:
+    """JSON for the Plotly.js map. Additive keys only: never rename a/b/distance/hostname."""
+    cfg = merged_network_params(params)
+    short_end, long_start = _band_limits(
+        float(cfg["max_jump_ly"]),
+        cfg.get("medium_start_pct", 50),
+        cfg.get("long_start_pct", 75),
+    )
     neighbor_cols = [c for c in df.columns if c.startswith("neighbor_") and c.endswith("_hostname")]
     nodes = []
     for _, row in df.iterrows():
@@ -354,11 +384,14 @@ def network_payload(df: pd.DataFrame) -> dict[str, Any]:
                 continue
             seen_edges.add(key)
             dist_col = col.replace("_hostname", "_distance")
+            dist = None if dist_col not in row or pd.isna(row.get(dist_col)) else float(row[dist_col])
             edges.append(
                 {
                     "a": src,
                     "b": dest,
-                    "distance": None if dist_col not in row or pd.isna(row.get(dist_col)) else float(row[dist_col]),
+                    "distance": dist,
+                    "band": None if dist is None else edge_band(dist, short_end, long_start),
+                    "flavor": "gate",
                 }
             )
     return {"nodes": nodes, "edges": edges}

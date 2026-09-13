@@ -151,7 +151,8 @@ Branch `ptah-v3`. Slices so far: JSON schemas + `systems.csv` lift; JSON documen
 store + strong etags; `/v1` read façade; settings + reality slider with strong
 If-Match (CAS); ingest emits L0–L2 JSON (NASA nulls kept) and `/v1/ingest/nasa`
 with a path prefix guard; slider ≥ 1 gap-fill stubs (one per role, NASA rows
-unchanged). RFC 7807 only on `/v1`. v2 `/api/*` unchanged.
+unchanged); `/v1` network rebuild (config/network.json defaults, additive
+`band`/`flavor` on the v2 payload). RFC 7807 only on `/v1`. v2 `/api/*` unchanged.
 
 Domain handoff: God’s Eye View owns Earth meters through geosynchronous orbit.
 Ptah owns everything outside that (heliocentric systems and the jump network).
