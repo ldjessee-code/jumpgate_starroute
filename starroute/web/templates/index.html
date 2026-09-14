@@ -3,185 +3,105 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Jumpgate Starroute</title>
+  <title>Jumpgate Starroute · Ptah</title>
   <link rel="stylesheet" href="/static/css/app.css" />
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 </head>
-<body class="map-first map-tab">
+<body class="desk-layout">
   <header class="masthead compact">
     <div class="masthead-top">
       <div class="masthead-copy">
-        <p class="eyebrow">v2.0 · GM / author tool</p>
+        <p class="eyebrow">Ptah · v3 desk · GM / author tool</p>
         <h1>Jumpgate Starroute</h1>
-        <p class="lede">A 60 ly map around Sol — Humans and the Kessari. Change jump settings in the side panel and generate a new map from the same star list.</p>
+        <p class="lede">Saved map on the left. Generate and options in the center. Lists and peers on the right.</p>
       </div>
       <div class="header-actions">
-        <button id="btn-drawer" class="btn header-help" type="button" aria-expanded="false">Settings</button>
         <button id="btn-glossary" class="btn header-help" type="button">Terms &amp; help</button>
       </div>
     </div>
-    <nav class="tabs" role="tablist">
-      <button class="tab is-active" data-screen="map" type="button">Map</button>
-      <button class="tab backend-only" data-screen="factions" type="button">Who lives where</button>
-      <button class="tab is-disabled" data-screen="ingest" type="button" disabled aria-disabled="true" title="NASA catalog ingest comes later. v2.0 generates maps from the shipped star list.">Choose the stars <span class="tab-later">later</span></button>
-    </nav>
   </header>
 
-  <main>
-    <section id="screen-ingest" class="screen">
-      <p class="tab-intro">Later step. Load NASA’s lists, pick which star is “home,” and decide how big a neighborhood to keep. v2.0 generates maps from the shipped star list instead.</p>
-
-      <article class="card">
-        <h2>
-          <span>NASA star and planet lists</span>
-          <button type="button" class="info" data-term="nasaFiles" aria-label="About NASA catalog files">?</button>
-        </h2>
-        <p class="hint">Use a matching pair of files from the NASA Exoplanet Archive. You can accept the ones this computer already has, or upload your own.</p>
-        <div class="file-grid">
-          <label>
-            <span class="label-row">Planet list <button type="button" class="info" data-term="nasaFiles" aria-label="About the planet list">?</button></span>
-            <span class="jargon">One row per known planet</span>
-            <input id="planet-path" type="text" spellcheck="false" placeholder="Choose or keep the planet file…" />
-            <input id="planet-file" type="file" accept=".csv" />
-          </label>
-          <label>
-            <span class="label-row">Star list <button type="button" class="info" data-term="hostname" aria-label="About the star list">?</button></span>
-            <span class="jargon">The stars those planets orbit</span>
-            <input id="host-path" type="text" spellcheck="false" placeholder="Choose or keep the star file…" />
-            <input id="host-file" type="file" accept=".csv" />
-          </label>
+  <main class="desk">
+    <aside class="col col-left" aria-label="Saved map">
+      <section class="card map-card" id="screen-map">
+        <div class="card-head">
+          <h2>Saved map</h2>
         </div>
-        <div class="row-actions">
-          <button id="btn-preview" class="btn" type="button">Check the files</button>
-          <span id="detect-note" class="muted"></span>
-        </div>
-        <pre id="preview-box" class="output hidden"></pre>
-      </article>
-
-      <article class="card">
-        <h2>Home star and neighborhood</h2>
-        <p class="hint">Our Sun (Sol) is added automatically because NASA skips it. Distances are shown in light-years — how far light travels in a year.</p>
-        <div class="param-grid">
-          <label class="combo-label">
-            <span class="label-row">Map center (home star) <button type="button" class="info" data-term="origin" aria-label="About the map center">?</button></span>
-            <span class="jargon">Default: Sol, our Sun</span>
-            <input id="origin-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
-            <ul id="origin-suggest" class="suggest" hidden></ul>
-          </label>
-          <label>
-            <span class="label-row">How far from home to include <button type="button" class="info" data-term="catalogRadius" aria-label="About catalog size">?</button></span>
-            <span class="jargon">Light-years · shipped preview is 60</span>
-            <input id="ingest-max-ly" name="starroute-catalog-radius-ly" type="number" min="10" step="10" value="60" autocomplete="off" />
-          </label>
-          <label>
-            <span class="label-row">Smallest stars to keep <button type="button" class="info" data-term="solarMass" aria-label="About star mass">?</button></span>
-            <span class="jargon">Compared with the Sun = 1.0 · default 0.25 · this is not a distance</span>
-            <input id="ingest-min-mass" name="starroute-catalog-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
-          </label>
-        </div>
-        <div class="row-actions">
-          <button id="btn-ingest" class="btn primary" type="button">Build the star list</button>
-          <button id="btn-reset-ingest" class="btn" type="button">Reset this tab</button>
-          <a class="link" href="/api/download/systems.csv">Download the star list</a>
-        </div>
-        <pre id="ingest-box" class="output hidden"></pre>
-      </article>
-    </section>
-
-    <section id="screen-factions" class="screen">
-      <p class="tab-intro">Optional story layer. Decide which cultures prefer which kinds of worlds (warm gas giants, Earth-like temperatures, and so on). Save the rules here. They are painted onto the map when you generate a new map.</p>
-
-      <article class="card">
-        <h2>
-          <span>Human starting place</span>
-          <button type="button" class="info" data-term="humanHome" aria-label="About the human home star">?</button>
-        </h2>
-        <div class="param-grid">
-          <label class="combo-label">
-            <span class="label-row">Human home star <button type="button" class="info" data-term="humanHome" aria-label="About human home star">?</button></span>
-            <span class="jargon">Can differ from the map center</span>
-            <input id="human-root" type="text" value="Sol" autocomplete="off" spellcheck="false" />
-            <ul id="human-root-suggest" class="suggest" hidden></ul>
-          </label>
-          <label>
-            <span class="label-row">Human nation that owns it <button type="button" class="info" data-term="faction" aria-label="About factions">?</button></span>
-            <span class="jargon">Usually the first human culture on the list</span>
-            <input id="human-root-group" type="text" value="Human" />
-          </label>
-        </div>
-      </article>
-
-      <article class="card">
-        <h2>Cultures</h2>
-        <p class="hint">Name each people. Species are placed first, then leftover stars go to human nations. Start from a built-in template (Methan gas-giant stations, living crystal, a sky quarter, the rim…) or a blank custom culture. You can have up to 16.</p>
-        <div class="add-culture">
-          <span class="label-row">Add from a template <button type="button" class="info" data-term="faction" aria-label="About cultures">?</button></span>
-          <div class="add-culture-row">
-            <select id="preset-pick"></select>
-            <button id="btn-add-culture" class="btn" type="button">Add culture</button>
-            <span id="culture-count" class="culture-count"></span>
+        <div class="card-body">
+          <p class="hint">Drag to turn. Scroll to zoom. Click a star for details below.</p>
+          <div class="map-stage mini">
+            <div id="star-map"></div>
+            <aside id="map-legend" class="map-legend" aria-label="Map color legend"></aside>
           </div>
+          <label class="check">
+            <input id="color-faction" type="checkbox" checked />
+            Color by culture
+          </label>
+          <label>
+            <span class="label-row">Highlight one culture</span>
+            <select id="focus-faction">
+              <option value="all">Everyone (full color)</option>
+            </select>
+          </label>
         </div>
-        <div id="faction-cards" class="faction-cards"></div>
-        <div class="row-actions">
-          <button id="btn-faction-preview" class="btn" type="button">Preview who would match</button>
-          <button id="btn-faction-save" class="btn primary" type="button">Save these rules</button>
-          <button id="btn-reset-factions" class="btn" type="button">Reset this tab</button>
-          <a class="link" href="/api/download/factions.json">Download rules file</a>
+      </section>
+      <section class="card" id="selected-system-card">
+        <div class="card-head">
+          <h2>Selected system</h2>
         </div>
-        <pre id="faction-box" class="output hidden"></pre>
-      </article>
-    </section>
+        <div class="card-body">
+          <p id="selected-system" class="empty">Click a star on the map.</p>
+        </div>
+      </section>
+    </aside>
 
-    <section id="screen-map" class="screen is-active">
-      <div class="map-layout" id="map-layout">
-        <aside class="card controls" id="settings-drawer">
-          <p class="tab-intro sidebar-intro">The star list is already in this page (60 ly around Sol). Change jump settings below and generate a new map. Same viewer, same JSON. NASA catalog ingest is a later step.</p>
-          <h2>Route settings</h2>
+    <div class="col col-center">
+      <section class="card" id="map-layout" data-card>
+        <div class="card-head">
+          <h2>Generate map</h2>
+          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="generate-body">−</button>
+        </div>
+        <div id="generate-body" class="card-body controls">
+          <p class="hint">The star list is already in this page (60 ly around Sol). Change jump settings and generate. NASA ingest is a later card.</p>
+          <h3>Route settings</h3>
           <label>
             <span class="label-row">Longest single jump <button type="button" class="info" data-term="jumpRange" aria-label="About jump range">?</button></span>
-            <span class="jargon">Light-years · not star mass · default 50</span>
+            <span class="jargon">Light-years · default 25</span>
             <input id="max-jump" name="starroute-jump-range-ly" type="number" min="1" step="1" value="25" autocomplete="off" />
           </label>
           <label>
             <span class="label-row">Short jumps go up to <button type="button" class="info" data-term="jumpBands" aria-label="About short/medium/long">?</button></span>
-            <span class="jargon">Percent of the longest jump · not light-years · preview 40%</span>
+            <span class="jargon">Percent of the longest jump · preview 40%</span>
             <span class="pct-field"><input id="medium-pct" name="starroute-medium-pct" type="number" min="10" max="90" step="5" value="40" autocomplete="off" /> <span class="pct-suffix">%</span></span>
           </label>
           <label>
             <span class="label-row">Long jumps start at <button type="button" class="info" data-term="jumpBands" aria-label="About long jumps">?</button></span>
-            <span class="jargon">Percent of the longest jump · not light-years · preview 60%</span>
+            <span class="jargon">Percent of the longest jump · preview 60%</span>
             <span class="pct-field"><input id="long-pct" name="starroute-long-pct" type="number" min="15" max="95" step="5" value="60" autocomplete="off" /> <span class="pct-suffix">%</span></span>
           </label>
           <p id="band-readout" class="band-readout"></p>
           <label>
             <span class="label-row">Jump routes from one star <button type="button" class="info" data-term="neighbors" aria-label="About jump routes per star">?</button></span>
-            <span class="jargon">Preview uses 6</span>
             <input id="max-neighbors" name="starroute-max-neighbors" type="number" min="1" max="16" step="1" value="6" autocomplete="off" />
           </label>
           <label>
             <span class="label-row">How many stars get jump routes <button type="button" class="info" data-term="linkedCap" aria-label="About how many stars get jump routes">?</button></span>
-            <span class="jargon">Extra stars still appear as dots · preview 80</span>
             <input id="max-linked" name="starroute-linked-cap" type="number" min="2" step="1" value="80" autocomplete="off" />
           </label>
           <label>
             <span class="label-row">Picky-ness for medium jumps <button type="button" class="info" data-term="rank" aria-label="About medium pickiness">?</button></span>
-            <span class="jargon">0 = take anyone · 1 = only prize worlds · preview 0.15</span>
             <input id="hard-rank" name="starroute-hard-rank" type="number" min="0" max="1" step="0.05" value="0.15" autocomplete="off" />
           </label>
           <label>
             <span class="label-row">Picky-ness for long jumps <button type="button" class="info" data-term="rank" aria-label="About long pickiness">?</button></span>
-            <span class="jargon">Preview 0.25 · short jumps ignore this</span>
             <input id="soft-rank" name="starroute-soft-rank" type="number" min="0" max="1" step="0.05" value="0.25" autocomplete="off" />
           </label>
           <label>
             <span class="label-row">Smallest stars on the grid <button type="button" class="info" data-term="solarMass" aria-label="About star mass">?</button></span>
-            <span class="jargon">Sun = 1.0 · default 0.25 · this is not a distance</span>
             <input id="net-min-mass" name="starroute-network-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
           </label>
           <label class="combo-label">
             <span class="label-row">Where jump routes start growing <button type="button" class="info" data-term="root" aria-label="About network start">?</button></span>
-            <span class="jargon">Usually the same as the map center</span>
             <input id="root-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
             <ul id="root-suggest" class="suggest" hidden></ul>
           </label>
@@ -191,11 +111,11 @@
           </label>
           <div class="row-actions needs-backend">
             <button id="btn-network" class="btn primary" type="button">Draw the routes</button>
-            <button id="btn-reset-map" class="btn" type="button">Reset this tab</button>
+            <button id="btn-reset-map" class="btn" type="button">Reset generate</button>
           </div>
           <div class="row-actions">
             <button id="btn-wasm-rebuild" class="btn primary" type="button">Generate new map</button>
-            <span class="field-help">Uses the shipped star list (not a fresh NASA download). First click loads Python-in-WASM (slow once). After that, changing jump length or percents and generating again is local.</span>
+            <span class="field-help">Shipped star list. First click loads Python-in-WASM once.</span>
           </div>
           <p id="wasm-status" class="field-help" aria-live="polite"></p>
           <pre id="network-box" class="output hidden"></pre>
@@ -208,9 +128,36 @@
             <a class="link" href="/api/download/sol_network.csv">Spreadsheet of routes</a>
             <a class="link" href="/api/download/route_table.csv">Faction route table</a>
           </div>
-        </aside>
+        </div>
+      </section>
 
-        <article class="card map-card">
+      <section class="card" data-card>
+        <div class="card-head">
+          <h2>Setting</h2>
+          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="setting-body">−</button>
+        </div>
+        <div id="setting-body" class="card-body">
+          <p class="hint">Reality slider is provenance: catalog → gap-fill → fiction. Separate from jump-band settings above.</p>
+          <label>
+            Reality
+            <select id="reality-stop">
+              <option value="0">0 Catalog</option>
+              <option value="1">1 Gap-fill</option>
+              <option value="2">2 Soft fiction</option>
+              <option value="3">3 Setting-scale</option>
+              <option value="4">4 Procedural</option>
+            </select>
+          </label>
+          <label>Setting id <input id="setting-id" type="text" value="preview" autocomplete="off" /></label>
+        </div>
+      </section>
+
+      <section class="card" data-card>
+        <div class="card-head">
+          <h2>Route tools</h2>
+          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="route-body">−</button>
+        </div>
+        <div id="route-body" class="card-body">
           <div class="map-toolbar">
             <label>
               <span class="label-row">From <button type="button" class="info" data-term="gatePath" aria-label="About routes">?</button></span>
@@ -219,25 +166,131 @@
             <label>To
               <select id="path-end"></select>
             </label>
-            <label>
-              <span class="label-row">Highlight one culture <button type="button" class="info" data-term="focusFaction" aria-label="About highlighting a culture">?</button></span>
-              <select id="focus-faction">
-                <option value="all">Everyone (full color)</option>
-              </select>
-            </label>
-            <label class="check">
-              <input id="color-faction" type="checkbox" checked />
-              Color by culture
-            </label>
           </div>
           <div id="path-readout" class="path-readout"></div>
-          <div class="map-stage">
-            <div id="star-map"></div>
-            <aside id="map-legend" class="map-legend" aria-label="Map color legend"></aside>
+        </div>
+      </section>
+
+      <section class="card" id="screen-factions" data-card>
+        <div class="card-head">
+          <h2>Factions</h2>
+          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="factions-body">−</button>
+        </div>
+        <div id="factions-body" class="card-body">
+          <p class="hint">Optional story layer. May become its own service later. List of current names is on the right.</p>
+          <div class="param-grid">
+            <label class="combo-label">
+              <span class="label-row">Human home star <button type="button" class="info" data-term="humanHome" aria-label="About human home star">?</button></span>
+              <input id="human-root" type="text" value="Sol" autocomplete="off" spellcheck="false" />
+              <ul id="human-root-suggest" class="suggest" hidden></ul>
+            </label>
+            <label>
+              <span class="label-row">Human nation that owns it <button type="button" class="info" data-term="faction" aria-label="About factions">?</button></span>
+              <input id="human-root-group" type="text" value="Human" />
+            </label>
           </div>
-        </article>
-      </div>
-    </section>
+          <div class="add-culture">
+            <span class="label-row">Add from a template</span>
+            <div class="add-culture-row">
+              <select id="preset-pick"></select>
+              <button id="btn-add-culture" class="btn" type="button">Add culture</button>
+              <span id="culture-count" class="culture-count"></span>
+            </div>
+          </div>
+          <div id="faction-cards" class="faction-cards"></div>
+          <div class="row-actions">
+            <button id="btn-faction-preview" class="btn" type="button">Preview who would match</button>
+            <button id="btn-faction-save" class="btn primary" type="button">Save these rules</button>
+            <button id="btn-reset-factions" class="btn" type="button">Reset factions</button>
+            <a class="link" href="/api/download/factions.json">Download rules file</a>
+          </div>
+          <pre id="faction-box" class="output hidden"></pre>
+        </div>
+      </section>
+
+      <section class="card collapsed" id="screen-ingest" data-card>
+        <div class="card-head">
+          <h2>Choose the stars</h2>
+          <span class="card-summary muted">later</span>
+          <button type="button" class="collapse-btn" aria-expanded="false" aria-controls="ingest-body">+</button>
+        </div>
+        <div id="ingest-body" class="card-body">
+          <p class="hint">Later step. NASA lists and neighborhood size. v2/v3 generate from the shipped star list instead.</p>
+          <div class="file-grid">
+            <label>
+              <span class="label-row">Planet list <button type="button" class="info" data-term="nasaFiles" aria-label="About the planet list">?</button></span>
+              <input id="planet-path" type="text" spellcheck="false" placeholder="Choose or keep the planet file…" />
+              <input id="planet-file" type="file" accept=".csv" />
+            </label>
+            <label>
+              <span class="label-row">Star list <button type="button" class="info" data-term="hostname" aria-label="About the star list">?</button></span>
+              <input id="host-path" type="text" spellcheck="false" placeholder="Choose or keep the star file…" />
+              <input id="host-file" type="file" accept=".csv" />
+            </label>
+          </div>
+          <div class="row-actions">
+            <button id="btn-preview" class="btn" type="button">Check the files</button>
+            <span id="detect-note" class="muted"></span>
+          </div>
+          <pre id="preview-box" class="output hidden"></pre>
+          <div class="param-grid">
+            <label class="combo-label">
+              <span class="label-row">Map center (home star) <button type="button" class="info" data-term="origin" aria-label="About the map center">?</button></span>
+              <input id="origin-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
+              <ul id="origin-suggest" class="suggest" hidden></ul>
+            </label>
+            <label>
+              <span class="label-row">How far from home to include <button type="button" class="info" data-term="catalogRadius" aria-label="About catalog size">?</button></span>
+              <input id="ingest-max-ly" name="starroute-catalog-radius-ly" type="number" min="10" step="10" value="60" autocomplete="off" />
+            </label>
+            <label>
+              <span class="label-row">Smallest stars to keep <button type="button" class="info" data-term="solarMass" aria-label="About star mass">?</button></span>
+              <input id="ingest-min-mass" name="starroute-catalog-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
+            </label>
+          </div>
+          <div class="row-actions">
+            <button id="btn-ingest" class="btn primary" type="button">Build the star list</button>
+            <button id="btn-reset-ingest" class="btn" type="button">Reset ingest</button>
+            <a class="link" href="/api/download/systems.csv">Download the star list</a>
+          </div>
+          <pre id="ingest-box" class="output hidden"></pre>
+        </div>
+      </section>
+    </div>
+
+    <aside class="col col-right" aria-label="Peers and lists">
+      <section class="card" id="peers">
+        <div class="card-head"><h2>Peers</h2></div>
+        <div class="card-body">
+          <p class="hint">Same-campaign links to other layer providers. Disabled means that service’s /v1 is not wired from this desk yet.</p>
+          <ul class="card-list">
+            <li class="peer-chip disabled">Chronos <span class="muted">calendar · later</span></li>
+            <li class="peer-chip disabled">Worldstack <span class="muted">bodies · later</span></li>
+          </ul>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Campaign / setting</h2></div>
+        <div class="card-body">
+          <p id="setting-summary" class="muted">Setting <strong>preview</strong>. Reality stop from the center card.</p>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>System search</h2></div>
+        <div class="card-body">
+          <input id="system-search" type="search" placeholder="AU Mic, alleg:, zone:denied…" />
+          <ul id="system-search-hits" class="card-list"></ul>
+          <p id="system-search-empty" class="empty">Type to search the saved map (and /v1 when the API is up).</p>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Who lives where</h2></div>
+        <div class="card-body">
+          <p class="hint">Names on the current map. Edit rules in the center Factions card.</p>
+          <ul id="faction-list" class="card-list"></ul>
+        </div>
+      </section>
+    </aside>
   </main>
 
   <div id="term-pop" class="term-pop hidden" role="dialog" aria-live="polite"></div>

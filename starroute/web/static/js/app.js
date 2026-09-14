@@ -204,45 +204,53 @@ async function api(url, options) {
 }
 
 function showScreen(name) {
-  const tab = document.querySelector(`.tab[data-screen="${name}"]`);
-  if (tab && (tab.disabled || tab.getAttribute("aria-disabled") === "true")) return;
-  document.body.classList.toggle("map-tab", name === "map");
-  document.querySelectorAll(".screen").forEach((el) => {
-    el.classList.toggle("is-active", el.id === `screen-${name}`);
-  });
-  document.querySelectorAll(".tab").forEach((el) => {
-    el.classList.toggle("is-active", el.dataset.screen === name);
-  });
   if (name === "factions") {
     ensurePresets().then(() => fillPresetSelects());
   }
-  if (name === "map") {
-    updateBandReadout();
-    if (networkData) {
-      fillFocusOptions(networkData.nodes);
-      drawMap();
-    }
-    window.setTimeout(() => {
-      const plot = $("star-map");
-      if (plot && window.Plotly) Plotly.Plots.resize(plot);
-    }, 50);
-  }
-}
-
-function toggleDrawer(force) {
-  const layout = $("map-layout");
-  const btn = $("btn-drawer");
-  if (!layout) return;
-  const open = force === undefined ? !layout.classList.contains("drawer-open") : force;
-  layout.classList.toggle("drawer-open", open);
-  if (btn) {
-    btn.setAttribute("aria-expanded", open ? "true" : "false");
-    btn.textContent = open ? "Hide settings" : "Settings";
+  updateBandReadout();
+  if (networkData) {
+    fillFocusOptions(networkData.nodes);
+    drawMap();
   }
   window.setTimeout(() => {
     const plot = $("star-map");
     if (plot && window.Plotly) Plotly.Plots.resize(plot);
+  }, 50);
+}
+
+function toggleDrawer() {
+  window.setTimeout(() => {
+    const plot = $("star-map");
+    if (plot && window.Plotly) Plotly.Plots.resize(plot);
   }, 80);
+}
+
+function showSelectedSystem(node) {
+  const box = $("selected-system");
+  if (!box) return;
+  if (!node) {
+    box.className = "empty";
+    box.textContent = "Click a star on the map.";
+    return;
+  }
+  box.className = "";
+  const bits = [
+    `<strong>${esc(node.hostname)}</strong>`,
+    node.group ? `Culture: ${esc(node.group)}` : "",
+    node.spectype ? `Star: ${esc(node.spectype)}` : "",
+    node.dist_ly != null ? `${Number(node.dist_ly).toFixed(1)} ly from Sol` : "",
+    node.gate_distance != null ? `Gate hops from root: ${node.gate_distance}` : "",
+  ].filter(Boolean);
+  box.innerHTML = bits.join("<br>");
+}
+
+function renderFactionList(nodes) {
+  const list = $("faction-list");
+  if (!list) return;
+  const names = groupsOnMap(nodes);
+  list.innerHTML = names.length
+    ? names.map((n) => `<li>${esc(n)}</li>`).join("")
+    : "<li class='empty'>No cultures on the saved map yet.</li>";
 }
 
 function shortestPathLocal(start, end) {
@@ -937,6 +945,17 @@ function drawMap(path = []) {
   ];
 
   renderLegend(nodes);
+  const afterPlot = () => {
+    plot.removeAllListeners && plot.removeAllListeners("plotly_click");
+    plot.on("plotly_click", (ev) => {
+      const pt = ev.points && ev.points[0];
+      const raw = String((pt && pt.text) || "");
+      const named = raw.match(/\(([^)]+)\)/);
+      const host = named ? named[1] : "";
+      const node = nodes.find((n) => n.hostname === host);
+      if (node) showSelectedSystem(node);
+    });
+  };
   Plotly.react(plot, traces, {
     paper_bgcolor: "#05070c",
     plot_bgcolor: "#05070c",
@@ -949,8 +968,7 @@ function drawMap(path = []) {
       yaxis: { title: "Y (ly)", backgroundcolor: "#05070c", gridcolor: "#2a3140", zerolinecolor: "#3a4254", color: "#c9c2b2" },
       zaxis: { title: "Z (ly)", backgroundcolor: "#05070c", gridcolor: "#2a3140", zerolinecolor: "#3a4254", color: "#c9c2b2" },
     },
-  }, { responsive: true, displaylogo: false });
-}
+  }, { responsive: true, displaylogo: false }).then(afterPlot);
 
 async function highlightPath() {
   if (!networkData) return;
@@ -1001,6 +1019,7 @@ function applyNetworkResult(data) {
   networkData = payload;
   fillPathSelects(networkData.nodes);
   fillFocusOptions(networkData.nodes);
+  renderFactionList(networkData.nodes);
   highlightPath();
 }
 
@@ -1195,7 +1214,44 @@ async function boot() {
     catalogOrigin = (window.STARROUTE_DEFAULT_MAP.origin && window.STARROUTE_DEFAULT_MAP.origin.origin_hostname) || "Sol";
   }
   showScreen("map");
-  $("btn-drawer").addEventListener("click", () => toggleDrawer());
+  if ($("btn-drawer")) $("btn-drawer").addEventListener("click", () => toggleDrawer());
+  document.querySelectorAll(".collapse-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const card = btn.closest("[data-card], .card");
+      if (!card) return;
+      const open = card.classList.toggle("collapsed");
+      btn.textContent = open ? "+" : "−";
+      btn.setAttribute("aria-expanded", open ? "false" : "true");
+      window.setTimeout(() => {
+        const plot = $("star-map");
+        if (plot && window.Plotly) Plotly.Plots.resize(plot);
+      }, 50);
+    });
+  });
+  if ($("system-search")) {
+    $("system-search").addEventListener("input", () => {
+      const q = $("system-search").value.trim().toLowerCase();
+      const hits = $("system-search-hits");
+      const empty = $("system-search-empty");
+      if (!hits) return;
+      if (!q || !networkData) {
+        hits.innerHTML = "";
+        if (empty) empty.hidden = false;
+        return;
+      }
+      const matches = networkData.nodes.filter((n) =>
+        n.hostname.toLowerCase().includes(q) || (n.group || "").toLowerCase().includes(q)
+      ).slice(0, 20);
+      hits.innerHTML = matches.map((n) => `<li data-host="${esc(n.hostname)}">${esc(n.hostname)}${n.group ? " · " + esc(n.group) : ""}</li>`).join("");
+      if (empty) empty.hidden = matches.length > 0;
+      hits.querySelectorAll("li").forEach((li) => {
+        li.addEventListener("click", () => {
+          const node = networkData.nodes.find((n) => n.hostname === li.dataset.host);
+          showSelectedSystem(node);
+        });
+      });
+    });
+  }
   $("btn-glossary").addEventListener("click", openGlossary);
   $("glossary-close").addEventListener("click", closeGlossary);
   $("glossary").addEventListener("click", (event) => {

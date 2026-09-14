@@ -576,4 +576,70 @@ body.map-first .map-stage #star-map { flex: 1 1 auto; height: auto; min-height: 
 @media (max-width: 900px) {
   .file-grid, .param-grid, .map-layout, .place-extra { grid-template-columns: 1fr; }
   #star-map { height: 50vh; }
+  body.desk-layout .desk { grid-template-columns: 1fr; }
 }
+
+body.desk-layout {
+  overflow: auto;
+}
+body.desk-layout html, body.desk-layout {
+  height: auto;
+  min-height: 100%;
+}
+body.desk-layout main.desk {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) minmax(320px, 1.45fr) minmax(240px, 1fr);
+  gap: 0.75rem;
+  max-width: none;
+  padding: 0.75rem 1rem 2rem;
+  align-items: start;
+}
+body.desk-layout .col { min-width: 0; }
+body.desk-layout .screen { display: block; }
+body.desk-layout .card {
+  padding: 0;
+  overflow: hidden;
+}
+body.desk-layout .card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper-2);
+}
+body.desk-layout .card-head h2 { margin: 0; font-size: 1.1rem; }
+body.desk-layout .card-body { padding: 0.85rem 0.95rem 1rem; }
+body.desk-layout .card.collapsed .card-body { display: none; }
+body.desk-layout .card.collapsed .card-head { border-bottom: none; }
+body.desk-layout .collapse-btn {
+  width: 1.8rem;
+  height: 1.8rem;
+  padding: 0;
+  flex: 0 0 auto;
+}
+body.desk-layout .card-summary { flex: 1; text-align: right; font-size: 0.78rem; }
+body.desk-layout .map-stage.mini #star-map {
+  height: 280px;
+  min-height: 220px;
+}
+body.desk-layout .map-stage.mini {
+  position: relative;
+}
+body.desk-layout .map-legend {
+  max-height: 10rem;
+  overflow: auto;
+}
+body.desk-layout .card-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+body.desk-layout .card-list li {
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.9rem;
+}
+body.desk-layout .peer-chip.disabled { opacity: 0.55; }
+body.desk-layout h3 { font-size: 1rem; margin: 0.4rem 0 0.5rem; color: var(--accent); }
