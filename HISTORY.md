@@ -153,7 +153,8 @@ If-Match (CAS); ingest emits L0–L2 JSON (NASA nulls kept) and `/v1/ingest/nasa
 with a path prefix guard; slider ≥ 1 gap-fill stubs (one per role, NASA rows
 unchanged); `/v1` network rebuild (config/network.json defaults, additive
 `band`/`flavor` on the v2 payload); slider 2–4 writes (overrides, extra edges,
-generated hosts, xyz). RFC 7807 only on `/v1`. v2 `/api/*` unchanged.
+generated hosts, xyz); affiliation/contention/legal/trade overlays (no
+calendar, no tick yet). RFC 7807 only on `/v1`. v2 `/api/*` unchanged.
 
 Domain handoff: God’s Eye View owns Earth meters through geosynchronous orbit.
 Ptah owns everything outside that (heliocentric systems and the jump network).

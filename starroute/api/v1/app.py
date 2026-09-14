@@ -19,6 +19,7 @@ from starroute.api.v1.resolve import resolve_host
 from starroute.api.v1 import fiction as fiction_api
 from starroute.api.v1 import ingest as ingest_api
 from starroute.api.v1 import network as network_api
+from starroute.api.v1 import overlays as overlays_api
 from starroute.api.v1 import premise as premise_api
 from starroute.api.v1 import settings as settings_api
 from starroute.store.documents import JsonStore
@@ -86,6 +87,52 @@ def create_v1_app() -> FastAPI:
     @app.post("/ingest/nasa", operation_id="ingest_nasa")
     def ingest_nasa(body: dict = Body(...)) -> dict:
         return ingest_api.ingest_nasa(body)
+
+    @app.get("/factions", operation_id="list_factions")
+    def list_factions(setting_id: Optional[str] = Query(default=None)) -> dict:
+        require_setting_id(setting_id)
+        return {"factions": overlays_api.seed_factions()}
+
+    @app.get("/factions/{faction_id}", operation_id="get_faction")
+    def get_faction(faction_id: str) -> dict:
+        for row in overlays_api.seed_factions():
+            if row["id"] == faction_id:
+                legal = overlays_api.get_legal(faction_id)
+                return {**row, "legal": legal}
+        raise Problem(404, "not_found", f"Unknown faction {faction_id!r}", instance=f"/factions/{faction_id}")
+
+    @app.get("/factions/{faction_id}/legal", operation_id="get_legal")
+    def get_legal(faction_id: str) -> dict:
+        return overlays_api.get_legal(faction_id)
+
+    @app.put("/factions/{faction_id}/legal", operation_id="put_legal")
+    def put_legal(faction_id: str, body: dict = Body(...)) -> dict:
+        return overlays_api.put_legal(faction_id, body)
+
+    @app.get("/settings/{setting_id}/affiliations", operation_id="get_affiliations")
+    def get_affiliations(setting_id: str) -> dict:
+        return overlays_api.get_affiliations(setting_id)
+
+    @app.put("/settings/{setting_id}/affiliations", operation_id="put_affiliations")
+    def put_affiliations(setting_id: str, body: dict = Body(...)) -> dict:
+        return overlays_api.put_affiliations(setting_id, body)
+
+    @app.put("/systems/{system_id}/affiliations", operation_id="put_system_affiliations")
+    def put_system_affiliations(
+        system_id: str,
+        body: dict = Body(...),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id)
+        return overlays_api.put_system_affiliations(system_id, body, sid)
+
+    @app.get("/networks/{network_id}/trade", operation_id="get_trade")
+    def get_trade(network_id: str) -> dict:
+        return overlays_api.get_trade(network_id)
+
+    @app.put("/networks/{network_id}/trade", operation_id="put_trade")
+    def put_trade(network_id: str, body: dict = Body(...)) -> dict:
+        return overlays_api.put_trade(network_id, body)
 
     @app.get("/provider", operation_id="get_provider")
     def get_provider() -> dict:
