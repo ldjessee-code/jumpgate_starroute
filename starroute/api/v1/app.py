@@ -22,6 +22,7 @@ from starroute.api.v1 import network as network_api
 from starroute.api.v1 import overlays as overlays_api
 from starroute.api.v1 import premise as premise_api
 from starroute.api.v1 import settings as settings_api
+from starroute.api.v1 import search as search_api
 from starroute.api.v1 import tick as tick_api
 from starroute.store.documents import JsonStore
 from starroute.ids import edge_id, host_id
@@ -159,6 +160,19 @@ def create_v1_app() -> FastAPI:
             "ui": "/api",
             "api": "/v1",
         }
+
+    @app.get("/search", operation_id="search_systems")
+    def search_systems(
+        q: str = Query(...),
+        setting_id: Optional[str] = Query(default=None),
+    ) -> dict:
+        sid = require_setting_id(setting_id)
+        return search_api.search_systems(q, sid)
+
+    @app.get("/systems/{system_id}/advisory", operation_id="get_advisory")
+    def get_advisory(system_id: str, setting_id: Optional[str] = Query(default=None)) -> dict:
+        sid = require_setting_id(setting_id)
+        return search_api.get_advisory(system_id, sid)
 
     @app.get("/systems", operation_id="list_systems")
     def list_systems(setting_id: Optional[str] = Query(default=None)) -> dict:
@@ -340,8 +354,9 @@ def create_v1_app() -> FastAPI:
         start: str = Query(...),
         end: str = Query(...),
         setting_id: Optional[str] = Query(default=None),
+        avoid: Optional[str] = Query(default=None),
     ) -> dict:
-        require_setting_id(setting_id)
+        sid = require_setting_id(setting_id)
         systems = load_systems_df()
         net = load_network_df()
         start_host = resolve_host(start, systems, instance=f"/networks/{network_id}/route")
@@ -349,7 +364,15 @@ def create_v1_app() -> FastAPI:
         path = shortest_path(net, start_host, end_host)
         if not path and start_host != end_host:
             raise Problem(404, "no_route", f"No path from {start_host} to {end_host}")
-        return {
+        hops = [
+            {
+                "hostname": h,
+                "id": host_id(h),
+                "advisory": search_api.get_advisory(h, sid)["advisory"],
+            }
+            for h in path
+        ]
+        payload = {
             "network_id": network_id,
             "start": start_host,
             "end": end_host,
@@ -358,6 +381,18 @@ def create_v1_app() -> FastAPI:
             "path_hostnames": path,
             "path_ids": [host_id(h) for h in path],
             "jumps": max(len(path) - 1, 0),
+            "advisories": hops,
         }
+        if avoid == "denied":
+            blocked = {h["hostname"] for h in hops if h["advisory"] == "denied"}
+            if blocked:
+                raise Problem(
+                    409,
+                    "no_safe_route",
+                    "Unconstrained path crosses denied systems; embargo does not delete edges",
+                    instance=f"/networks/{network_id}/route",
+                    extra={"unconstrained": payload, "denied": sorted(blocked)},
+                )
+        return payload
 
     return app

@@ -156,7 +156,8 @@ unchanged); `/v1` network rebuild (config/network.json defaults, additive
 generated hosts, xyz); affiliation/contention/legal/trade overlays (no
 calendar); FIFO political tick (enqueue vs apply; Chronos webhook is
 optional and `t_gct` is null without a calendar URL); hazard classes
-(Sol mild vs AU Mic active M dwarf; templates only, no dated events).
+(Sol mild vs AU Mic active M dwarf; templates only, no dated events);
+search prefixes and derived travel advisories (`avoid=denied` is advisory only).
 RFC 7807 only on `/v1`. v2 `/api/*` unchanged.
 
 Domain handoff: God’s Eye View owns Earth meters through geosynchronous orbit.

@@ -38,3 +38,6 @@ def test_list_systems_requires_setting_id_when_two_exist(client: TestClient):
     ok = client.get("/v1/systems", params={"setting_id": "alpha"})
     assert ok.status_code == 200
     assert ok.json()["setting_id"] == "alpha"
+    missing_search = client.get("/v1/search", params={"q": "sol"})
+    assert missing_search.status_code == 400
+    assert missing_search.json()["code"] == "missing_setting_id"
