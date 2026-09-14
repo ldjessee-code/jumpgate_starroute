@@ -21,6 +21,7 @@ class StarCard(BaseModel):
     st_lum: Optional[float] = None
     st_age: Optional[float] = None
     st_rotp: Optional[float] = None
+    st_vsin: Optional[float] = None
     st_met: Optional[float] = None
     sy_snum: Optional[float] = None
     cb_flag: Optional[int] = None

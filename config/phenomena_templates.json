@@ -1,0 +1,56 @@
+[
+  {
+    "id": "tmpl-sol-flare",
+    "kind": "stellar_flare",
+    "class_id": "flare:sol_mild",
+    "natural": true,
+    "needs_delta": false,
+    "proposed_effect": "Occasional radio noise; Earth-like magnetospheres cope.",
+    "default_lag_mode": "light"
+  },
+  {
+    "id": "tmpl-g-quiet",
+    "kind": "stellar_flare",
+    "class_id": "flare:G_quiet",
+    "natural": true,
+    "needs_delta": false,
+    "proposed_effect": "Quiet G/K corona; rare strong flares.",
+    "default_lag_mode": "light"
+  },
+  {
+    "id": "tmpl-m-flare",
+    "kind": "stellar_flare",
+    "class_id": "flare:M_active",
+    "natural": true,
+    "needs_delta": false,
+    "proposed_effect": "Radio blackout inner system; H-class at surface may drop one step (Worldstack).",
+    "default_lag_mode": "light"
+  },
+  {
+    "id": "tmpl-m-cme",
+    "kind": "cme",
+    "class_id": "cme:M_severe",
+    "natural": true,
+    "needs_delta": false,
+    "proposed_effect": "Atmospheric stripping risk on close-in worlds.",
+    "default_lag_mode": "light"
+  },
+  {
+    "id": "tmpl-binary-xuv",
+    "kind": "radiation",
+    "class_id": "radiation:binary",
+    "natural": true,
+    "needs_delta": false,
+    "proposed_effect": "Elevated XUV near the barycenter.",
+    "default_lag_mode": "light"
+  },
+  {
+    "id": "tmpl-rogue-transit",
+    "kind": "rogue_star_transit",
+    "class_id": "transit:rogue",
+    "natural": true,
+    "needs_delta": true,
+    "proposed_effect": "Oort-cloud stirring; rare close approach (slider >= 3 unless a named catalog object).",
+    "default_lag_mode": "light"
+  }
+]

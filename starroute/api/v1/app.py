@@ -27,6 +27,7 @@ from starroute.store.documents import JsonStore
 from starroute.ids import edge_id, host_id
 from starroute.ingest.pipeline import detect_default_sources, preview_sources
 from starroute.mapgen.network import shortest_path
+from starroute.mapgen.phenomena import classify_star, load_templates, suggest_events
 
 
 def _v3_network(setting_id: Optional[str], network_id: str) -> dict:
@@ -230,6 +231,34 @@ def create_v1_app() -> FastAPI:
         store = JsonStore()
         items = [store.get("bodies", bid) for bid in doc.get("bodies") or []]
         return {"system_id": doc["id"], "bodies": [b for b in items if b]}
+
+    @app.get("/systems/{system_id}/hazards", operation_id="get_system_hazards")
+    def get_system_hazards(system_id: str, setting_id: Optional[str] = Query(default=None)) -> dict:
+        doc = get_system(system_id, setting_id)
+        classes = classify_star(doc)
+        return {
+            "system_id": doc.get("id"),
+            "hostname": doc.get("hostname"),
+            "classes": classes,
+            "suggestions": suggest_events(classes),
+        }
+
+    @app.get("/phenomena/classes", operation_id="list_phenomena_classes")
+    def list_phenomena_classes() -> dict:
+        return {
+            "classes": [
+                "flare:sol_mild",
+                "flare:G_quiet",
+                "flare:M_active",
+                "cme:M_severe",
+                "radiation:binary",
+                "transit:rogue",
+            ]
+        }
+
+    @app.get("/phenomena/templates", operation_id="list_phenomena_templates")
+    def list_phenomena_templates() -> dict:
+        return {"templates": load_templates()}
 
     @app.get("/bodies/{body_id}", operation_id="get_body_l2")
     def get_body_l2(body_id: str) -> dict:
