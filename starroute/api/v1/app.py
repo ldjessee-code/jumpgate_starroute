@@ -22,6 +22,7 @@ from starroute.api.v1 import network as network_api
 from starroute.api.v1 import overlays as overlays_api
 from starroute.api.v1 import premise as premise_api
 from starroute.api.v1 import settings as settings_api
+from starroute.api.v1 import tick as tick_api
 from starroute.store.documents import JsonStore
 from starroute.ids import edge_id, host_id
 from starroute.ingest.pipeline import detect_default_sources, preview_sources
@@ -60,6 +61,18 @@ def create_v1_app() -> FastAPI:
         if_match: Optional[str] = Header(default=None, alias="If-Match"),
     ) -> dict:
         return settings_api.put_setting(setting_id, body, if_match)
+
+    @app.post("/settings/{setting_id}/actions", operation_id="apply_political_action")
+    def apply_political_action(setting_id: str, body: dict = Body(...)) -> dict:
+        return tick_api.enqueue_action(setting_id, body)
+
+    @app.post("/settings/{setting_id}/tick", operation_id="tick_setting")
+    def tick_setting(setting_id: str, body: dict = Body(default={})) -> dict:
+        return tick_api.tick_setting(setting_id, body or {})
+
+    @app.post("/webhooks/chronos/advance", operation_id="chronos_advance_hook")
+    def chronos_advance_hook(body: dict = Body(...)) -> dict:
+        return tick_api.chronos_advance_hook(body)
 
     @app.get("/settings/{setting_id}/reality", operation_id="get_reality")
     def get_reality(setting_id: str) -> dict:

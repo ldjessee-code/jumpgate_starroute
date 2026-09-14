@@ -74,6 +74,26 @@ class TransitionIllegal(ValueError):
     pass
 
 
+def event_kind(action: str, from_state: str, to_state: str) -> Optional[str]:
+    if action == "expand_claim":
+        return "claim_expanded"
+    if action == "escalate":
+        return "war_declared" if to_state == "war" else "tension_up"
+    if action == "deescalate":
+        if to_state in {"none", "cooperative"}:
+            return "peace_signed"
+        return "ceasefire_offered"
+    if action == "embargo":
+        return "embargo_declared"
+    if action == "open_trade":
+        return "trade_opened"
+    if action == "propaganda":
+        return "propaganda"
+    if action == "raid":
+        return "sneak_attack" if from_state == "none" else "raid"
+    return None
+
+
 def advisory_for(contention: str) -> str:
     return ADVISORY.get(contention, "clear")
 
