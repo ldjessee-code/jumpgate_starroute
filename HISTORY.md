@@ -159,7 +159,8 @@ optional and `t_gct` is null without a calendar URL); hazard classes
 (Sol mild vs AU Mic active M dwarf; templates only, no dated events);
 search prefixes and derived travel advisories (`avoid=denied` is advisory only);
 3-column parchment desk (mini-map left, generate/options center, peers/lists
-right). RFC 7807 only on `/v1`. v2 `/api/*` unchanged.
+right); ``.venv/bin/ptah`` console script (same pattern as Chronos).
+RFC 7807 only on `/v1`. v2 `/api/*` unchanged.
 
 Domain handoff: God’s Eye View owns Earth meters through geosynchronous orbit.
 Ptah owns everything outside that (heliocentric systems and the jump network).

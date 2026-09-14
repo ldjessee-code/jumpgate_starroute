@@ -296,3 +296,23 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+
+AIRPLAY_PORTS = {5000, 6000, 7000, 7100}
+DEFAULT_HOST = "127.0.0.1"
+DEFAULT_PORT = 8050
+
+
+def main(argv: list[str] | None = None) -> None:
+    """Console script: ``.venv/bin/ptah`` — same pattern as Chronos."""
+    import argparse
+    import os
+
+    import uvicorn
+
+    parser = argparse.ArgumentParser(prog="ptah", description="Jumpgate Starroute (Ptah) desk")
+    parser.add_argument("--host", default=os.environ.get("PTAH_HOST", DEFAULT_HOST))
+    parser.add_argument("--port", type=int, default=int(os.environ.get("PTAH_PORT", str(DEFAULT_PORT))))
+    args = parser.parse_args(argv)
+    if args.port in AIRPLAY_PORTS:
+        raise SystemExit(f"refusing macOS AirPlay port {args.port}; use {DEFAULT_PORT}")
+    uvicorn.run("starroute.web.app:app", host=args.host, port=args.port, reload=False)

@@ -53,8 +53,8 @@ you do not already have a venv.
 ```bash
 cd ~/Projects/exoplanet/jumpgate_starroute
 python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+.venv/bin/pip install -e '.[dev]'
+.venv/bin/pytest
 ```
 
 Place NASA snapshots in `data/raw/` (gitignored; ~100 MB together):
@@ -67,17 +67,21 @@ The August 2026 pair used for v1.0 lives locally in `data/raw/`.
 ## Run
 
 ```bash
-python -m starroute serve
+.venv/bin/ptah
 ```
 
-Open http://127.0.0.1:8050
+Open http://127.0.0.1:8050 (not 5000/7000 — macOS AirPlay). Override with `PTAH_PORT`.
 
-CLI equivalents:
+Same pattern as Chronos (`.venv/bin/chronos` on 8060).
+
+CLI (ingest, network, migrate):
 
 ```bash
-python -m starroute ingest --preview
-python -m starroute ingest --max-ly 1000 --min-mass 0.25
-python -m starroute network --max-jump 50
+.venv/bin/starroute ingest --preview
+.venv/bin/starroute ingest --max-ly 1000 --min-mass 0.25
+.venv/bin/starroute network --max-jump 50
+.venv/bin/starroute serve   # same desk as ptah
+```
 python -m starroute network --max-jump 50 --no-factions
 ```
 

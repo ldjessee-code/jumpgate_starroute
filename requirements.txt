@@ -1,3 +1,4 @@
+# Prefer: .venv/bin/pip install -e '.[dev]'  (see pyproject.toml)
 # Python 3.9+ (3.11+ preferred when available; v3 schemas need pydantic from FastAPI)
 pandas>=2.2.2
 numpy>=1.26.4
