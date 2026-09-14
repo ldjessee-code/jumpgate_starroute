@@ -4,12 +4,16 @@
 |---|---|
 | **Title** | Ptah (Jumpgate Starroute) v3.0: Worldstack layer provider, public HTTP/MCP, politics, phenomena, Chronos peer |
 | **Working name** | **Ptah** (Egyptian craftsman-creator). GitHub remains `jumpgate_starroute` until a rename. |
+| **Folder** | `jumpgate_starroute` at `/Volumes/SeagatePortable/Dropbox/Projects/jumpgate_starroute` (not the inner `starroute/` package). |
+| **Product key** | `ptah` |
+| **Default** | `http://127.0.0.1:8050` (`PTAH_PORT`). Federation examples list 8080; the desk in this repo is **8050**. |
+| **Federation** | [`gamer_eye/FEDERATION.md`](/Volumes/SeagatePortable/Dropbox/Projects/gamer_eye/FEDERATION.md) |
 | **Author** | TBD (draft for review) |
 | **Date** | 2026-09-12 |
-| **Status** | Draft (revised after review 2026-09-12; Ptah + camera handoff 2026-09-12) |
+| **Status** | Draft (revised after review 2026-09-12; Ptah + camera handoff 2026-09-12; folder move 2026-09-14) |
 | **Product version** | **3.0** (not 2.5). New public contract. Mapgen engine from v2.0 may stay. |
 | **Current code** | `jumpgate_starroute` v2.0.0 (`starroute/__init__.py`, FastAPI `starroute/web/app.py`) |
-| **Siblings** | Worldstack (L3–L10 + GEV packs); Chronos (campaign chronology); God’s Eye View (Earth through GEO). |
+| **Siblings** | `worldstack` (L3–L10); `campaign_calendar` / Chronos; `terrain_service` / Geb; `facility_service` / Marduk; `gamer_eye` (federation + GEV). All sit under `/Volumes/SeagatePortable/Dropbox/Projects/`. |
 | **UI** | Keep the existing Plotly / drawer UI for standalone use and hands-on generate (human or agent). |
 
 ---
@@ -1229,7 +1233,7 @@ Worldstack must treat Jumpgate GET as authoritative for XYZ and edges. If Worlds
 
 ## How Jumpgate talks to **Chronos** (separate layer-provider project)
 
-Chronos working name and APIs stay in `CAMPAIGN_CALENDAR_DESIGN.md`. Jumpgate’s duties:
+Chronos working name and APIs stay in [`../campaign_calendar/CAMPAIGN_CALENDAR_DESIGN.md`](/Volumes/SeagatePortable/Dropbox/Projects/campaign_calendar/CAMPAIGN_CALENDAR_DESIGN.md). Jumpgate’s duties:
 
 1. **Do not invent a third clock.** No `campaign_now` field except a cache of Chronos `now` when configured.
 2. **Register as event source + lag helper.** Chronos MVP-5 is exactly this.
@@ -1390,9 +1394,11 @@ Storage: JSON for 1k hosts + 3k bodies ≪ 50 MB; NASA CSVs remain ~100 MB gitig
 
 ## References
 
-- Jumpgate v2.0: `/Users/ldjessee/Projects/exoplanet/jumpgate_starroute/` — especially `starroute/web/app.py`, `starroute/mapgen/network.py`, `starroute/mapgen/factions.py`, `starroute/ingest/pipeline.py`, `starroute/ingest/classify.py`, `starroute/ingest/sol.py`, `HISTORY.md`, `WASM.md`, `config/network.json`, `config/factions.json`
-- Worldstack brief copy: `WORLDSTACK_DESIGN.copy.md` (layers L0–L11, visitability, API sketch, JSON store)
-- Chronos brief copy: `CAMPAIGN_CALENDAR_DESIGN.copy.md` (GCT, branches, consequences, peer table, API sketch)
+- This repo (`/Volumes/SeagatePortable/Dropbox/Projects/jumpgate_starroute`): `starroute/web/app.py`, `starroute/mapgen/network.py`, `starroute/mapgen/factions.py`, `starroute/ingest/pipeline.py`, `starroute/ingest/classify.py`, `starroute/ingest/sol.py`, `HISTORY.md`, `WASM.md`, `config/network.json`, `config/factions.json`
+- Worldstack brief: [`../worldstack/WORLDSTACK_DESIGN.md`](/Volumes/SeagatePortable/Dropbox/Projects/worldstack/WORLDSTACK_DESIGN.md)
+- Chronos brief: [`../campaign_calendar/CAMPAIGN_CALENDAR_DESIGN.md`](/Volumes/SeagatePortable/Dropbox/Projects/campaign_calendar/CAMPAIGN_CALENDAR_DESIGN.md)
+- Geb brief: [`../terrain_service/GEB_DESIGN.md`](/Volumes/SeagatePortable/Dropbox/Projects/terrain_service/GEB_DESIGN.md)
+- Marduk brief: [`../facility_service/MARDUK_DESIGN.md`](/Volumes/SeagatePortable/Dropbox/Projects/facility_service/MARDUK_DESIGN.md)
 - TravellerMap API (structure only): https://travellermap.com/doc/api — search prefixes, `GET /api/route?start&end&jump`, allegiance, travel zones
 - SWN faction-as-news-chyron / freeze distant regions (structure only; no rules clone)
 - Elite BGS: influence shares sum to 1; controlling vs present; government family → war vs election (structure only; no daily ticks)

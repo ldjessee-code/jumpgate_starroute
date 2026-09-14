@@ -7,9 +7,12 @@ Version numbers increment when a release ships. This file is the narrative;
 repo name stays `jumpgate_starroute` until a rename. See
 [docs/JUMPGATE_V3_DESIGN.md](docs/JUMPGATE_V3_DESIGN.md).
 
-A frozen copy of the pre-1.0 script pile (including an older `archived/`
-folder) sits outside the repo at `/Users/ldjessee/Projects/Archive/starmap`.
-The 444 MB Python 3.9 `env/` from that era was not copied.
+The working tree sits with the other federation providers at
+`/Volumes/SeagatePortable/Dropbox/Projects/jumpgate_starroute` (moved out of
+`~/Projects/exoplanet/jumpgate_starroute`). A frozen copy of the pre-1.0
+script pile (including an older `archived/` folder) remains outside the repo
+at `/Users/ldjessee/Projects/Archive/starmap`. The 444 MB Python 3.9 `env/`
+from that era was not copied.
 
 ---
 

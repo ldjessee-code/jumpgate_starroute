@@ -8,9 +8,10 @@ and builds a **Sol-centered jump-drive or star-gate network** you can steer
 with range, ranking, and optional species/nation rules, then shows the map
 in a browser.
 
-This is not the sibling analytics-platform project (`../analytics-platform`).
-How the project got here is in [HISTORY.md](HISTORY.md). Future releases
-increment the version number there and here.
+This is the **Ptah** layer provider (`jumpgate_starroute`). It lives next to
+the other federation services under `Dropbox/Projects/` (Chronos, Worldstack,
+Geb, Marduk, Gamer Eye). How the project got here is in [HISTORY.md](HISTORY.md).
+Future releases increment the version number there and here.
 
 ## Current state (v2.0)
 
@@ -51,11 +52,13 @@ Python 3.9+ (3.11+ preferred). **uv** is the lightest modern installer if
 you do not already have a venv.
 
 ```bash
-cd ~/Projects/exoplanet/jumpgate_starroute
+cd /path/to/jumpgate_starroute   # not the inner starroute/ package folder
 python3 -m venv .venv
 .venv/bin/pip install -e '.[dev]'
 .venv/bin/pytest
 ```
+
+Local checkout: `/Volumes/SeagatePortable/Dropbox/Projects/jumpgate_starroute`.
 
 Place NASA snapshots in `data/raw/` (gitignored; ~100 MB together):
 
@@ -81,7 +84,6 @@ CLI (ingest, network, migrate):
 .venv/bin/starroute ingest --max-ly 1000 --min-mass 0.25
 .venv/bin/starroute network --max-jump 50
 .venv/bin/starroute serve   # same desk as ptah
-```
 python -m starroute network --max-jump 50 --no-factions
 ```
 
