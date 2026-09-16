@@ -120,3 +120,7 @@ configured human root nation (Turquenish Empire by default).
 This release is **v2.0**. Earlier experimental scripts were **v0.1–v0.9**;
 the first cleaned release was **v1.0**. v2.0 is the browser-engine shift.
 See [HISTORY.md](HISTORY.md).
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE).
