@@ -7,7 +7,10 @@ and builds a **Sol-centered jump-drive or star-gate network** you can steer
 with range, ranking, and optional species/nation rules, then shows the map
 in a browser.
 
-This is not the sibling analytics-platform project (`../analytics-platform`).
+Ptah v3 / Worldstack / Gamer Eye development continues in
+[star_network](https://github.com/ldjessee-code/star_network). This repository
+stays at the v2.0 map tool.
+
 How the project got here is in [HISTORY.md](HISTORY.md). Future releases
 increment the version number there and here.
 
