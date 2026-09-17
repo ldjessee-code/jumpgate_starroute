@@ -16,6 +16,14 @@ const GLOSSARY = [
     impact: "Use a matching pair of files from the same download date. The planet file is one row per planet; the star file is one or more rows per star.",
   },
   {
+    id: "mapPreset",
+    title: "Map pack",
+    group: "Getting started",
+    alsoCalled: "preset, crowded, sparse, lonely humans",
+    meaning: "A pre-built map of local space: which stars are kept, how long a jump can be, and which cultures live where. Three packs ship as static JSON. Switching packs does not need Python — the page just loads another snapshot.",
+    impact: "Crowded keeps small stars and short jumps, with humans plus methane, crystal, and hot-world people. Sparse drops the tiniest red dwarfs and lengthens jumps. Lonely humans keeps only Sun-like stars and oxygen-breathing settlers. Generate new map still rebuilds from the shipped star list with the settings in the drawer.",
+  },
+  {
     id: "sol",
     title: "Sol",
     group: "Getting started",

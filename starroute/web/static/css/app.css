@@ -461,6 +461,9 @@ body.map-first .map-stage #star-map { flex: 1 1 auto; height: auto; min-height: 
   margin-bottom: 0.7rem;
   align-items: end;
 }
+.map-toolbar #map-preset {
+  min-width: 12.5rem;
+}
 .path-readout { min-height: 1.3rem; color: var(--ink-soft); font-size: 0.9rem; margin-bottom: 0.5rem; }
 .downloads { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.7rem; }
 

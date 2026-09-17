@@ -9,6 +9,15 @@ The 444 MB Python 3.9 `env/` from that era was not copied.
 
 ---
 
+## Unreleased — static map presets
+
+Three pre-generated packs (`crowded`, `sparse`, `lonely_humans`) ship as
+`kind: network_snapshot` JSON. The static viewer can switch among them
+without a Python server. Rebuild with `python -m starroute build-presets`.
+See [PRESETS.md](PRESETS.md).
+
+---
+
 ## v2.0 — August 2026
 
 Browser engine. Same map viewer and snapshot JSON; maps are grown in

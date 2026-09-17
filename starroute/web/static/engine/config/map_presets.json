@@ -1,0 +1,184 @@
+{
+  "default": "crowded",
+  "catalog": {
+    "sample_csv": "starroute/web/static/sample-systems.csv",
+    "note": "Used when data/raw NASA CSVs are missing. The shipped sample is a 60 ly Sol neighborhood already filtered to min stellar mass 0.25."
+  },
+  "presets": [
+    {
+      "id": "crowded",
+      "title": "Crowded neighborhood",
+      "description": "Dense local space. Small stars stay on the map; jumps are short. Humans share the neighborhood with methane-breathers, living crystal, and hot-world gas-giant people.",
+      "origin": { "origin_hostname": "Sol", "max_distance_ly": 60 },
+      "network": {
+        "max_jump_ly": 16,
+        "medium_start_pct": 40,
+        "long_start_pct": 60,
+        "max_neighbors": 6,
+        "max_linked_nodes": 80,
+        "hard_rank": 0.1,
+        "soft_rank": 0.18,
+        "min_stellar_mass": 0.25,
+        "root_hostname": "Sol"
+      },
+      "factions": {
+        "hub_percentile": 0.08,
+        "hub_extra_link_ly": 10,
+        "human_root": "Sol",
+        "human_root_group": "Human",
+        "multi_route_groups": ["Human", "Kessari", "Methan", "Crystomorphs"],
+        "species": [
+          {
+            "name": "Kessari",
+            "count": 18,
+            "prefix": "KS",
+            "preset": "kessari",
+            "description": "Hot-world, high-pressure people. They prefer sulfur-band climates and Jupiter-like gas giants.",
+            "filters": [{
+              "any": [
+                { "column": "sulfur_ranking", "op": "gt", "value": 0 },
+                { "column": "gas_giant_count", "op": "gt", "value": 0 }
+              ]
+            }],
+            "sort": { "column": "sulfur_ranking", "ascending": false }
+          },
+          {
+            "name": "Methan",
+            "count": 16,
+            "prefix": "ME",
+            "preset": "methan",
+            "description": "Methane-breathers. They live in stations inside or around leftover Jupiter-like gas giants.",
+            "filters": [{ "column": "gas_giant_count", "op": "gt", "value": 0 }],
+            "sort": { "column": "gas_giant_count", "ascending": false }
+          },
+          {
+            "name": "Crystomorphs",
+            "count": 16,
+            "prefix": "CR",
+            "preset": "crystomorphs",
+            "description": "Living crystal. They prefer stars far from the celestial equator, away from the thickest traffic.",
+            "filters": [{ "column": "dec", "op": "abs_gt", "value": 45 }],
+            "sort": { "column": "dec", "ascending": false, "key": "abs" }
+          }
+        ],
+        "nations": [
+          {
+            "name": "Human",
+            "count": 80,
+            "prefix": "HU",
+            "preset": "human",
+            "description": "Oxygen-breathing settlers around Sol, especially leftover rocky and carbon-band worlds.",
+            "filters": [],
+            "sort": { "column": "carbon_ranking", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sparse",
+      "title": "Sparse neighborhood",
+      "description": "Fewer stars: the smallest red dwarfs are dropped. Jumps run longer so the remaining systems still form one network. Several habitat classes remain.",
+      "origin": { "origin_hostname": "Sol", "max_distance_ly": 60 },
+      "network": {
+        "max_jump_ly": 28,
+        "medium_start_pct": 40,
+        "long_start_pct": 60,
+        "max_neighbors": 5,
+        "max_linked_nodes": 60,
+        "hard_rank": 0.12,
+        "soft_rank": 0.22,
+        "min_stellar_mass": 0.37,
+        "root_hostname": "Sol"
+      },
+      "factions": {
+        "hub_percentile": 0.08,
+        "hub_extra_link_ly": 14,
+        "human_root": "Sol",
+        "human_root_group": "Human",
+        "multi_route_groups": ["Human", "Kessari", "Methan", "Crystomorphs"],
+        "species": [
+          {
+            "name": "Kessari",
+            "count": 12,
+            "prefix": "KS",
+            "preset": "kessari",
+            "description": "Sulfur-band / high-pressure worlds and gas giants.",
+            "filters": [{
+              "any": [
+                { "column": "sulfur_ranking", "op": "gt", "value": 0 },
+                { "column": "gas_giant_count", "op": "gt", "value": 0 }
+              ]
+            }],
+            "sort": { "column": "sulfur_ranking", "ascending": false }
+          },
+          {
+            "name": "Methan",
+            "count": 12,
+            "prefix": "ME",
+            "preset": "methan",
+            "description": "Methane-breathers on leftover gas-giant stations.",
+            "filters": [{ "column": "gas_giant_count", "op": "gt", "value": 0 }],
+            "sort": { "column": "gas_giant_count", "ascending": false }
+          },
+          {
+            "name": "Crystomorphs",
+            "count": 10,
+            "prefix": "CR",
+            "preset": "crystomorphs",
+            "description": "Living crystal on high-declination stars.",
+            "filters": [{ "column": "dec", "op": "abs_gt", "value": 45 }],
+            "sort": { "column": "dec", "ascending": false, "key": "abs" }
+          }
+        ],
+        "nations": [
+          {
+            "name": "Human",
+            "count": 80,
+            "prefix": "HU",
+            "preset": "human",
+            "description": "Oxygen-breathing settlers around Sol.",
+            "filters": [],
+            "sort": { "column": "carbon_ranking", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "lonely_humans",
+      "title": "Lonely humans",
+      "description": "Sun-like stars only (about 0.66–1.5 solar masses). Longer jumps keep one thin network. Only oxygen-breathing humans; no alien cultures.",
+      "origin": { "origin_hostname": "Sol", "max_distance_ly": 60 },
+      "network": {
+        "max_jump_ly": 36,
+        "medium_start_pct": 40,
+        "long_start_pct": 65,
+        "max_neighbors": 4,
+        "max_linked_nodes": 80,
+        "hard_rank": 0.1,
+        "soft_rank": 0.2,
+        "min_stellar_mass": 0.66,
+        "max_stellar_mass": 1.5,
+        "root_hostname": "Sol"
+      },
+      "factions": {
+        "hub_percentile": 0.1,
+        "hub_extra_link_ly": 16,
+        "human_root": "Sol",
+        "human_root_group": "Human",
+        "multi_route_groups": ["Human"],
+        "species": [],
+        "nations": [
+          {
+            "name": "Human",
+            "count": 80,
+            "prefix": "HU",
+            "preset": "human",
+            "description": "The only people in this pack. They settle leftover systems around Sol in the oxygen / Sun-like mass band.",
+            "filters": [],
+            "sort": { "column": "carbon_ranking", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+          }
+        ]
+      }
+    }
+  ]
+}
