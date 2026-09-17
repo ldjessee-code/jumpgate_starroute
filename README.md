@@ -54,6 +54,11 @@ If you open the HTML as a local `file://` page and the browser blocks JSON
 fetch, the picker falls back to `presets/{id}/map.js`. The crowded pack also
 boots from `default-map.js`.
 
+Setting notes live in [`setting/`](setting/) as ordinary Markdown. The static
+wiki is `starroute/web/static/docs/lore/` (search titles, render pages in the
+browser). After adding a `.md` file, run `python -m starroute build-lore`.
+See `starroute/web/static/docs/lore.html`.
+
 ## Setup (only to rebuild your own map)
 
 Python 3.9+ (3.11+ preferred). **uv** is the lightest modern installer if
@@ -89,6 +94,7 @@ python -m starroute ingest --max-ly 1000 --min-mass 0.25
 python -m starroute network --max-jump 50
 python -m starroute network --max-jump 50 --no-factions
 python -m starroute build-presets
+python -m starroute build-lore
 ```
 
 `build-presets` (or `python scripts/build_presets.py`) writes JSON packs to
@@ -107,7 +113,7 @@ config/               default network, faction, and map-preset JSON
 data/raw/             NASA snapshots (local, not committed)
 data/processed/       systems.csv, sol_network.csv, route_table.csv
 data/presets/         crowded / sparse / lonely_humans JSON packs
-setting/              placeholder for a later flat .md wiki viewer
+setting/              flat Markdown lore vault (static wiki on Pages)
 ```
 
 Faction names, counts, prefixes, and filters live in `config/factions.json`.

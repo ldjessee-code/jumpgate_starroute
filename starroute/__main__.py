@@ -34,6 +34,10 @@ def main(argv: list[str] | None = None) -> None:
     presets = sub.add_parser("build-presets", help="Write the three static map preset packs")
     presets.add_argument("--id", action="append", dest="ids", help="Build only this preset id (repeatable)")
 
+    lore = sub.add_parser("build-lore", help="Write the static lore wiki index from setting/*.md")
+    lore.add_argument("--vault", help="Markdown vault (default: setting/)")
+    lore.add_argument("--dest", help="Static lore folder (default: starroute/web/static/docs/lore)")
+
     args = parser.parse_args(argv)
 
     if args.cmd == "serve":
@@ -74,6 +78,16 @@ def main(argv: list[str] | None = None) -> None:
         for preset_id in args.ids or []:
             extra.extend(["--id", preset_id])
         raise SystemExit(build_presets_main(extra))
+
+    if args.cmd == "build-lore":
+        from starroute.lore import main as build_lore_main
+
+        extra = []
+        if args.vault:
+            extra.extend(["--vault", args.vault])
+        if args.dest:
+            extra.extend(["--dest", args.dest])
+        raise SystemExit(build_lore_main(extra))
 
 
 if __name__ == "__main__":

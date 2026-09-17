@@ -28,6 +28,8 @@ ORIGIN_JSON = DATA_PROCESSED / "origin.json"
 DATA_PRESETS = ROOT / "data" / "presets"
 SAMPLE_SYSTEMS_CSV = ROOT / "starroute" / "web" / "static" / "sample-systems.csv"
 STATIC_PRESETS = ROOT / "starroute" / "web" / "static" / "presets"
+SETTING_DIR = ROOT / "setting"
+STATIC_LORE = ROOT / "starroute" / "web" / "static" / "docs" / "lore"
 
 
 def ensure_data_dirs() -> None:

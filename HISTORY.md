@@ -9,6 +9,14 @@ The 444 MB Python 3.9 `env/` from that era was not copied.
 
 ---
 
+## Unreleased — static lore vault
+
+`setting/*.md` is a flat lore wiki. Pages serves a committed copy at
+`docs/lore/` (Markdown rendered in the browser). Rebuild the index with
+`python -m starroute build-lore` — stdlib only; NASA CSVs are irrelevant.
+
+---
+
 ## Unreleased — static map presets
 
 Three pre-generated packs (`crowded`, `sparse`, `lonely_humans`) ship as

@@ -1,0 +1,40 @@
+{
+  "default": "overview",
+  "pages": [
+    {
+      "id": "overview",
+      "title": "Overview",
+      "order": 10,
+      "source": "overview.md",
+      "path": "pages/overview.md"
+    },
+    {
+      "id": "systems",
+      "title": "Systems",
+      "order": 20,
+      "source": "systems.md",
+      "path": "pages/systems.md"
+    },
+    {
+      "id": "cultures",
+      "title": "Cultures",
+      "order": 30,
+      "source": "cultures.md",
+      "path": "pages/cultures.md"
+    },
+    {
+      "id": "history",
+      "title": "History",
+      "order": 40,
+      "source": "history.md",
+      "path": "pages/history.md"
+    },
+    {
+      "id": "contributing",
+      "title": "How to contribute",
+      "order": 90,
+      "source": "contributing.md",
+      "path": "pages/contributing.md"
+    }
+  ]
+}

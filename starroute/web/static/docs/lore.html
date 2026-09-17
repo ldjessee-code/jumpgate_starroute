@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Lore vault · Jumpgate Starroute</title>
+<style>:root {
+  --bg: #0b1020;
+  --panel: #141b2f;
+  --ink: #e8eefc;
+  --muted: #a9b4d0;
+  --accent: #7eb6ff;
+  --line: #2a3555;
+  --ok: #8fd39a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); }
+header, footer {
+  border-bottom: 1px solid var(--line);
+  padding: 1rem 1.25rem;
+  background: #0a0e1a;
+}
+footer { border-bottom: 0; border-top: 1px solid var(--line); margin-top: 3rem; color: var(--muted); font-size: 0.92rem; }
+nav a { margin-right: 1rem; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+main { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.85rem; margin-top: 0; }
+h2 { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
+h3 { margin-top: 1.4rem; }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin: 1rem 0;
+}
+code, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+code { background: #0a0e1a; padding: 0.1em 0.35em; border-radius: 4px; }
+pre {
+  background: #0a0e1a;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+}
+.note { color: var(--muted); }
+.ok { color: var(--ok); }
+ul.compact li { margin: 0.35rem 0; }
+nav a[aria-current="page"] { color: var(--ink); }
+</style>
+</head>
+<body>
+<header>
+  <strong>Jumpgate Starroute</strong>
+  <nav style="margin-top:0.55rem">
+    <a href="../index.html">Home</a>
+    <a href="index.html">Docs</a>
+    <a href="../app.html">Map</a>
+    <a href="lore/index.html">Lore</a>
+    <a href="lore.html" aria-current="page">Add a page</a>
+    <a href="deploy.html">Deploy</a>
+    <a href="run-local.html">Run locally</a>
+    <a href="presets.html">Presets</a>
+  </nav>
+</header>
+<main>
+<h1>Lore vault (static wiki)</h1>
+<p>Setting text lives as ordinary Markdown in the repo. GitHub Pages visitors browse a <strong>committed copy</strong> in the browser. There is no Wiki.js, Obsidian, Postgres, or edit-in-browser.</p>
+<p><a href="lore/index.html"><strong>Open the lore viewer →</strong></a></p>
+
+<h2>Layout</h2>
+<div class="card">
+<pre>setting/                      source of truth (git clone)
+  README.md                   tooling notes; not in the wiki index
+  overview.md
+  systems.md
+  cultures.md
+  history.md
+  contributing.md
+
+starroute/web/static/docs/lore/   what Pages actually serves
+  index.html                  viewer
+  index.json / index.js       page list
+  pages/*.md                  copies of the vault
+  marked.min.js               MIT Markdown renderer (vendored)</pre>
+</div>
+
+<h2>Add a page</h2>
+<ol>
+  <li>Create <code>setting/your-topic.md</code>. Subfolders are allowed (<code>setting/cultures/kessari.md</code>).</li>
+  <li>Optional front matter:
+<pre>---
+title: Your topic
+order: 40
+---</pre>
+    Without it, the first <code># heading</code> or the file name becomes the title.
+  </li>
+  <li>Regenerate the index. This walk is <strong>stdlib Python</strong> — missing NASA CSVs do not matter:
+<pre>python -m starroute build-lore
+# or: python scripts/build_lore.py</pre>
+  </li>
+  <li>Commit the new <code>.md</code> <em>and</em> the updated files under <code>starroute/web/static/docs/lore/</code>.</li>
+</ol>
+<p class="note">The public site only publishes <code>starroute/web/static/</code>. If you add a vault file and skip the index rebuild, Pages will not list it.</p>
+
+<h2>Try it locally</h2>
+<div class="card">
+<pre>cd starroute/web/static
+python -m http.server 8765</pre>
+<p>Then open <code>http://127.0.0.1:8765/docs/lore/</code> (or <code>.../docs/lore/index.html</code>). Raw <code>file://</code> is unreliable because the viewer fetches Markdown.</p>
+</div>
+
+<h2>On GitHub Pages</h2>
+<p>After merge to <code>main</code>, the project site is typically:</p>
+<ul class="compact">
+  <li>Home — <code>https://ldjessee-code.github.io/jumpgate_starroute/</code></li>
+  <li>Lore — <code>.../jumpgate_starroute/docs/lore/</code></li>
+</ul>
+<p>Links in the viewer are relative, so the <code>/jumpgate_starroute/</code> base path does not need a special prefix.</p>
+
+</main>
+<footer>
+  <p>MIT licensed. Docs describe folders and commands, not vendor dashboard click-paths.</p>
+</footer>
+</body>
+</html>

@@ -4,6 +4,7 @@ Jumpgate Starroute publishes a **static** demo and docs site from `starroute/web
 
 - Map viewer: `app.html` (preset picker; no Python)
 - Docs: `docs/` (deploy strategies + local run on Windows / macOS / Linux; browser notes for Chrome, ChromeOS, Android)
+- Lore: `docs/lore/` (static Markdown wiki; source files in repo `setting/`)
 - Packs: `presets/{crowded,sparse,lonely_humans}/`
 
 ## GitHub Pages
