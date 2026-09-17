@@ -1,0 +1,200 @@
+GURPS 4e 
+
+Basic Game setting core idea:
+
+The crew of the Scarab class multi-role frigate, all survivors of the Turquenish-Mardat War, are trying to make it in the aftermath of this war between two large Earth lead Factions, the Turquenish Empire and the Mardat Coalition.
+
+While there are some minor alien races and some humans that have diverged genetically and societally, both of the Turquenish Empire and the Mardat Coalition were predominately (60-70%) what is referred to as 'mainstream' humans.
+
+The other races do not have the same drive and character to spread out the way humans have, so their spread in the galaxy seems smaller, more tightly knit. (See race section)
+
+FTL
+
+Faster than light is thru a network of large jump gate rings that have been around a long time. The Faertheren, an old, secretive, and apolitical race that maintains and spreads the network. They operate on a schedule and system that mostly appears to be driven by usage. The less a gate is used, the less it is maintained. If the gate in a system is used a lot, it could be that a new gate will be added in a hundred or so years. The largest ships that go thru the rings are the Methan ships. These ships are 600 meters across spheres or cylinders, the variation being length; from 600 meters to 2,000 meters long.
+
+Space Travel
+
+Outside the Faertheron Gates, space travel depends on the technological and production capabilities of the system, culture, and wealth. From chemical rockets, to ion drives, to reactionless drives. Aboreals and Methan seem to only use reactionless drives.
+
+
+Turquenish-Mardat War
+
+Fought over conflicts about technology and ideology. 
+
+Turquenish culture is open to and expects a certain amount of biological and genetic editing to improve one's life and the life of progeny.
+
+Mardat prefers mechanical/electronic improvements.
+
+There were several systems that had gates open up a couple hundred years ago that connected more distant systems of each nation to the other. This caused a less stringent aherence to the limits and boundaries on self modification that the other allowed (ie, Mardat citizens going to Turquenish 'spas' and having genetic editing and manipulation done; while Turquenish citizens would go to Mardat 'integrators' and have advanced digital interfaces implanted in their brain).
+
+These broke laws and traditions and blamed the other at memetic warfare, corrupting the poor, unwitting populations of these systems to be 'corrupted' but the other's culture.
+
+At the more established and traditional borders, there was all kinds of checks and trade and travel was tightly controlled, but these frontier systems with gates that connected to other frontier systems of the other, these controls were not followed or those who were to enforce the became corrupt, the flow of goods and services grew and only increased the traffic to these systems. It also lowered the traffic thru what had been the main route for goods to flow to and from the frontier to the core systems.
+
+Now, after the war, the devastation, the destruction, the lose of life, and chaos introduced, it seems petty.
+
+There are both hardliners of both but they no longer are a majority or seem to have political weight to push for these strict modification laws. Many have been struck down.
+
+But the damage has been done. And several systems at the end tried to leave or separate themselves from their original government... supposedly these poor systems had been mimetically attacked and subverted, according to their original government. 
+(That they just did NOT want a part of either's culture nor war anymore seemed to be ignored)
+
+
+After the war, many of the outlining systems have not been contacted frequently, have not had ships traveling there, and with the war damaging or destroying many ships and ship production, ship ownership is not as common as it was and most are former military ships now repurposed for civilian use.
+
+Both the Turquenish Empire and the Mardat Coalition are worried that if they do not maintain traffic to these systems, the gates will not be maintained and eventually dismantled. A few here or there would not be a big deal, but if key links between key resources and production systems could break the web like network of gates, which would make it impossible to have a cohesive society, culture, and government.
+
+Some of the systems have low populations and non-strategic resources... The local system administrators, governors, etc are worried that the two governments will ignore them in favor of those with larger populations, more established infrastructure/means of production, and more strategic resources. They are hiring shipments of what they have: communication, media, art, and such. And are also hoping for return shipments of things they cannot produce: tools, supplies, and resources their system lacks or has either in low amounts or is just more difficult to get to.
+
+
+Alien Races
+
+'The Aboreals' (if they are as single race and not a collection of symbiotic races) have no spoken language, they communicating thru chemical signals (scents). Obviously communication is hard, but trade is even harder, with their very peaceful, nearly pacifistic view and needing very little industrialized products. The are very advanced at biochemistry, biotechnology, and genetic manipulation at a capability and understanding not matched by any. 
+
+The Bazzar Queens relate a story about when they first encountered them. They just started colonizing a planet, not even realizing it was already being occupied by a sentient race. They just assumed a thick and lush garden world which the Bazzar were razing to grow their crops. They talk about a nightmarish biological ware that wiped all Bazzar from the planet and system in almost no time. This showed that this race had space travel, advanced technology, and when vast areas of their cities were being burned and cleared for Bazzar farming, they finally did something. The Aboreals and The Bazzar have a very tight treaty and the Bazzar act as the preferred security and traders for The Aboreals' goods. 
+
+Humans have only ever seen the Borealis acting as pacifists, to the point of making very lopsided agreements. But when dealing with them, they keep the Bazzar's story in mind and worry about crossing whatever line the Aboreals have that would result in such a devastating biological warfare attack.
+
+The Bazzar is an insect race with a hive structure. There is a limit to how many a Queen can manage, so once a group gets near that limit, there will start a split and a new person will be 'promoted' to a Queen to manage/control this new subset of the Bazzar. 'Queen' is a left over term from when Human's first encountered the Bazzar, but there are three sexes and the Queen, once 'promoted' becomes sexless, so the analogy of bees or ants does not really hold up well when the Bazzar are examined in detail. Many believe that the Queens communicate and work towards goals, but each seems to have their own personality... of a sort.
+
+The Bazzar have no problems describing their complicated reproduction process, but it is usually condensed that there is genetic donor of sex type A, genetic donor of sex type B, then the incubator which is sex type 3. Queens, which apparently can come from any of the three, change to be sexless when they are promoted. The Bazzar are not clear on what it takes and how long for a Queen to be promoted.
+
+Crystomorphs are silicon based life forms that communicate with light flashes. They are more distant in the galaxy from humans. They think in very long time periods, even though they have a...form or stage in their life cycle (they are never clear on this) that are mobile and in a rough scale to most races (the 1 to 3 meter and 39 to 200 kg mass range most of the sentient races seem to fall within).
+
+The Echryon and The Echtol, two distantly related races of cephalopods, one predominately living in liquid water and the other on 'land', respectively (when first encountered, humans compared them to turtles and tortoises, but not a great comparison). These 12 limbed carbon-oxygen based life forms are intelligent, cannot interbreed, but both agree at some point in their distant past, were the same race. They both communicate with shape, color, and even texture. They do have a written language and their most primitive examples are like flip books, you flip the pages and it shows movement of shape and color, conveying meaning. Many sapient races can understand the very basics of their language, but most rely on some translator (be it digital or biological). Their area of the galaxy is mingled and borders mostly on Mardat space, but does have two systems with gates that go to Turquenish space.
+
+The Methan is completely unwilling to communicate with almost all other races. Supposedly the Crystomorphs and the Faetheren do communicate with them, but it seems to take a very long, long time? The Methan are the exception to the size rule for sentient races it appears. They start life at 5 meters tall and 10 meters long and grow to be over a 100 meters long and up to 50 meters tall. Somewhere between a jellyfish and a blimp or zepplin, these creatures live in mid to upper-mid layers of gas giants. Either their technology or their biology emits a specific EM signal. Many races will abandon a system if the Methan show up, because they seem to take any industry, settlements, colonies, etc in orbit around the gas giants that they are colonizing as direct threats or maybe even acts of war the Methan supposedly give a single warning, but many claim to never have gotten a warning. If actually attacked, usually all other planets in the system are sterilized of all life. Even Crystomorphs say this has happened to them. The Methan space is mostly nearer the galactic core and they use the same gates as all other races.
+
+The Schettel are a race of scavengers. Their small size, very flexible skeletal structure, and extremely adaptable immune system seems to make them incapable of catching a disease, being poisoned, and can digest almost anything for sustenance. They keep no treaties, agreements, or anything for more than it suites them. They buy trash, junk, scrap, and seem to keep their society/culture going. No one has ever seen a Schettel factory or other means of production. They do not even seem to do infrastructure. No roads, power lines, etc. Whatever they put together appears to be self sufficient. The planets they inhabit seem to have scattered structures amongst massive junkyards or piles of trash. Their fleets of ships bringing what they could scrounge, buy, and some say steal back to their planets for these scavenging 'communities'. Schettel are usually the ones called to scuttle or break a ship, if the originating race sees no value in trying to dismantle it themselves.
+
+The Faetheren are so secretive, one on has seen one. Their ships move about, seemingly always busy moving resources and components to maintain, build, or decommission gates. They seem to use NAIs to communicate with the other races using light, radio (digital and analog that is sound), as well as some other way to talk to the Methan (other than EM/radio). Their ships, and a cloud of drones when working on gates, will sometimes connect/dock to each other and to the jump gate rings, but if some other race tries to connect, they immediately warn this is not permitted and if they ship does not detach the Faetheren ship will go thru a series of steps (acceleration, maneuvers, drones using cutting lasers to try to cut the connection) to try to get away and if not, then the Faetheren ship self destructs. From the wreckage, the going speculation is that they are biological entities augmented with biological, electronic/digital, and mechanical components. No other race knows of a time without the Faetheren.
+
+
+Timeline of races joining the gate network
+
+The Crystomorphs are the second oldest and the first to claim to have stumbled upon a Faetheren gate ring, but they still have ships that travel sunlight between systems. The going understanding is that they are effectively immortal. They have claimed 101 systems, out towards the galactic rim.
+
+The Methan are next oldest. They are in at least 100 systems, but some of them also have the Crystomorphs or Faetheren present.
+
+Then 10s of thousands of years later, the Echryon and Echtol found the jump gate network. They claim 61 systems.
+
+Since then, the Echryon/Echtol say that they encountered Aboreals and Bazzar's section of the network 2-3 thousand years later. They have 20-30 systems each.
+
+Humans and Schettel both found and joined the network in the last 1,500 years.
+
+Schettel lay claim to 12 systems, but are not contiguous on the network, they are scattered about, usually not more than 2 to 3 jumps on the network from each other. Separated by systems claimed by another race or unclaimed all together.
+
+Humans in total have claimed just over a hundred systems.
+
+The Turquenish Empire claimed, before the war, 39 systems and the Mardat Coalition had 38 member systems. There are varied speculation on what the numbers are now, but still over 30 each.
+
+There is the Industrial Hegemony that its corporate board of directors that incorporated 11 systems. 
+
+The League of The Faithful, an extreme theocracy, claims 3 systems.
+
+The remaining systems are individuals or pairs that remained neutral during the war. Either some corporate entity or colonists trying to get away from one of the other Human entities.
+
+
+(Player Introduction to session)
+The Relay Strider’s engines hum softly as you dock at the Kalvor-3 trade outpost, a gritty moonbase in the heart of the Kalvor system—a bustling Mardat trade hub three jump gates from the tense Turquenish-Mardat border. The galaxy’s still licking its wounds from the war, and this ramshackle port, with its prefab domes and flickering holo-signs, is a melting pot of human traders, Bazzar hustlers, and the occasional alien oddity. You’ve been summoned to a dingy shack on the docks for a high-stakes job: a Bazzar fixer named Kwez, representing her local Queen, has a deal to offload a sensitive cargo from the Aboreals’ ship, Verdant Whisper. The cargo’s bound for the Turquenish O’Neill colony Eden Spiral, five gates away, but whispers of illegal goods and prying eyes hint at trouble ahead. The air’s thick with opportunity and danger—border patrols are watching, scavengers are circling, and the jump gates don’t wait for stragglers. As you step into the shack, the scent of alien pheromones and the faint glow of bioluminescent Aboreals set your nerves on edge. Time to make a deal, keep your wits sharp, and get that cargo moving before someone—or something—makes you regret taking this job.
+
+
+
+Revised Adventure: Smuggler’s Gambit
+
+Premise: In the Kalvor system, a bustling Mardat trade hub, the Relay Strider’s crew is contacted by Kwez, a Bazzar “trader enhancer” (fixer), to take over a shipment of rare biotech enzymes—vital for Eden Spiral’s failing bioreactors—from an Aboreal ship, the Verdant Whisper. The Aboreals, contracted by Eden Spiral’s Governor Lira Vesh, negotiated the deal but refused to cross the Mardat border checkpoint due to their pacifist aversion to potential conflict, leaving the cargo stranded in Kalvor. As the crew loads the enzymes, the Schettel scavenger ship Rust Fang, led by Zikra, demands the cargo from the Aboreals, learns it’s been transferred to the Relay Strider, and pursues, initiating a race to deliver the enzymes to Eden Spiral through the Faetheren jump gate while evading Mardat patrols and the relentless Schettel. The illegal cargo risks exposure, and crew tensions over ethics add moral complexity.
+Session Structure (2–4 Hours):  
+
+    Cargo Handoff (30–45 min): The crew meets Kwez and the Aboreals in Kalvor to secure the enzyme cargo, navigating Bazzar negotiations and Aboreal hesitance.  
+
+    Schettel Pursuit Setup (30–45 min): As the cargo is loaded, the Rust Fang threatens the Aboreals, learns of the transfer, and begins chasing the Relay Strider, requiring quick piloting and hacking to evade initial scans.  
+
+    Mardat Border Checkpoint (45–60 min): The crew faces a Mardat inspection station, using deception or tech to hide the illegal enzymes while the Rust Fang closes in, adding time pressure.  
+
+    Jump-Gate Race and Ambush (45–60 min): The crew races to the jump gate to reach Eden Spiral, fending off a Rust Fang attack or boarding attempt.  
+
+    Wrap-Up (15–30 min): Deliver the enzymes to Eden Spiral, resolve crew ethics debates, and plan next moves.
+
+Tone and Stakes: The adventure captures Firefly’s high-stakes smuggling and crew dynamics, with the Schettel chase adding a “beat the clock” urgency, while The Expanse’s political tension shines through Mardat scrutiny and Aboreal pacifism. Success saves Eden Spiral but risks escalating factional tensions, with the Schettel as a chaotic wildcard.
+Locations
+
+    Kalvor-3 Trade Outpost (Starting Point, Cargo Handoff)  
+        A gritty, neutral trading hub on a rocky moon in the Kalvor system, its prefab domes and chaotic docks teeming with human, Bazzar, and occasional Aboreal traders. The Verdant Whisper is docked here, its organic hull a stark contrast to the outpost’s metal sprawl, drawing Schettel attention.  
+        Gameplay Use: The crew negotiates with Kwez and the Aboreals (social skills), loads the enzymes (technical skills), and detects the Rust Fang’s approach (Observation). The bustling, lawless vibe sets a Firefly-like stage for shady deals.
+    Verdant Whisper (Aboreal Ship, Cargo Transfer)  
+        A sleek, bioengineered Aboreal vessel (50 m long, vine-like hull), docked at Kalvor-3, its interior glowing with bioluminescent pods holding the enzymes. The Aboreals’ pacifist crew exudes calm but refuses to proceed due to Mardat border risks.  
+        Gameplay Use: The bio-soldier negotiates with the Aboreals (Diplomacy), the engineer ensures cargo compatibility (Electronics Repair), and the cyber-soldier scans for Schettel spies (Computer Hacking). The alien ship adds Expanse-style exoticism.
+    Kalvor System Checkpoint (Mardat Border Station)  
+        A fortified, NAI-controlled Mardat station (200 m wide) orbiting Kalvor’s primary jump gate, bristling with scanners and drone bays, its stark design reflecting Mardat efficiency. It monitors traffic for illegal biotech, unaware of the Rust Fang’s pursuit.  
+        Gameplay Use: The bio-soldier deceives inspectors (Fast-Talk), the cyber-soldier hacks security (Computer Hacking), and the engineer conceals the cargo (Mechanic/Starship). The time pressure from the Schettel chase heightens tension.
+    Faetheren Jump Gate (Transit to Eden Spiral)  
+        A 1-km-wide, Faetheren-built ring pulsing with blue energy, connecting Kalvor to the Turquenish system hosting Eden Spiral. Its usage-based maintenance makes the crew’s timely passage critical to avoid scrutiny or gate risks.  
+        Gameplay Use: The pilot navigates the gate (Piloting/Starship, Navigation/Hyperspace) under pursuit pressure, while the cyber-soldier counters Rust Fang scans (Computer Hacking). The gate’s alien tech evokes Expanse mystery.
+    Eden Spiral (Turquenish O’Neill Colony, Delivery Point)  
+        A massive, rotating cylinder habitat (2 km long, 500 m diameter) in a Turquenish frontier system, its bioengineered gardens wilting due to bioreactor failure. Governor Vesh awaits the enzymes to restore food production, under pressure from colony hardliners.  
+        Gameplay Use: The captain negotiates payment (Merchant), the engineer verifies enzyme integration (Electronics Repair), and the bio-soldier calms colony tensions (Diplomacy). The colony’s stakes mirror Firefly’s community struggles.
+
+NPCs
+
+    Governor Lira Vesh (Turquenish, Female, 50s)  
+        The driven administrator of Eden Spiral, her bio-augmented charisma masks desperation to save her colony’s bioreactors. She contracted the Aboreals via Kwez, risking her career to bypass wartime biotech bans.  
+        Role: Hires the crew through Kwez, providing mission stakes and payment (10,000 credits). Her urgency pressures the captain to accept the risky job (Merchant or Diplomacy rolls).
+    Kwez (Bazzar, Female, Queen Aspirant)  
+        A cunning Bazzar fixer at Kalvor-3, her pheromonal influence and sharp dealmaking facilitate the Aboreal handoff, but she pushes a side deal to sell excess enzymes for profit. She knows the Schettel are sniffing around but withholds this to protect her reputation.  
+        Role: Brokers the cargo transfer, challenging the crew with negotiations (Diplomacy, Merchant vs. her Will 13). Her side deal tempts the captain with extra credits.
+    Sylvara (Aboreal, Genderless, Age Unknown)  
+        The serene captain of the Verdant Whisper, whose scent-based communication and pacifist principles halted the enzyme delivery at the Mardat border. Sylvara is eager to transfer the cargo but wary of Schettel threats, urging the crew to act swiftly.  
+        Role: Hands off the enzymes, requiring delicate handling (Diplomacy vs. Will 12) to avoid delays. Their pacifism adds moral weight to the crew’s smuggling decision.
+    Commander Tarn Krell (Mardat, Male, 40s)  
+        A no-nonsense Mardat officer at the Kalvor checkpoint, his cyber-augmented neural implants make him a relentless inspector of biotech smuggling. Unaware of the Rust Fang pursuit, he prioritizes protocol but bends under trade necessity.  
+        Role: Leads the checkpoint interrogation, testing the crew’s deception (Fast-Talk vs. Will 13) or hacking (Computer Hacking vs. Security 14). His authority adds Expanse-like tension.
+    Zikra (Schettel, Genderless, Age Unknown)  
+        The ruthless captain of the Rust Fang, a Schettel scavenger ship, whose small, flexible frame and opportunistic greed drive their pursuit of the enzymes for black-market resale. Zikra’s crew uses hit-and-run tactics, exploiting Kalvor’s busy traffic to close in.  
+        Role: Initiates the chase and ambush, forcing combat (Guns/TL10, skill 12) or evasion (Piloting vs. their skill 13). Their persistence creates the “beat the clock” urgency.
+    Tevor Hal (Human, Male, 30s, Neutral Trader)  
+        A shifty Kalvor-3 merchant acting as Eden Spiral’s contact to receive the enzymes, his neutral stance hiding a willingness to sell out if the Schettel offer a better deal. His trade connections make him essential but unreliable.  
+        Role: Receives the cargo at Eden Spiral, requiring verification (Electronics Repair) and negotiation (Merchant vs. Will 11). His potential betrayal adds risk.
+
+Player Roles and Contributions
+
+    Pilot/Captain (Mildly Augmented, Piloting, Navigation, Business)  
+        Negotiation: Uses Merchant (IQ-based, skill 14) to haggle with Kwez for the job (10,000 credits base, +2,000 for her side deal) and Tevor for delivery payment, opposed by their Will (13 and 11). Leadership (skill 12) resolves crew ethics disputes.  
+        Navigation: Pilots the Relay Strider to evade Rust Fang scans in Kalvor (Piloting/Starship/TL10, DX-based, skill 15 vs. Zikra’s Per 12) and through the jump gate (Navigation/Hyperspace, skill 13, -2 for haste).  
+        Leadership: Decides whether to risk the side deal or prioritize speed, balancing profit vs. Schettel pursuit (IQ-based judgment).
+    Bio-Augmented Soldier (People Skills, Bio-Augments)  
+        Diplomacy: Negotiates with Sylvara (Diplomacy, skill 14, +1 Charisma bio-augment, vs. Will 12) to secure the cargo quickly and with Krell at the checkpoint (Fast-Talk, skill 13, vs. Will 13) to avoid scans. Calms Tevor’s nerves (Diplomacy) at delivery.  
+        Combat: Leads defense against Rust Fang boarders (Stealth, skill 14; Guns/TL10, skill 14, +1 DX bio-augment), using enhanced reflexes to outmaneuver Schettel (DX 8).  
+        Ethics: Voices Turquenish concerns about smuggling, sparking crew debate (opposed Will 12).
+    Cyber-Augmented Soldier (Strength, Speed, Hacking)  
+        Hacking: Hacks Rust Fang’s sensors to delay pursuit (Computer Hacking/TL10, skill 15, +1 cybernetic processing, vs. Security 12) and checkpoint NAI systems to falsify logs (vs. Security 14).  
+        Combat: Uses cyber-augmented strength (ST 14, +2) and speed (Enhanced Move 1) to repel Schettel boarders (Brawling, skill 15, or Wrestling, skill 14, vs. Schettel ST 8). Breaks cargo locks if needed (Forced Entry, skill 14).  
+        Support: Scans for Schettel signals (Computer Operation, skill 14), aiding evasion.
+    Mechanic/Engineer (Ship Maintenance)  
+        Cargo Handling: Conceals enzymes in the cargo bay (Mechanic/Starship/TL10, skill 14, vs. checkpoint Per 13) and verifies their stability on the Verdant Whisper (Electronics Repair (Medical)/TL10, skill 13). Jury-rigs a decoy pod (Engineer/Starship, skill 13) if needed.  
+        Repairs: Fixes ship damage from Rust Fang attacks (Mechanic/Starship, skill 14, -2 for combat conditions, 10-minute time limit). Integrates enzymes at Eden Spiral (Electronics Repair, skill 13).  
+        Technical: Boosts engine output to outrun Rust Fang (Mechanic/Starship, skill 14, -1 for haste).
+    Ms. Betty (NPC, Support)  
+        Analyzes enzyme stability (Pharmacy (Synthetic)/TL10, skill 14), ensuring safe transport. Uses Diplomacy (skill 13) to assist with Sylvara or Kwez, and treats crew injuries from Schettel attacks (Surgery/TL10, skill 16). Her trade database (Merchant, skill 13) values the enzymes at 15,000 credits on the black market, tempting the captain. Glitches (roll 15 or less) may delay treatment, requiring a Computer Programming check (IQ-2).
+
+Optional Complications (For Faster Sessions)
+
+    Aboreal Delay  
+        Sylvara’s pacifism causes a last-minute hesitation, requiring an extra Diplomacy roll (skill 14 vs. Will 13, +20 min) to convince them to release the cargo, as they fear implicating their colony in illegal trade. Failure delays the handoff, giving the Rust Fang time to close in (reduces evasion margin by 2).  
+        Impact: Tests the bio-soldier’s social skills, adding Expanse-like diplomatic stakes and tightening the chase timeline.
+    Rust Fang Sabotage  
+        Zikra’s crew plants a tracking beacon on the Relay Strider during the handoff (+30 min), requiring the cyber-soldier to locate it (Computer Hacking, skill 15 vs. Security 13) and the engineer to remove it (Mechanic/Starship, skill 14, -2 for haste). If undetected, the Rust Fang gains +2 to pursuit rolls.  
+        Impact: Boosts cyber-soldier and engineer roles, adding Firefly-style tech sabotage and chase urgency.
+    Mardat Patrol Escalation  
+        If the checkpoint deception fails, Krell deploys a Mardat corvette to pursue (space chase, +30 min). The pilot must outmaneuver it (Piloting/Starship, skill 15 vs. corvette skill 13), while the engineer boosts engines (Mechanic/Starship, skill 14, -2 for haste). Failure leads to a boarding action (combat).  
+        Impact: Heightens Expanse-like pursuit tension, emphasizing pilot and engineer skills.
+    Kwez’s Double-Deal  
+        Kwez secretly tips off the Rust Fang for a cut of the enzymes, demanding the crew split the cargo (+20 min). The captain must negotiate (Merchant, skill 14 vs. Will 13) or the bio-soldier intimidate (Intimidation, skill 13 vs. Will 13) to avoid her sabotage, else the Rust Fang gains a surprise attack (+2 to their initiative).  
+        Impact: Adds Firefly-style betrayal, testing captain and bio-soldier’s social skills.
+
+Consistency and Integration
+
+    Setting Alignment: The tweaked premise ties to the setting’s post-war trade dynamics, Aboreal pacifism (per the document), Mardat border scrutiny, and Schettel scavenging. Kalvor as a trade hub reflects its role as a Mardat traffic node, while the enzymes’ illegality and Eden Spiral’s needs align with Turquenish biotech reliance. The Firefly smuggling vibe and Expanse political tension are enhanced by the Schettel chase and Aboreal moral complexity.
+    Tweak Integration: The Aboreals’ failed delivery due to pacifism sets up the crew’s role, with the Bazzar fixer (Kwez) and Schettel pursuit adding urgency. The Kalvor handoff and chase replace the original negotiation at Eden Spiral, streamlining the start while maintaining stakes.
+    Character Roles: Each player shines: the captain negotiates and pilots, the bio-soldier handles diplomacy and combat, the cyber-soldier hacks and fights, and the engineer manages cargo and repairs. Ms. Betty supports with medical and trade skills, her Mardat origins drawing scrutiny but not stealing focus.
+    Memory Integration: Drawing on your interest in detailed GURPS 4e scenarios (e.g., Null Collective cells, February 23, 2025), I’ve structured NPCs and locations with clear roles and stats for easy GM use, similar to your request for stat blocks and narrative depth. The smuggling and chase elements echo your Starfield mission tweaks (e.g., April 10, 2025), adapted for GURPS.
+    Pacing: The 4–5 scenes (handoff, pursuit setup, checkpoint, chase/ambush, wrap-up) fit 2–4 hours, with complications adding 15–30 minutes. GURPS mechanics (DX/IQ rolls, opposed checks) ensure quick resolution.
+

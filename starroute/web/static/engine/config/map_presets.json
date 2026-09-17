@@ -7,8 +7,8 @@
   "presets": [
     {
       "id": "crowded",
-      "title": "Crowded neighborhood",
-      "description": "Dense local space. Small stars stay on the map; jumps are short. Humans share the neighborhood with methane-breathers, living crystal, and hot-world gas-giant people.",
+      "title": "Crowded — Turquenish neighborhood",
+      "description": "Dense local space around Sol. Short jumps. Turquenish (bio-edit) and Mardat (chrome) plus tight-knit alien enclaves. Default tabletop slice.",
       "origin": { "origin_hostname": "Sol", "max_distance_ly": 60 },
       "network": {
         "max_jump_ly": 16,
@@ -25,59 +25,138 @@
         "hub_percentile": 0.08,
         "hub_extra_link_ly": 10,
         "human_root": "Sol",
-        "human_root_group": "Human",
-        "multi_route_groups": ["Human", "Kessari", "Methan", "Crystomorphs"],
+        "human_root_group": "Turquenish Empire",
+        "multi_route_groups": ["Turquenish Empire", "Mardat Coalition", "Methan", "Crystomorphs"],
         "species": [
           {
-            "name": "Kessari",
-            "count": 18,
-            "prefix": "KS",
-            "preset": "kessari",
-            "description": "Hot-world, high-pressure people. They prefer sulfur-band climates and Jupiter-like gas giants.",
-            "filters": [{
-              "any": [
-                { "column": "sulfur_ranking", "op": "gt", "value": 0 },
-                { "column": "gas_giant_count", "op": "gt", "value": 0 }
-              ]
-            }],
-            "sort": { "column": "sulfur_ranking", "ascending": false }
-          },
-          {
             "name": "Methan",
-            "count": 16,
+            "count": 10,
             "prefix": "ME",
             "preset": "methan",
-            "description": "Methane-breathers. They live in stations inside or around leftover Jupiter-like gas giants.",
+            "description": "Gas-giant dwellers. They treat orbital industry around their giants as a threat.",
             "filters": [{ "column": "gas_giant_count", "op": "gt", "value": 0 }],
             "sort": { "column": "gas_giant_count", "ascending": false }
           },
           {
             "name": "Crystomorphs",
-            "count": 16,
+            "count": 8,
             "prefix": "CR",
             "preset": "crystomorphs",
-            "description": "Living crystal. They prefer stars far from the celestial equator, away from the thickest traffic.",
+            "description": "Silicon life on high-declination stars, out of the thickest human traffic.",
             "filters": [{ "column": "dec", "op": "abs_gt", "value": 45 }],
             "sort": { "column": "dec", "ascending": false, "key": "abs" }
+          },
+          {
+            "name": "Aboreals",
+            "count": 5,
+            "prefix": "AB",
+            "preset": "aboreals",
+            "description": "Scent-language garden people. Unmatched biotech; nearly pacifist until a line is crossed.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 90 },
+              { "column": "ra", "op": "lt", "value": 180 },
+              { "column": "dec", "op": "lt", "value": 0 }
+            ],
+            "sort": { "column": "carbon_ranking", "ascending": false }
+          },
+          {
+            "name": "Bazzar",
+            "count": 5,
+            "prefix": "BA",
+            "preset": "bazzar",
+            "description": "Hive traders. They handle security and deals for Aboreal goods.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 180 },
+              { "column": "ra", "op": "lt", "value": 270 },
+              { "column": "dec", "op": "lt", "value": 0 }
+            ],
+            "sort": { "column": "carbon_ranking", "ascending": false }
+          },
+          {
+            "name": "Echryon & Echtol",
+            "count": 5,
+            "prefix": "EC",
+            "preset": "echryon",
+            "description": "Related cephalopods — water and land — speaking in shape and color.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 0 },
+              { "column": "ra", "op": "lt", "value": 90 },
+              { "column": "dec", "op": "gt", "value": 0 }
+            ],
+            "sort": { "column": "carbon_ranking", "ascending": false }
+          },
+          {
+            "name": "Schettel",
+            "count": 3,
+            "prefix": "SC",
+            "preset": "schettel",
+            "description": "Scavengers on leftover, low-score systems.",
+            "filters": [{ "column": "combined_score", "op": "lt_quantile", "value": 0.25 }],
+            "sort": { "column": "combined_score", "ascending": true }
           }
         ],
         "nations": [
           {
-            "name": "Human",
-            "count": 80,
-            "prefix": "HU",
-            "preset": "human",
-            "description": "Oxygen-breathing settlers around Sol, especially leftover rocky and carbon-band worlds.",
+            "name": "Turquenish Empire",
+            "count": 22,
+            "prefix": "TU",
+            "preset": "turquenish",
+            "description": "Bio-edit humans. Sol’s local pocket. O’Neill gardens, spas, progeny work.",
+            "filters": [{ "op": "near_host", "host": "Sol", "max_ly": 50 }],
+            "sort": { "column": "combined_score", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+          },
+          {
+            "name": "Mardat Coalition",
+            "count": 18,
+            "prefix": "MA",
+            "preset": "mardat",
+            "description": "Chrome humans. Implants, NAIs, automated docks. The next sky-wedge.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 120 },
+              { "column": "ra", "op": "lt", "value": 240 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "Industrial Hegemony",
+            "count": 6,
+            "prefix": "IN",
+            "preset": "hegemony",
+            "description": "Corporate board over a handful of industrial systems.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 240 },
+              { "column": "ra", "op": "lt", "value": 300 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "League of The Faithful",
+            "count": 2,
+            "prefix": "LE",
+            "preset": "faithful",
+            "description": "Tiny theocracy. Suspicious of spas and integrators.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 300 },
+              { "column": "ra", "op": "lt", "value": 360 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "Other Human",
+            "count": 20,
+            "prefix": "OH",
+            "preset": "other_human",
+            "description": "Independents and leftover colonies that sat out the war — or tried to leave it.",
             "filters": [],
-            "sort": { "column": "carbon_ranking", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+            "sort": { "column": "combined_score", "ascending": false }
           }
         ]
       }
     },
     {
       "id": "sparse",
-      "title": "Sparse neighborhood",
-      "description": "Fewer stars: the smallest red dwarfs are dropped. Jumps run longer so the remaining systems still form one network. Several habitat classes remain.",
+      "title": "Sparse — thin Turquenish grid",
+      "description": "Same Turquenish–Mardat war, fewer small stars, longer jumps. Alien enclaves remain but feel isolated.",
       "origin": { "origin_hostname": "Sol", "max_distance_ly": 60 },
       "network": {
         "max_jump_ly": 28,
@@ -94,51 +173,130 @@
         "hub_percentile": 0.08,
         "hub_extra_link_ly": 14,
         "human_root": "Sol",
-        "human_root_group": "Human",
-        "multi_route_groups": ["Human", "Kessari", "Methan", "Crystomorphs"],
+        "human_root_group": "Turquenish Empire",
+        "multi_route_groups": ["Turquenish Empire", "Mardat Coalition", "Methan", "Crystomorphs"],
         "species": [
           {
-            "name": "Kessari",
-            "count": 12,
-            "prefix": "KS",
-            "preset": "kessari",
-            "description": "Sulfur-band / high-pressure worlds and gas giants.",
-            "filters": [{
-              "any": [
-                { "column": "sulfur_ranking", "op": "gt", "value": 0 },
-                { "column": "gas_giant_count", "op": "gt", "value": 0 }
-              ]
-            }],
-            "sort": { "column": "sulfur_ranking", "ascending": false }
-          },
-          {
             "name": "Methan",
-            "count": 12,
+            "count": 8,
             "prefix": "ME",
             "preset": "methan",
-            "description": "Methane-breathers on leftover gas-giant stations.",
+            "description": "Gas-giant enclaves, farther apart on the thin grid.",
             "filters": [{ "column": "gas_giant_count", "op": "gt", "value": 0 }],
             "sort": { "column": "gas_giant_count", "ascending": false }
           },
           {
             "name": "Crystomorphs",
-            "count": 10,
+            "count": 6,
             "prefix": "CR",
             "preset": "crystomorphs",
-            "description": "Living crystal on high-declination stars.",
+            "description": "Crystal skies on high-declination hosts.",
             "filters": [{ "column": "dec", "op": "abs_gt", "value": 45 }],
             "sort": { "column": "dec", "ascending": false, "key": "abs" }
+          },
+          {
+            "name": "Aboreals",
+            "count": 3,
+            "prefix": "AB",
+            "preset": "aboreals",
+            "description": "Rare garden ports; their Bazzar treaty still holds.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 90 },
+              { "column": "ra", "op": "lt", "value": 180 },
+              { "column": "dec", "op": "lt", "value": 0 }
+            ],
+            "sort": { "column": "carbon_ranking", "ascending": false }
+          },
+          {
+            "name": "Bazzar",
+            "count": 3,
+            "prefix": "BA",
+            "preset": "bazzar",
+            "description": "Hive traders at the remaining garden/trade rocks.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 180 },
+              { "column": "ra", "op": "lt", "value": 270 },
+              { "column": "dec", "op": "lt", "value": 0 }
+            ],
+            "sort": { "column": "carbon_ranking", "ascending": false }
+          },
+          {
+            "name": "Echryon & Echtol",
+            "count": 3,
+            "prefix": "EC",
+            "preset": "echryon",
+            "description": "Cephalopod quarter; fewer linking gates into Turquenish space.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 0 },
+              { "column": "ra", "op": "lt", "value": 90 },
+              { "column": "dec", "op": "gt", "value": 0 }
+            ],
+            "sort": { "column": "carbon_ranking", "ascending": false }
+          },
+          {
+            "name": "Schettel",
+            "count": 2,
+            "prefix": "SC",
+            "preset": "schettel",
+            "description": "Scavengers on neglected, low-score systems.",
+            "filters": [{ "column": "combined_score", "op": "lt_quantile", "value": 0.25 }],
+            "sort": { "column": "combined_score", "ascending": true }
           }
         ],
         "nations": [
           {
-            "name": "Human",
-            "count": 80,
-            "prefix": "HU",
-            "preset": "human",
-            "description": "Oxygen-breathing settlers around Sol.",
+            "name": "Turquenish Empire",
+            "count": 28,
+            "prefix": "TU",
+            "preset": "turquenish",
+            "description": "Bio-edit humans. Sol’s remaining larger hosts on the thin grid.",
+            "filters": [{ "op": "near_host", "host": "Sol", "max_ly": 55 }],
+            "sort": { "column": "combined_score", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+          },
+          {
+            "name": "Mardat Coalition",
+            "count": 22,
+            "prefix": "MA",
+            "preset": "mardat",
+            "description": "Chrome humans. Longer hops between automated bases.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 120 },
+              { "column": "ra", "op": "lt", "value": 240 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "Industrial Hegemony",
+            "count": 6,
+            "prefix": "IN",
+            "preset": "hegemony",
+            "description": "Corporate slice. Likes the thinner garden-world count.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 240 },
+              { "column": "ra", "op": "lt", "value": 300 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "League of The Faithful",
+            "count": 2,
+            "prefix": "LE",
+            "preset": "faithful",
+            "description": "Tiny theocracy, farther from both spas and integrators.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 300 },
+              { "column": "ra", "op": "lt", "value": 360 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "Other Human",
+            "count": 24,
+            "prefix": "OH",
+            "preset": "other_human",
+            "description": "Independents filling the gaps the little red-dwarf hamlets used to fill.",
             "filters": [],
-            "sort": { "column": "carbon_ranking", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+            "sort": { "column": "combined_score", "ascending": false }
           }
         ]
       }
@@ -146,7 +304,7 @@
     {
       "id": "lonely_humans",
       "title": "Lonely humans",
-      "description": "Sun-like stars only (about 0.66–1.5 solar masses). Longer jumps keep one thin network. Only oxygen-breathing humans; no alien cultures.",
+      "description": "Sun-like stars only. No local aliens. Turquenish, Mardat, Hegemony, Faithful, and independents still feud and expand.",
       "origin": { "origin_hostname": "Sol", "max_distance_ly": 60 },
       "network": {
         "max_jump_ly": 36,
@@ -164,18 +322,63 @@
         "hub_percentile": 0.1,
         "hub_extra_link_ly": 16,
         "human_root": "Sol",
-        "human_root_group": "Human",
-        "multi_route_groups": ["Human"],
+        "human_root_group": "Turquenish Empire",
+        "multi_route_groups": ["Turquenish Empire", "Mardat Coalition"],
         "species": [],
         "nations": [
           {
-            "name": "Human",
-            "count": 80,
-            "prefix": "HU",
-            "preset": "human",
-            "description": "The only people in this pack. They settle leftover systems around Sol in the oxygen / Sun-like mass band.",
+            "name": "Turquenish Empire",
+            "count": 20,
+            "prefix": "TU",
+            "preset": "turquenish",
+            "description": "Bio-edit humans. Sol’s pocket. No Aboreal neighbors to dilute their genetic edge.",
+            "filters": [{ "op": "near_host", "host": "Sol", "max_ly": 55 }],
+            "sort": { "column": "combined_score", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+          },
+          {
+            "name": "Mardat Coalition",
+            "count": 16,
+            "prefix": "MA",
+            "preset": "mardat",
+            "description": "Chrome humans. The culture war has nowhere to leak.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 120 },
+              { "column": "ra", "op": "lt", "value": 240 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "Industrial Hegemony",
+            "count": 6,
+            "prefix": "IN",
+            "preset": "hegemony",
+            "description": "Corporate board buying quiet Sun-like hosts.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 240 },
+              { "column": "ra", "op": "lt", "value": 300 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "League of The Faithful",
+            "count": 2,
+            "prefix": "LE",
+            "preset": "faithful",
+            "description": "Tiny theocracy. Rejects spas and integrators.",
+            "filters": [
+              { "column": "ra", "op": "gt", "value": 300 },
+              { "column": "ra", "op": "lt", "value": 360 }
+            ],
+            "sort": { "column": "combined_score", "ascending": false }
+          },
+          {
+            "name": "Other Human",
+            "count": 20,
+            "prefix": "OH",
+            "preset": "other_human",
+            "description": "Independents on the actual frontier — no alien enclaves to hide among.",
             "filters": [],
-            "sort": { "column": "carbon_ranking", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+            "sort": { "column": "combined_score", "ascending": false }
           }
         ]
       }

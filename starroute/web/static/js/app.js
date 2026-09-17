@@ -77,18 +77,18 @@ let presetLoadToken = 0;
 const MAP_PRESETS = [
   {
     id: "crowded",
-    title: "Crowded neighborhood",
-    description: "Dense local space. Small stars stay on the map; jumps are short. Humans share the neighborhood with methane-breathers, living crystal, and hot-world gas-giant people.",
+    title: "Crowded — Turquenish neighborhood",
+    description: "Dense local space around Sol. Short jumps. Turquenish (bio-edit) and Mardat (chrome) plus tight-knit alien enclaves. Default tabletop slice.",
   },
   {
     id: "sparse",
-    title: "Sparse neighborhood",
-    description: "Fewer stars: the smallest red dwarfs are dropped. Jumps run longer so the remaining systems still form one network. Several habitat classes remain.",
+    title: "Sparse — thin Turquenish grid",
+    description: "Same Turquenish–Mardat war, fewer small stars, longer jumps. Alien enclaves remain but feel isolated.",
   },
   {
     id: "lonely_humans",
     title: "Lonely humans",
-    description: "Sun-like stars only (about 0.66–1.5 solar masses). Longer jumps keep one thin network. Only oxygen-breathing humans; no alien cultures.",
+    description: "Sun-like stars only. No local aliens. Turquenish, Mardat, Hegemony, Faithful, and independents still feud and expand.",
   },
 ];
 

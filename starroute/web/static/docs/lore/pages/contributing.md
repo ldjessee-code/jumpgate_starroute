@@ -5,11 +5,18 @@ order: 90
 
 # How to contribute
 
-This vault is flat files. No accounts, no in-browser editor.
+Flat files. No accounts, no in-browser editor.
 
-## Add lore
+## Which pack?
 
-1. Add a Markdown file under `setting/` (subfolders are allowed).
+Put Turquenish-neighborhood text under `setting/crowded/`. Thin-grid
+variants under `setting/sparse/`. Human-only expansion under
+`setting/lonely_humans/`. Shareable tabletop notes (no char sheets) go in
+`setting/source/` as `.txt` if they should stay out of the wiki index.
+
+## Add a page
+
+1. Create `setting/.../your-topic.md`.
 2. Optional front matter:
 
    ```markdown
@@ -19,24 +26,13 @@ This vault is flat files. No accounts, no in-browser editor.
    ---
    ```
 
-3. Rebuild the static index (no NASA data required):
+3. Rebuild:
 
    ```bash
    python -m starroute build-lore
    ```
 
-4. Commit **both** the new `.md` and the generated copies under
-   `starroute/web/static/docs/lore/`.
+4. Commit the new `.md` **and** `starroute/web/static/docs/lore/`.
 
-The public GitHub Pages site only publishes `starroute/web/static/`. The
-builder copies vault pages there so visitors can read them without cloning
-the repo.
-
-## Style
-
-- Keep pages short. Link instead of repeating the map docs.
-- Catalog spellings (`tau Cet`, not “Tau Ceti”) match the map.
-- Do not add Wiki.js, Docker wikis, or Obsidian as a runtime.
-
-More detail: `docs/lore.html` on the static site, or `setting/README.md` in
-the repo.
+If you change who lives on the map, edit `config/map_presets.json` and run
+`python -m starroute build-presets` as well.

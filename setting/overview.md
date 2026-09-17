@@ -1,33 +1,22 @@
 ---
-title: Overview
-order: 10
+title: Three neighborhoods
+order: 1
 ---
 
-# Overview
+# Three neighborhoods
 
-Jumpgate Starroute is a **local-space** setting: a few dozen to a hundred
-systems around Sol, linked by jump routes or star-gates. The maps in this
-repo are the geography. These pages are the thin layer of story on top.
+This vault is the **Turquenish–Mardat** setting, cut three ways to match the
+map packs in the toolbar. Same sky catalog. Different who-lives-here and how
+far a jump is.
 
-Nothing here invents stars. If a system appears on the map, it is a real
-catalog host (plus Sol, which NASA skips). Cultures are a GM paint layer:
-who prefers which worlds, not a claim about actual exoplanet life.
+| Pack | Map id | What it is |
+| --- | --- | --- |
+| [Crowded — Turquenish neighborhood](crowded/overview.md) | `crowded` | Dense local space. Short jumps. Humans **and** local aliens. Default tabletop. |
+| [Sparse — thin Turquenish grid](sparse/overview.md) | `sparse` | Same war, fewer small stars, longer hops. Alien enclaves feel isolated. |
+| [Lonely humans](lonely_humans/overview.md) | `lonely_humans` | Sun-like stars only. No local aliens. Human factions still feud and expand. |
 
-## What ships with the map
+The tabletop notes (GURPS campaign text you can share) sit in
+`setting/source/`. Player character sheets and ship art stay in Dropbox.
 
-Three static packs describe different neighborhoods of the same sky:
-
-- **Crowded** — small stars stay on the map; jumps are short; humans share
-  space with methane-breathers, living crystal, and hot-world people.
-- **Sparse** — the tiniest red dwarfs drop out; jumps run longer so the
-  remaining stars still form one network.
-- **Lonely humans** — Sun-like stars only. A thinner web. No alien cultures.
-
-Switch packs in the map toolbar. These lore pages stay the same; only which
-stars are “on stage” changes.
-
-## How to read this vault
-
-Start with [Systems](systems.md) for the sky, [Cultures](cultures.md) for
-who lives where, and [History](history.md) for a short timeline. To add a
-page, see [How to contribute](contributing.md).
+Switch packs on the map. These pages stay; only which stars are “on stage”
+changes.

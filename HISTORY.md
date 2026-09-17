@@ -15,6 +15,11 @@ The 444 MB Python 3.9 `env/` from that era was not copied.
 `docs/lore/` (Markdown rendered in the browser). Rebuild the index with
 `python -m starroute build-lore` — stdlib only; NASA CSVs are irrelevant.
 
+Three pack write-ups match the map toolbar: **crowded** is the Turquenish
+neighborhood (bio-edit Empire vs chrome Coalition, local aliens);
+**sparse** is the same war on a thinner gate grid; **lonely_humans** is
+human factions only. Tabletop notes (text only) live in `setting/source/`.
+
 ---
 
 ## Unreleased — static map presets

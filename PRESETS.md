@@ -28,9 +28,9 @@ Packs are written to `data/presets/{id}/map.json` and copied to
   sample is **63 / 148** catalog stars (42.6%). The knobs below still meet 75%
   under pack assignment rules.
 
-## `crowded` — Crowded neighborhood
+## `crowded` — Crowded — Turquenish neighborhood
 
-Dense local space. Small stars stay on the map; jumps are short. Humans share the neighborhood with methane-breathers, living crystal, and hot-world gas-giant people.
+Dense local space around Sol. Short jumps. Turquenish (bio-edit) and Mardat (chrome) plus tight-knit alien enclaves. Default tabletop slice.
 
 - Catalog source: **sample**
 - Knobs: min/max stellar mass 0.25 M☉; max jump **16 ly**;
@@ -39,12 +39,12 @@ Dense local space. Small stars stay on the map; jumps are short. Humans share th
 - Snapshot nodes: **90** (205 jump edges).
 - Linked / largest component: **90** / **90**.
 - Habitable by someone (linked, pack rules): **90** (100.0%).
-- Cultures on the grid: Human 41, Kessari 17, Crystomorphs 16, Methan 16.
+- Cultures on the grid: Turquenish Empire 23, Mardat Coalition 18, Other Human 11, Methan 9, Crystomorphs 8, Industrial Hegemony 6, Aboreals 5, Bazzar 5, Echryon & Echtol 4, League of The Faithful 1.
 - NASA habitat flags on linked systems: carbon-zone 7, sulfur-zone 15, gas-giant 36 (any of those: 36).
 
-## `sparse` — Sparse neighborhood
+## `sparse` — Sparse — thin Turquenish grid
 
-Fewer stars: the smallest red dwarfs are dropped. Jumps run longer so the remaining systems still form one network. Several habitat classes remain.
+Same Turquenish–Mardat war, fewer small stars, longer jumps. Alien enclaves remain but feel isolated.
 
 - Catalog source: **sample**
 - Knobs: min/max stellar mass 0.37 M☉; max jump **28 ly**;
@@ -53,12 +53,12 @@ Fewer stars: the smallest red dwarfs are dropped. Jumps run longer so the remain
 - Snapshot nodes: **98** (242 jump edges).
 - Linked / largest component: **98** / **98**.
 - Habitable by someone (linked, pack rules): **98** (100.0%).
-- Cultures on the grid: Human 65, Methan 12, Kessari 11, Crystomorphs 10.
+- Cultures on the grid: Turquenish Empire 29, Other Human 24, Mardat Coalition 15, Methan 7, Crystomorphs 6, Industrial Hegemony 6, Aboreals 3, Bazzar 3, Echryon & Echtol 3, League of The Faithful 2.
 - NASA habitat flags on linked systems: carbon-zone 8, sulfur-zone 21, gas-giant 48 (any of those: 48).
 
 ## `lonely_humans` — Lonely humans
 
-Sun-like stars only (about 0.66–1.5 solar masses). Longer jumps keep one thin network. Only oxygen-breathing humans; no alien cultures.
+Sun-like stars only. No local aliens. Turquenish, Mardat, Hegemony, Faithful, and independents still feud and expand.
 
 - Catalog source: **sample**
 - Knobs: min/max stellar mass 0.66–1.5 M☉; max jump **36 ly**;
@@ -67,5 +67,5 @@ Sun-like stars only (about 0.66–1.5 solar masses). Longer jumps keep one thin 
 - Snapshot nodes: **58** (149 jump edges).
 - Linked / largest component: **58** / **58**.
 - Habitable by someone (linked, pack rules): **58** (100.0%).
-- Cultures on the grid: Human 58.
+- Cultures on the grid: Turquenish Empire 21, Other Human 18, Mardat Coalition 11, Industrial Hegemony 6, League of The Faithful 2.
 - NASA habitat flags on linked systems: carbon-zone 5, sulfur-zone 17, gas-giant 36 (any of those: 36).

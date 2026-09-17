@@ -178,15 +178,10 @@ def assign_factions(
             continue
         _claim(work, spec, species=spec["name"], nation="")
 
-    remaining = work.loc[~work["assigned"]].copy()
     for spec in cfg.get("nations", []):
         if not spec.get("name") or int(spec.get("count") or 0) <= 0:
             continue
-        claimed = _claim(remaining, spec, species="Human", nation=spec["name"])
-        work.loc[claimed.index, "assigned"] = True
-        work.loc[claimed.index, "Species"] = "Human"
-        work.loc[claimed.index, "Nation"] = spec["name"]
-        remaining = remaining.drop(claimed.index)
+        _claim(work, spec, species="Human", nation=spec["name"])
 
     root = cfg.get("human_root", "Sol")
     root_group = cfg.get("human_root_group", "Turquenish Empire")
@@ -228,9 +223,8 @@ def preview_faction_matches(df: pd.DataFrame, config: dict[str, Any]) -> list[di
     groups = [(spec, spec["name"], "") for spec in config.get("species", [])]
     groups += [(spec, "Human", spec["name"]) for spec in config.get("nations", [])]
     for spec, species, nation in groups:
-        available = work.loc[~work["assigned"]]
-        mask = _mask_from_filters(available, spec.get("filters"))
-        matching = int(mask.sum())
+        full_mask = _mask_from_filters(work, spec.get("filters"))
+        matching = int((full_mask & ~work["assigned"]).sum())
         claimed = _claim(work, spec, species=species, nation=nation)
         results.append(
             {
@@ -246,7 +240,8 @@ def preview_faction_matches(df: pd.DataFrame, config: dict[str, Any]) -> list[di
 
 def _claim(df: pd.DataFrame, spec: dict, species: str, nation: str) -> pd.DataFrame:
     available = df.loc[~df["assigned"]]
-    mask = _mask_from_filters(available, spec.get("filters"))
+    full_mask = _mask_from_filters(df, spec.get("filters"))
+    mask = full_mask.reindex(available.index).fillna(False)
     candidates = _sort_candidates(available.loc[mask], spec)
     take = candidates.head(int(spec.get("count", 0)))
     df.loc[take.index, "Species"] = species
