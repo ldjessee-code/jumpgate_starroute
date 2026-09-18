@@ -23,6 +23,7 @@
 
   function currentMatch() {
     const p = path();
+    if (/\/docs\/help\.html$/.test(p)) return "docs-index";
     if (/\/docs\/lore(\/|$)/.test(p) || /\/docs\/lore\.html$/.test(p)) return "lore";
     if (/\/app\.html$/.test(p)) return "map";
     if (/\/docs\/deploy\.html$/.test(p)) return "deploy";
@@ -47,8 +48,25 @@
     }).join("");
   }
 
+  function addHelpButton(nav) {
+    if (document.getElementById("btn-context-help")) return;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = "btn-context-help";
+    btn.className = "help-mode-btn";
+    btn.setAttribute("aria-pressed", "false");
+    btn.setAttribute("aria-label", "Context help. Click, then click something on the page.");
+    btn.title = "Click, then click a control, the map, or a heading";
+    btn.setAttribute("data-help", "contextHelp");
+    btn.textContent = "?";
+    nav.insertAdjacentElement("afterend", btn);
+  }
+
   function boot() {
-    document.querySelectorAll("[data-site-nav]").forEach(fill);
+    document.querySelectorAll("[data-site-nav]").forEach((nav) => {
+      fill(nav);
+      addHelpButton(nav);
+    });
   }
 
   if (document.readyState === "loading") {

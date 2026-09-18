@@ -4,6 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Home · Jumpgate Starroute</title>
+<link rel="stylesheet" href="css/help.css"/>
 <style>:root {
   --bg: #0b1020;
   --panel: #141b2f;
@@ -67,15 +68,15 @@ th { background: #0a0e1a; }
 <body>
 <header>
   <strong>Jumpgate Starroute</strong>
-  <nav data-site-nav aria-label="Site" style="margin-top:0.55rem"></nav>
+  <nav data-site-nav data-help="siteNav" aria-label="Site" style="margin-top:0.55rem"></nav>
 </header>
-<main>
+<main data-help="pagesSite">
 
 <h1>Jumpgate Starroute</h1>
 <p>Sol-centered jump network maps for GMs and writers, built from real star catalog data. This GitHub Pages site is the <strong>static</strong> half of the project: open the map, switch packs, read the docs. No Python install required for visitors.</p>
 <div class="grid two">
   <div class="card">
-    <h2 style="margin-top:0;border:0;padding:0">Try the map</h2>
+    <h2 style="margin-top:0;border:0;padding:0" data-help="mapPreset">Try the map</h2>
     <p>Three pre-built neighborhood packs ship as JSON network snapshots (not 3D models).</p>
     <p><a href="app.html"><strong>Open the map viewer →</strong></a></p>
   </div>
@@ -85,7 +86,7 @@ th { background: #0a0e1a; }
       <li><a href="docs/deploy.html">Two deploy strategies</a> (static host vs builder)</li>
       <li><a href="docs/run-local.html">Run locally</a> on Windows, Mac, Linux (+ browsers)</li>
       <li><a href="docs/presets.html">Preset packs</a> (crowded / sparse / lonely_humans)</li>
-      <li><a href="docs/lore/index.html">Lore vault</a> (static Markdown wiki)</li>
+      <li><a href="docs/lore/index.html" data-help="lorePackSelect">Lore vault</a> (follows the map pack)</li>
     </ul>
   </div>
 </div>
@@ -100,5 +101,7 @@ th { background: #0a0e1a; }
   <p>MIT licensed. Docs describe <em>what</em> to host and run, not click-paths through vendor dashboards that change often.</p>
 </footer>
 <script src="js/site-nav.js"></script>
+<script src="js/glossary.js"></script>
+<script src="js/help.js"></script>
 </body>
 </html>

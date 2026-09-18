@@ -4,6 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Run locally · Jumpgate Starroute</title>
+<link rel="stylesheet" href="../css/help.css"/>
 <style>:root {
   --bg: #0b1020;
   --panel: #141b2f;
@@ -135,7 +136,8 @@ python -m starroute build-presets</pre>
 <ul class="compact">
   <li><code>/presets/index.json</code> returns JSON listing crowded / sparse / lonely_humans.</li>
   <li><code>/app.html</code> shows a preset control in the map UI.</li>
-  <li><code>/docs/lore/</code> lists stub setting pages and renders Markdown.</li>
+  <li><code>/docs/lore/</code> lists pages for the current map pack; Add/Edit works in the browser.</li>
+  <li>Header <code>?</code> enters help mode; click the map or a control for a popup.</li>
   <li>Browser developer tools → Network shows the chosen <code>presets/&lt;id&gt;/map.json</code> loading with status 200.</li>
 </ul>
 
@@ -144,5 +146,7 @@ python -m starroute build-presets</pre>
   <p>MIT licensed. Docs describe <em>what</em> to host and run, not click-paths through vendor dashboards that change often.</p>
 </footer>
 <script src="../js/site-nav.js"></script>
+<script src="../js/glossary.js"></script>
+<script src="../js/help.js"></script>
 </body>
 </html>

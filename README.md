@@ -16,48 +16,46 @@ increment the version number there and here.
 
 ## Current state (v2.0)
 
-Browser engine on git branch `wasm-pyodide` (see [WASM.md](WASM.md)): the
-same Python mapgen runs in the page via Pyodide. Not merged to `main` until
-you like it.
+Public site (no Python): **https://ldjessee-code.github.io/jumpgate_starroute/**
 
-Opens on a **ready-made 3D map**. Three **static map packs** ship as JSON
-network snapshots (not 3D models). Pick **Crowded**, **Sparse**, or **Lonely
-humans** in the map toolbar — the page loads that pack from files next to the
-viewer. No live Python server is required to look around or switch packs.
+Three **static map packs** ship as JSON network snapshots (not 3D models):
 
-Settings hide in a side drawer so the map can fill the window. Counts,
-habitability, and the knobs used for each pack are in [PRESETS.md](PRESETS.md).
+- **Crowded** — Turquenish neighborhood (short jumps, bio vs chrome, local aliens)
+- **Sparse** — same war on a thinner gate grid
+- **Lonely humans** — Sun-like stars only; human factions, no local aliens
 
-Rotate, zoom, highlight a culture, and trace a jump path in the browser.
-**Generate new map** (Settings) rebuilds from the same shipped star list with
-new jump settings, in the browser. Same viewer, same snapshot JSON.
+Switch packs in the map toolbar. Lore follows the pack you last picked.
+Settings sit in a side drawer. **Generate new map** rebuilds from the shipped
+star list in the browser (Pyodide). NASA ingest is still grayed out.
 
-**Choose the stars** (NASA CSV ingest) is last and grayed out in this
-release. Hosting a processed table comes later.
+**Context help:** click the **?** next to the site links (or press `?`), then
+click a control, the map, the legend, or a lore panel. That is HTML/CSS/JS
+only. See [docs/help.html](starroute/web/static/docs/help.html).
 
-This release is **v2.0**. See [HISTORY.md](HISTORY.md).
+Counts and knobs: [PRESETS.md](PRESETS.md). How we got here: [HISTORY.md](HISTORY.md).
 
 ## Open the map (no install)
 
-Python is optional for viewers. Need a web connection once (Plotly). Then
-open:
+Hosted: https://ldjessee-code.github.io/jumpgate_starroute/app.html
 
-`starroute/web/static/app.html`
+Or locally (do not use raw `file://` — fetches get blocked):
 
-or `preview/index.html`
+```bash
+cd starroute/web/static
+python -m http.server 8765
+```
 
-GitHub Pages / Cloudflare Pages can host the repo (or just
-`starroute/web/static/`). The preset picker fetches
-`presets/{crowded,sparse,lonely_humans}/map.json` next to `app.html`.
+Then http://127.0.0.1:8765/
 
-If you open the HTML as a local `file://` page and the browser blocks JSON
-fetch, the picker falls back to `presets/{id}/map.js`. The crowded pack also
-boots from `default-map.js`.
+The preset picker loads `presets/{crowded,sparse,lonely_humans}/map.json`.
+If JSON fetch fails, it falls back to `map.js`. Crowded also boots from
+`default-map.js`.
 
-Setting notes live in [`setting/`](setting/) as ordinary Markdown. The static
-wiki is `starroute/web/static/docs/lore/` (search titles, render pages in the
-browser). After adding a `.md` file, run `python -m starroute build-lore`.
-See `starroute/web/static/docs/lore.html`.
+**Lore:** [`setting/`](setting/) is the Markdown vault. The viewer is
+`docs/lore/` and lists only the current pack. Add/Edit in the browser saves a
+copy in that browser (`setting/custom/{pack}/` is the git folder so your files
+stay separate). Rebuild the committed index with `python -m starroute build-lore`.
+Details: `starroute/web/static/docs/lore.html`.
 
 ## Setup (only to rebuild your own map)
 
@@ -113,7 +111,7 @@ config/               default network, faction, and map-preset JSON
 data/raw/             NASA snapshots (local, not committed)
 data/processed/       systems.csv, sol_network.csv, route_table.csv
 data/presets/         crowded / sparse / lonely_humans JSON packs
-setting/              flat Markdown lore vault (static wiki on Pages)
+setting/              lore vault (crowded / sparse / lonely_humans / custom)
 ```
 
 Faction names, counts, prefixes, and filters live in `config/factions.json`.

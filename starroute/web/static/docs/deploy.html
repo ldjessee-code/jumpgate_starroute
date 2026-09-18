@@ -4,6 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Deploy · Jumpgate Starroute</title>
+<link rel="stylesheet" href="../css/help.css"/>
 <style>:root {
   --bg: #0b1020;
   --panel: #141b2f;
@@ -85,7 +86,7 @@ th { background: #0a0e1a; }
   <li>Prefer a <strong>GitHub Actions</strong> workflow in the repo (see <code>.github/workflows/pages.yml</code>) that uploads <code>starroute/web/static/</code>.</li>
   <li>In the repository’s Pages settings, set the source to <strong>GitHub Actions</strong> (wording may vary; the durable idea is “deploy from the workflow,” not “deploy a branch folder by hand”).</li>
   <li>After the workflow runs, the site is usually at <code>https://&lt;owner&gt;.github.io/jumpgate_starroute/</code>.</li>
-  <li>Useful paths: <code>/</code> (home), <code>/app.html</code> (map), <code>/docs/</code> (these pages), <code>/docs/lore/</code> (setting wiki).</li>
+  <li>Useful paths: <code>/</code> (home), <code>/app.html</code> (map), <code>/docs/</code>, <code>/docs/lore/</code> (wiki for the selected pack), <code>/docs/help.html</code> (click-? then click a control).</li>
 </ul>
 
 <h3>Cloudflare Pages (optional mirror)</h3>
@@ -117,5 +118,7 @@ th { background: #0a0e1a; }
   <p>MIT licensed. Docs describe <em>what</em> to host and run, not click-paths through vendor dashboards that change often.</p>
 </footer>
 <script src="../js/site-nav.js"></script>
+<script src="../js/glossary.js"></script>
+<script src="../js/help.js"></script>
 </body>
 </html>
