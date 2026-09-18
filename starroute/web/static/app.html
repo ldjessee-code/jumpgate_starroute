@@ -32,8 +32,10 @@
     </div>
     <nav class="tabs" role="tablist">
       <button class="tab is-active" data-screen="map" type="button">Map</button>
-      <button class="tab backend-only" data-screen="factions" type="button">Who lives where</button>
-      <button class="tab is-disabled" data-screen="ingest" type="button" disabled aria-disabled="true" title="NASA catalog ingest comes later. v2.0 generates maps from the shipped star list.">Choose the stars <span class="tab-later">later</span></button>
+      <span class="later-tabs" data-help="laterTabs">
+        <button class="tab backend-only is-disabled" data-screen="factions" type="button" aria-disabled="true" data-help="laterFactions">Who lives where <span class="tab-later">self-host</span></button>
+        <button class="tab is-disabled" data-screen="ingest" type="button" aria-disabled="true" data-help="laterStars">Choose the stars <span class="tab-later">self-host</span></button>
+      </span>
     </nav>
   </header>
 
