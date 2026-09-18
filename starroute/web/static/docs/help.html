@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Context help · Jumpgate Starroute</title>
+<link rel="stylesheet" href="../css/help.css"/>
+<style>:root {
+  --bg: #0b1020;
+  --panel: #141b2f;
+  --ink: #e8eefc;
+  --muted: #a9b4d0;
+  --accent: #7eb6ff;
+  --line: #2a3555;
+  --ok: #8fd39a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); }
+header, footer {
+  border-bottom: 1px solid var(--line);
+  padding: 1rem 1.25rem;
+  background: #0a0e1a;
+}
+footer { border-bottom: 0; border-top: 1px solid var(--line); margin-top: 3rem; color: var(--muted); font-size: 0.92rem; }
+nav a { margin-right: 1rem; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+main { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.85rem; margin-top: 0; }
+h2 { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin: 1rem 0;
+}
+code, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+code { background: #0a0e1a; padding: 0.1em 0.35em; border-radius: 4px; }
+.note { color: var(--muted); }
+.ok { color: var(--ok); }
+ul.compact li { margin: 0.35rem 0; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Jumpgate Starroute</strong>
+  <nav data-site-nav aria-label="Site" style="margin-top:0.55rem"></nav>
+</header>
+<main data-help="contextHelp">
+
+<h1>Context help</h1>
+<p>Yes — this is only HTML, CSS, and JavaScript. No extra library.</p>
+<div class="card">
+  <ol>
+    <li>Click the round <strong>?</strong> next to the site links (or press <kbd>?</kbd>).</li>
+    <li>Click a control, heading, the 3D map, the legend, a lore panel, or a settings field.</li>
+    <li>A card pops up next to the click. Gold dashed outlines show what has a write-up.</li>
+    <li>Press <kbd>Esc</kbd> or click <strong>?</strong> again to leave help mode.</li>
+  </ol>
+  <p class="note">The small <strong>?</strong> beside a label still works without turning inspect mode on. <strong>Terms &amp; help</strong> on the map opens the full glossary.</p>
+</div>
+
+<h2>What can be tagged</h2>
+<p>Anything with <code>data-help="termId"</code> or <code>data-term="termId"</code>. The text lives in <code>js/glossary.js</code> (MIT, in this repo).</p>
+<ul class="compact">
+  <li>Map pack, path From/To, culture highlight, the plot, the legend, Settings, Generate new map</li>
+  <li>Lore pack dropdown, page list, article, Add/Edit, Load/Export</li>
+  <li>Home and docs sections</li>
+</ul>
+
+<h2>If nothing happens</h2>
+<p>Hard-refresh (Ctrl+F5). Help mode only talks about outlined items. Clicking empty page chrome shows a “nothing tagged here” card instead of failing silently.</p>
+
+</main>
+<footer>
+  <p>MIT licensed. Docs describe folders and commands, not vendor dashboard click-paths.</p>
+</footer>
+<script src="../js/site-nav.js"></script>
+<script src="../js/glossary.js"></script>
+<script src="../js/help.js"></script>
+</body>
+</html>

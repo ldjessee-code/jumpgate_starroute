@@ -1,4 +1,8 @@
-# v2.0 browser engine (branch `wasm-pyodide`)
+# v2.0 browser engine
+
+The hosted site is https://ldjessee-code.github.io/jumpgate_starroute/ .
+**Generate new map** still runs this Pyodide path in the tab. NASA ingest is
+not on that path.
 
 ## This release
 

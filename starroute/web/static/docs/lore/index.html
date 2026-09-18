@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Lore · Jumpgate Starroute</title>
 <link rel="stylesheet" href="../_style.css"/>
+<link rel="stylesheet" href="../../css/help.css"/>
 <link rel="stylesheet" href="lore.css"/>
 </head>
 <body class="lore-app">
@@ -14,30 +15,30 @@
 </header>
 <main class="lore-shell">
   <div class="lore-toolbar">
-    <label>
+    <label data-help="lorePackSelect">
       Map pack
       <select id="lore-pack"></select>
     </label>
     <p id="lore-pack-note" class="note"></p>
   </div>
   <div class="lore-layout">
-    <aside class="lore-sidebar">
+    <aside class="lore-sidebar" data-help="loreSidebar">
       <h2>Pages</h2>
       <label class="note" for="lore-search">Search titles</label>
       <input id="lore-search" type="search" placeholder="Overview, cultures…" autocomplete="off"/>
       <ul id="lore-list"></ul>
       <div class="lore-side-actions">
-        <button id="btn-lore-new" class="btn" type="button">Add a page</button>
-        <button id="btn-lore-edit" class="btn" type="button">Edit page</button>
-        <label class="btn file-btn">Load files
+        <button id="btn-lore-new" class="btn" type="button" data-help="loreEditor">Add a page</button>
+        <button id="btn-lore-edit" class="btn" type="button" data-help="loreEditor">Edit page</button>
+        <label class="btn file-btn" data-help="loreLoad">Load files
           <input id="lore-import" type="file" accept=".md,.markdown,.json,text/markdown,application/json" multiple />
         </label>
-        <button id="btn-lore-export" class="btn" type="button">Export yours</button>
+        <button id="btn-lore-export" class="btn" type="button" data-help="loreLoad">Export yours</button>
       </div>
       <p class="note tiny">Shipped pages stay in <code>setting/</code>. Your pages live in this browser (and optionally <code>setting/custom/</code> in the repo).</p>
     </aside>
     <div class="lore-main">
-      <article id="lore-article" class="lore-article">
+      <article id="lore-article" class="lore-article" data-help="loreArticle">
         <p class="lore-status">Loading pages…</p>
       </article>
       <p id="lore-status" class="lore-status"></p>
@@ -72,6 +73,8 @@
 </div>
 
 <script src="../../js/site-nav.js"></script>
+<script src="../../js/glossary.js"></script>
+<script src="../../js/help.js"></script>
 <script src="index.js"></script>
 <script src="marked.min.js"></script>
 <script src="lore.js"></script>

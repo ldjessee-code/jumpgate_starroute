@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jumpgate Starroute</title>
   <link rel="stylesheet" href="css/app.css" />
+  <link rel="stylesheet" href="css/help.css" />
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 </head>
 <body class="map-first map-tab">
@@ -12,13 +13,13 @@
     <div class="masthead-top">
       <div class="masthead-copy">
         <p class="eyebrow">v2.0 · GM / author tool</p>
-        <nav class="site-nav" data-site-nav aria-label="Site"></nav>
+        <nav class="site-nav" data-site-nav data-help="siteNav" aria-label="Site"></nav>
         <h1>Jumpgate Starroute</h1>
         <p class="lede" id="map-lede">A 60 ly map around Sol. Pick a pre-generated pack, or change jump settings in the side panel.</p>
       </div>
       <div class="header-actions">
-        <button id="btn-drawer" class="btn header-help" type="button" aria-expanded="false">Settings</button>
-        <button id="btn-glossary" class="btn header-help" type="button">Terms &amp; help</button>
+        <button id="btn-drawer" class="btn header-help" type="button" aria-expanded="false" data-help="settingsDrawer">Settings</button>
+        <button id="btn-glossary" class="btn header-help" type="button" data-help="howItWorks">Terms &amp; help</button>
       </div>
     </div>
     <nav class="tabs" role="tablist">
@@ -136,7 +137,7 @@
 
     <section id="screen-map" class="screen is-active">
       <div class="map-layout" id="map-layout">
-        <aside class="card controls" id="settings-drawer">
+        <aside class="card controls" id="settings-drawer" data-help="settingsDrawer">
           <p class="tab-intro sidebar-intro">Three static map packs ship with this page. Switching packs loads JSON from <code>presets/</code> — no Python server. Change jump settings and generate a new map from the shipped star list if you want a variant. NASA catalog ingest is a later step.</p>
           <h2>Route settings</h2>
           <label>
@@ -195,7 +196,7 @@
             <button id="btn-reset-map" class="btn" type="button">Reset this tab</button>
           </div>
           <div class="row-actions">
-            <button id="btn-wasm-rebuild" class="btn primary" type="button">Generate new map</button>
+            <button id="btn-wasm-rebuild" class="btn primary" type="button" data-help="wasmRebuild">Generate new map</button>
             <span class="field-help">Uses the shipped star list (not a fresh NASA download). First click loads Python-in-WASM (slow once). After that, changing jump length or percents and generating again is local.</span>
           </div>
           <p id="wasm-status" class="field-help" aria-live="polite"></p>
@@ -213,7 +214,7 @@
 
         <article class="card map-card">
           <div class="map-toolbar">
-            <label>
+            <label data-help="mapPreset">
               <span class="label-row">Map pack <button type="button" class="info" data-term="mapPreset" aria-label="About map packs">?</button></span>
               <select id="map-preset">
                 <option value="crowded">Crowded — Turquenish neighborhood</option>
@@ -234,15 +235,15 @@
                 <option value="all">Everyone (full color)</option>
               </select>
             </label>
-            <label class="check">
+            <label class="check" data-help="colorByCulture">
               <input id="color-faction" type="checkbox" checked />
               Color by culture
             </label>
           </div>
-          <div id="path-readout" class="path-readout"></div>
+          <div id="path-readout" class="path-readout" data-help="gatePath"></div>
           <div class="map-stage">
-            <div id="star-map"></div>
-            <aside id="map-legend" class="map-legend" aria-label="Map color legend"></aside>
+            <div id="star-map" data-help="starMap"></div>
+            <aside id="map-legend" class="map-legend" data-help="mapLegend" aria-label="Map color legend"></aside>
           </div>
         </article>
       </div>
@@ -265,6 +266,7 @@
   <script src="default-map.js"></script>
   <script src="js/site-nav.js"></script>
   <script src="js/glossary.js"></script>
+  <script src="js/help.js"></script>
   <script src="js/wasm-engine.js"></script>
   <script src="js/app.js"></script>
 </body>

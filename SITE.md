@@ -2,18 +2,22 @@
 
 Jumpgate Starroute publishes a **static** demo and docs site from `starroute/web/static/`.
 
-- Map viewer: `app.html` (preset picker; no Python)
-- Docs: `docs/` (deploy strategies + local run on Windows / macOS / Linux; browser notes for Chrome, ChromeOS, Android)
-- Lore: `docs/lore/` (static Markdown wiki; source files in repo `setting/`)
+Live: **https://ldjessee-code.github.io/jumpgate_starroute/**
+
+- Map: `app.html` (Turquenish / sparse / lonely-humans packs; no Python)
+- Docs: `docs/` (deploy, local run, presets, context help)
+- Lore: `docs/lore/` (wiki follows the selected map pack; add/edit your own pages in the browser)
 - Packs: `presets/{crowded,sparse,lonely_humans}/`
+
+**Context help:** click **?** in the header, then click a control. HTML/CSS/JS only (`js/help.js`, `js/glossary.js`).
 
 ## GitHub Pages
 
-A workflow at `.github/workflows/pages.yml` deploys that folder on pushes to `main`.
+Workflow `.github/workflows/pages.yml` deploys `starroute/web/static/` on push to `main`. Repo setting: Pages **source = GitHub Actions**.
 
-One-time repo setting: Pages **source = GitHub Actions**. After merge to `main`, the site is typically:
-
-`https://ldjessee-code.github.io/jumpgate_starroute/`
+- Home: https://ldjessee-code.github.io/jumpgate_starroute/
+- Map: https://ldjessee-code.github.io/jumpgate_starroute/app.html
+- Lore: https://ldjessee-code.github.io/jumpgate_starroute/docs/lore/
 
 ## Cloudflare Pages (optional)
 

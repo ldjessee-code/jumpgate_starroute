@@ -9,6 +9,13 @@ The 444 MB Python 3.9 `env/` from that era was not copied.
 
 ---
 
+## Unreleased — context help
+
+Click **?** (or press `?`) then click a control, the map, or a lore panel.
+Popup copy lives in `js/glossary.js`. No extra libraries.
+
+---
+
 ## Unreleased — static lore vault
 
 `setting/*.md` is a flat lore wiki. Pages serves a committed copy at

@@ -15,6 +15,9 @@ Turquenish–Mardat lore, split to match the three map packs.
 Tabletop originals live at `F:\Dropbox\Gaming\GURPS Turquenish-Mardat War\`.
 This repo copies **lore text** only (no player `.gca5` sheets, no screenshots).
 
+The public wiki follows the map pack. On the site, click **?** then a control
+for context help (HTML/CSS/JS only).
+
 After editing Markdown:
 
 ```bash

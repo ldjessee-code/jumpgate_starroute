@@ -111,32 +111,6 @@ const NETWORK_DEFAULTS = {
 
 const $ = (id) => document.getElementById(id);
 
-function termHtml(term) {
-  if (!term) return "<p>No help is available for that item yet.</p>";
-  const also = term.alsoCalled ? `<p class="also">Also called: ${term.alsoCalled}</p>` : "";
-  return `<h3>${term.title}</h3>${also}<p>${term.meaning}</p><p class="impact"><strong>If you change it:</strong> ${term.impact}</p>`;
-}
-
-function showTermPopover(button) {
-  const pop = $("term-pop");
-  const term = GLOSSARY_BY_ID[button.dataset.term];
-  pop.innerHTML = termHtml(term);
-  pop.classList.remove("hidden");
-  const rect = button.getBoundingClientRect();
-  const width = pop.offsetWidth;
-  const left = Math.min(Math.max(8, rect.left), window.innerWidth - width - 8);
-  let top = rect.bottom + 8;
-  if (top + pop.offsetHeight > window.innerHeight - 8) {
-    top = Math.max(8, rect.top - pop.offsetHeight - 8);
-  }
-  pop.style.left = `${left}px`;
-  pop.style.top = `${top}px`;
-}
-
-function hideTermPopover() {
-  $("term-pop").classList.add("hidden");
-}
-
 function renderGlossary(filter) {
   const needle = (filter || "").trim().toLowerCase();
   const body = $("glossary-body");
@@ -181,21 +155,8 @@ function closeGlossary() {
   $("glossary").classList.add("hidden");
 }
 
-document.addEventListener("click", (event) => {
-  const info = event.target.closest(".info");
-  if (info) {
-    event.preventDefault();
-    event.stopPropagation();
-    showTermPopover(info);
-    return;
-  }
-  if (!$("term-pop").contains(event.target)) hideTermPopover();
-});
 document.addEventListener("keydown", (event) => {
-  if (event.key === "Escape") {
-    hideTermPopover();
-    closeGlossary();
-  }
+  if (event.key === "Escape") closeGlossary();
 });
 
 function toast(message, isError = false) {
