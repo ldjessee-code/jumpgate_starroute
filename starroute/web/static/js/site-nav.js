@@ -37,6 +37,8 @@
     nav.style.display = "flex";
     nav.style.flexWrap = "wrap";
     nav.style.gap = "0.35rem 1rem";
+    nav.style.width = "fit-content";
+    nav.style.maxWidth = "100%";
     const attr = nav.getAttribute("data-root");
     const pre = attr !== null ? attr : prefix();
     const here = document.body.classList.contains("map-first") ? "map" : currentMatch();

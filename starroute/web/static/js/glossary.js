@@ -206,8 +206,8 @@ const GLOSSARY = [
     id: "focusFaction",
     title: "Highlight one culture",
     group: "Map",
-    meaning: "Keeps that faction’s stars in full color and fades the others (same hue, just quieter — not gray). Default is All.",
-    impact: "Use this to brief a table on “Methan space” without hiding the rest of the sky.",
+    meaning: "Keeps that faction’s stars in full color and fades the others. A faint halo expands around those stars and around jump routes that stay inside that culture.",
+    impact: "Pick Everyone to turn the halo off. Use this to brief a table on one polity without hiding the rest of the sky.",
   },
   {
     id: "snapshot",
@@ -322,6 +322,28 @@ const GLOSSARY = [
     group: "Getting started",
     meaning: "A static site (GitHub Pages). No Python on the server. Map packs and lore are files next to the page.",
     impact: "To rebuild packs or the lore index you still need Python on a maintainer machine, then a push to main.",
+  },
+  {
+    id: "laterTabs",
+    title: "Tabs that are not on this site",
+    group: "Getting started",
+    alsoCalled: "self-host, later, ghosted tabs",
+    meaning: "The gray tabs are real features, parked on the public Pages site. This host only serves finished map packs and lore. No Python runs here.",
+    impact: "To turn them on, run the app on your own machine (`python -m starroute serve`) with NASA CSVs in data/raw. Docs → Run locally and Deploy explain that split.",
+  },
+  {
+    id: "laterFactions",
+    title: "Who lives where (self-host)",
+    group: "Getting started",
+    meaning: "A full culture editor: rename polities, change how many systems they claim, and preview habitat rules. The public site already paints Turquenish, Mardat, and the rest onto the three packs.",
+    impact: "Enable it by self-hosting the Python app. Changing rules there does not rewrite the JSON packs until you run build-presets.",
+  },
+  {
+    id: "laterStars",
+    title: "Choose the stars (self-host)",
+    group: "Getting started",
+    meaning: "NASA catalog ingest: load planet and host CSVs, pick a home star, and decide how far out to keep. Not on GitHub Pages — the shipped packs already use a 60 ly sample around Sol.",
+    impact: "Self-host with files in data/raw, then ingest. Until then this tab stays available so you can see it exists, but it will not switch screens.",
   },
 ];
 

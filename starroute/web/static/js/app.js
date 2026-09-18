@@ -782,13 +782,18 @@ function renderLegend(nodes) {
   if (byFaction) {
     groups.forEach((g) => {
       const color = getGroupColor(g);
-      rows.push(`<label class="legend-row">
+      const focusOn = ($("focus-faction").value || "all") === g;
+      rows.push(`<label class="legend-row${focusOn ? " is-focus" : ""}">
         <input type="color" class="legend-pick" data-group="${esc(g)}" value="${color}" title="Change ${esc(g)} color" />
-        <span>${esc(g)}</span>
+        <span>${esc(g)}${focusOn ? " · highlighted" : ""}</span>
       </label>`);
     });
   } else {
     rows.push(`<div class="legend-row"><span class="legend-swatch heat"></span><span>Color = world score</span></div>`);
+  }
+  const focus = $("focus-faction") && $("focus-faction").value || "all";
+  if (focus !== "all") {
+    rows.push(`<div class="legend-row is-focus"><span class="legend-swatch" style="background:${getGroupColor(focus)};box-shadow:0 0 12px ${getGroupColor(focus)}"></span><span>Halo = ${esc(focus)}</span></div>`);
   }
   rows.push(`<div class="legend-row"><span class="legend-line"></span><span>Jump route</span></div>`);
   rows.push(`<div class="legend-row"><span class="legend-line path"></span><span>Highlighted path</span></div>`);
@@ -816,6 +821,9 @@ function drawMap(path = []) {
   const xs = [];
   const ys = [];
   const zs = [];
+  const gxs = [];
+  const gys = [];
+  const gzs = [];
   const hxs = [];
   const hys = [];
   const hzs = [];
@@ -829,6 +837,12 @@ function drawMap(path = []) {
       hys.push(a.y, b.y, null);
       hzs.push(a.z, b.z, null);
       return;
+    }
+    const bothFocus = focus !== "all" && a.group === focus && b.group === focus;
+    if (bothFocus) {
+      gxs.push(a.x, b.x, null);
+      gys.push(a.y, b.y, null);
+      gzs.push(a.z, b.z, null);
     }
     const focused = focus === "all" || a.group === focus || b.group === focus;
     const bucketX = focused ? xs : dimXs;
@@ -848,6 +862,9 @@ function drawMap(path = []) {
     if (focus === "all" || n.group === focus) return base;
     return Math.max(3, base * 0.7);
   });
+  const haloNodes = focus === "all" ? [] : nodes.filter((n) => n.group === focus);
+  const glowColor = focus === "all" ? "rgba(255,255,255,0.2)" : hexToRgba(getGroupColor(focus), 0.22);
+  const glowLineColor = focus === "all" ? "rgba(255,255,255,0.18)" : hexToRgba(getGroupColor(focus), 0.2);
   const hover = (n) =>
     `<b>${n.sy_name}</b> (${n.hostname})<br>` +
     `Founding order: ${n.process_order ?? "—"}<br>` +
@@ -871,8 +888,16 @@ function drawMap(path = []) {
     {
       type: "scatter3d",
       mode: "lines",
+      x: gxs, y: gys, z: gzs,
+      line: { color: glowLineColor, width: 14 },
+      hoverinfo: "none",
+      name: "Culture glow routes",
+    },
+    {
+      type: "scatter3d",
+      mode: "lines",
       x: xs, y: ys, z: zs,
-      line: { color: "rgba(180,190,200,0.45)", width: 2 },
+      line: { color: focus === "all" ? "rgba(180,190,200,0.45)" : hexToRgba(getGroupColor(focus), 0.7), width: focus === "all" ? 2 : 3 },
       hoverinfo: "none",
       name: "Gates",
     },
@@ -883,6 +908,24 @@ function drawMap(path = []) {
       line: { color: "#e24a3b", width: 7 },
       hoverinfo: "none",
       name: "Highlighted path",
+    },
+    {
+      type: "scatter3d",
+      mode: "markers",
+      x: haloNodes.map((n) => n.x),
+      y: haloNodes.map((n) => n.y),
+      z: haloNodes.map((n) => n.z),
+      hoverinfo: "none",
+      marker: {
+        size: haloNodes.map((n) => {
+          const base = 5 + Math.min(n.sy_pnum || 0, 8) * 1.6;
+          return Math.max(16, base * 2.8);
+        }),
+        color: glowColor,
+        symbol: "circle",
+        opacity: 0.35,
+      },
+      name: "Culture glow",
     },
     {
       type: "scatter3d",
@@ -1368,6 +1411,12 @@ async function boot() {
       $("net-min-mass").value = String(NETWORK_DEFAULTS.minSolarMass);
     }
     document.body.classList.remove("no-backend");
+    document.querySelectorAll(".tab.backend-only").forEach((tab) => {
+      tab.classList.remove("is-disabled");
+      tab.removeAttribute("aria-disabled");
+      const later = tab.querySelector(".tab-later");
+      if (later) later.remove();
+    });
   } catch {
     document.body.classList.add("no-backend");
   }
