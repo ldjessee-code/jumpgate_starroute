@@ -1,0 +1,19 @@
+{
+  "pack": "crowded",
+  "title": "My crowded setting",
+  "note": "Load this on Lore (Load files). The map pack stays crowded; only these pages are yours. Duplicate and rename ids if you add more.",
+  "pages": [
+    {
+      "id": "custom/crowded/overview",
+      "pack": "crowded",
+      "title": "Overview",
+      "markdown": "# Overview\n\nThis is your crowded neighborhood. The stars and jump routes still come from the shipped map pack.\n\nReplace this text. Culture names used on the map: **Turquenish Empire**, **Mardat Coalition**, **Industrial Hegemony**, **League of The Faithful**, **Other Human**, **Methan**, **Crystomorphs**, **Aboreals**, **Bazzar**, **Echryon & Echtol**.\n"
+    },
+    {
+      "id": "custom/crowded/peoples",
+      "pack": "crowded",
+      "title": "Peoples",
+      "markdown": "# Peoples\n\nWho lives here in your game? Keep or rename the map labels — the colors on the map stay until you change them in the legend.\n"
+    }
+  ]
+}

@@ -87,15 +87,13 @@ body.map-first #screen-map.is-active {
   flex-direction: column;
 }
 body.map-first .map-layout {
+  position: relative;
   grid-template-columns: 1fr;
   height: 100%;
   min-height: 0;
   flex: 1 1 auto;
   gap: 0.55rem;
   align-items: stretch;
-}
-body.map-first .map-layout.drawer-open {
-  grid-template-columns: min(22rem, 38vw) 1fr;
 }
 body.map-first .controls {
   display: none;
@@ -104,6 +102,36 @@ body.map-first .controls {
   margin-bottom: 0;
 }
 body.map-first .map-layout.drawer-open .controls { display: block; }
+
+/* Wide: settings sit beside the map */
+@media (min-width: 1100px) {
+  body.map-first .map-layout.drawer-open {
+    grid-template-columns: min(22rem, 34vw) 1fr;
+  }
+}
+
+/* Tight: slide over the map from the left edge */
+@media (max-width: 1099px) {
+  body.map-first .map-layout.drawer-open {
+    grid-template-columns: 1fr;
+  }
+  body.map-first .map-layout.drawer-open .controls {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: min(22rem, 92vw);
+    z-index: 6;
+    max-height: none;
+    height: 100%;
+    box-shadow: 10px 0 28px rgba(18, 24, 38, 0.35);
+    animation: drawer-in 0.18s ease-out;
+  }
+}
+@keyframes drawer-in {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
 body.map-first .map-card {
   min-height: 0;
   height: 100%;

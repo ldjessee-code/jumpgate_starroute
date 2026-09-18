@@ -26,10 +26,90 @@
   let activeId = null;
   let editorState = null;
 
+  const FACTION_COLOR_NAMES = [
+    ["Turquenish Empire", "turquenish"],
+    ["Mardat Coalition", "mardat"],
+    ["Industrial Hegemony", "hegemony"],
+    ["League of The Faithful", "faithful"],
+    ["League of the Faithful", "faithful"],
+    ["Other Human", "other-human"],
+    ["Echryon & Echtol", "echryon"],
+    ["Echryon/Echtol", "echryon"],
+    ["Crystomorphs", "crystomorphs"],
+    ["Aboreals", "aboreals"],
+    ["Schettel", "schettel"],
+    ["Faetheren", "faetheren"],
+    ["Bazzar", "bazzar"],
+    ["Methan", "methan"],
+    ["Human", "human"],
+  ];
+  const COLOR_KEY = "starroute-lore-match-colors";
+
+  function stripFrontMatter(text) {
+    const raw = String(text || "").replace(/^\uFEFF/, "");
+    if (!raw.startsWith("---")) return raw;
+    const rest = raw.slice(3);
+    const nl = rest.indexOf("\n");
+    if (nl === -1) return raw;
+    const close = rest.indexOf("\n---", nl);
+    if (close === -1) return raw;
+    let body = rest.slice(close + 4);
+    if (body.startsWith("\n")) body = body.slice(1);
+    return body;
+  }
+
   function parseMarkdown(text) {
     const parse = (typeof marked === "function") ? marked : (marked && marked.parse);
     if (typeof parse !== "function") return "<p>Markdown library failed to load.</p>";
-    return parse(text || "");
+    return parse(stripFrontMatter(text));
+  }
+
+  function colorizeFactions(root) {
+    if (!root || !document.body.classList.contains("lore-faction-colors")) return;
+    const skip = "SCRIPT,STYLE,A,CODE,PRE,TEXTAREA";
+    const walk = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const parent = node.parentElement;
+        if (!parent || skip.includes(parent.tagName)) return NodeFilter.FILTER_REJECT;
+        if (parent.closest(".fac")) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      },
+    });
+    const hits = [];
+    let node;
+    while ((node = walk.nextNode())) {
+      const value = node.nodeValue;
+      if (!value || !FACTION_COLOR_NAMES.some(([name]) => value.includes(name))) continue;
+      hits.push(node);
+    }
+    hits.forEach((textNode) => {
+      let html = textNode.nodeValue.replace(/[&<>]/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[ch]));
+      const tokens = [];
+      FACTION_COLOR_NAMES.forEach(([name, slug]) => {
+        const re = new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "g");
+        html = html.replace(re, () => {
+          tokens.push(`<span class="fac fac-${slug}">${name}</span>`);
+          return `\0${tokens.length - 1}\0`;
+        });
+      });
+      html = html.replace(/\0(\d+)\0/g, (_, idx) => tokens[Number(idx)]);
+      const wrap = document.createElement("span");
+      wrap.innerHTML = html;
+      textNode.parentNode.replaceChild(wrap, textNode);
+    });
+  }
+
+  function matchColorsOn() {
+    try {
+      const stored = localStorage.getItem(COLOR_KEY);
+      if (stored === "0") return false;
+    } catch { /* ignore */ }
+    return true;
+  }
+
+  function applyColorSetting(on) {
+    document.body.classList.toggle("lore-faction-colors", on);
+    try { localStorage.setItem(COLOR_KEY, on ? "1" : "0"); } catch { /* ignore */ }
   }
 
   function packOf(page) {
@@ -164,6 +244,7 @@
     try {
       const markdown = await markdownFor(page);
       articleEl.innerHTML = parseMarkdown(markdown);
+      colorizeFactions(articleEl);
       rewriteWikiLinks(articleEl);
       statusEl.textContent = page.custom
         ? "Your page (this browser) · " + page.id
@@ -194,6 +275,7 @@
 
   function previewEditor() {
     editorPreview.innerHTML = parseMarkdown(editorMd.value);
+    colorizeFactions(editorPreview);
   }
 
   function openEditor({ mode, page, markdown }) {
@@ -358,6 +440,16 @@
     packEl.value = requestedPack();
     rememberPack(packEl.value);
     packNote.textContent = "Follows the map pack saved in this browser.";
+    const colorBox = document.getElementById("lore-match-colors");
+    const colorsOn = matchColorsOn();
+    applyColorSetting(colorsOn);
+    if (colorBox) {
+      colorBox.checked = colorsOn;
+      colorBox.addEventListener("change", () => {
+        applyColorSetting(colorBox.checked);
+        if (activeId) loadPage(activeId);
+      });
+    }
     loadCustom();
     try {
       shipped = await loadIndex();

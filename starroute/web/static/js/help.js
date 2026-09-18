@@ -7,13 +7,24 @@
     return null;
   }
 
+  function docsUrl(page) {
+    const p = (location.pathname || "").replace(/\\/g, "/");
+    if (/\/docs\/lore(\/|$)/.test(p)) return "../" + page;
+    if (/\/docs(\/|$)/.test(p)) return page;
+    return "docs/" + page;
+  }
+
+  function rewriteDocLinks(html) {
+    return String(html || "").replace(/href="docs\/([^"]+)"/g, (_, file) => `href="${docsUrl(file)}"`);
+  }
+
   function termHtml(term) {
     if (!term) return "<p>No help is available for that item yet.</p>";
     const also = term.alsoCalled ? `<p class="also">Also called: ${term.alsoCalled}</p>` : "";
     const impact = term.impact
-      ? `<p class="impact"><strong>If you change it:</strong> ${term.impact}</p>`
+      ? `<p class="impact"><strong>If you change it:</strong> ${rewriteDocLinks(term.impact)}</p>`
       : "";
-    return `<h3>${term.title}</h3>${also}<p>${term.meaning}</p>${impact}`;
+    return `<h3>${term.title}</h3>${also}<p>${rewriteDocLinks(term.meaning)}</p>${impact}`;
   }
 
   function ensurePop() {

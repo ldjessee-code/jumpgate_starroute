@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Self-host · Jumpgate Starroute</title>
+<link rel="stylesheet" href="../css/help.css"/>
+<style>:root {
+  --bg: #0b1020; --panel: #141b2f; --ink: #e8eefc; --muted: #a9b4d0;
+  --accent: #7eb6ff; --line: #2a3555; --ok: #8fd39a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--ink); }
+a { color: var(--accent); }
+header, footer { border-bottom: 1px solid var(--line); padding: 1rem 1.25rem; background: #0a0e1a; }
+footer { border-bottom: 0; border-top: 1px solid var(--line); margin-top: 3rem; color: var(--muted); font-size: 0.92rem; }
+nav a { margin-right: 1rem; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+main { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+h1 { font-size: 1.85rem; margin-top: 0; }
+h2 { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; margin: 1rem 0; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+code { background: #0a0e1a; padding: 0.1em 0.35em; border-radius: 4px; }
+pre { background: #0a0e1a; border: 1px solid var(--line); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; }
+.note { color: var(--muted); }
+.ok { color: var(--ok); }
+ul.compact li { margin: 0.35rem 0; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: 0.55rem 0.65rem; text-align: left; vertical-align: top; }
+th { background: #0a0e1a; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Jumpgate Starroute</strong>
+  <nav data-site-nav aria-label="Site" style="margin-top:0.55rem"></nav>
+</header>
+<main>
+
+<h1>What self-hosting adds</h1>
+<p>The public site is a <strong>finished demo</strong>: three map packs, lore, and docs. Nothing on that host runs Python. Self-hosting is optional. Start with <a href="run-local.html">just opening the webpage</a> if you only want to look around.</p>
+
+<h2>On GitHub Pages (already there)</h2>
+<ul class="compact">
+  <li>Open the map, switch Crowded / Sparse / Lonely humans</li>
+  <li>Read lore for that pack; add/edit <em>your</em> pages in this browser</li>
+  <li>Load a <a href="own-setting.html">blank setting template</a></li>
+  <li>Context help, culture glow, save/open a map JSON</li>
+</ul>
+
+<h2>If you run the Python app</h2>
+<p><code>python -m starroute serve</code> turns on the gray tabs:</p>
+<table>
+  <thead><tr><th>Feature</th><th>Pages</th><th>Self-host</th></tr></thead>
+  <tbody>
+    <tr><td>Look at the three packs</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+    <tr><td>Your lore in this browser</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+    <tr><td>Who lives where (culture editor)</td><td>Parked</td><td class="ok">Yes</td></tr>
+    <tr><td>Choose the stars (NASA CSV ingest)</td><td>Parked</td><td class="ok">If you add CSVs</td></tr>
+    <tr><td>Generate new map in the tab (Pyodide)</td><td class="ok">Yes</td><td class="ok">Yes</td></tr>
+    <tr><td>Rebuild packs from the command line</td><td>No</td><td class="ok">Yes</td></tr>
+  </tbody>
+</table>
+<p>How to put a copy on the public internet after that: <a href="deploy.html">Deploy</a>.</p>
+
+<h2>Python extras (only this path)</h2>
+<p>Python 3.9 or newer (3.11+ is nicer). A virtualenv, then <code>pip install -r requirements.txt</code>:</p>
+<pre>pandas, numpy, scipy, networkx
+fastapi, uvicorn, python-multipart, jinja2</pre>
+<p class="note">No browser plugins. The map still uses a recent Chrome, Edge, Firefox, or Safari with WebGL, same as the static site.</p>
+
+<p><a href="run-local.html">How to run it on your machine →</a></p>
+
+</main>
+<footer>
+  <p>MIT licensed. Easiest path first; extra power is optional.</p>
+</footer>
+<script src="../js/site-nav.js"></script>
+<script src="../js/glossary.js"></script>
+<script src="../js/help.js"></script>
+</body>
+</html>

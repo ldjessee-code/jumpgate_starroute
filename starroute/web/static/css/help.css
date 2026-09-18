@@ -75,3 +75,4 @@ body.help-inspect button.info {
 .term-pop p { margin: 0 0 0.45rem; font-size: 0.88rem; line-height: 1.4; }
 .term-pop .impact { color: #3d4659; }
 .term-pop .impact strong { color: #2a6f8f; }
+.term-pop a { color: #2a6f8f; }

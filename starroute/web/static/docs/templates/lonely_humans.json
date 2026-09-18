@@ -1,0 +1,19 @@
+{
+  "pack": "lonely_humans",
+  "title": "My lonely-humans setting",
+  "note": "Load this on Lore while the map pack is Lonely humans. No alien cultures on that map.",
+  "pages": [
+    {
+      "id": "custom/lonely_humans/overview",
+      "pack": "lonely_humans",
+      "title": "Overview",
+      "markdown": "# Overview\n\nSun-like stars only. Human factions, no local aliens. Replace this text.\n"
+    },
+    {
+      "id": "custom/lonely_humans/factions",
+      "pack": "lonely_humans",
+      "title": "Factions",
+      "markdown": "# Factions\n\nMap labels: **Turquenish Empire**, **Mardat Coalition**, **Industrial Hegemony**, **League of The Faithful**, **Other Human**.\n"
+    }
+  ]
+}
