@@ -20,15 +20,13 @@ Browser engine on git branch `wasm-pyodide` (see [WASM.md](WASM.md)): the
 same Python mapgen runs in the page via Pyodide. Not merged to `main` until
 you like it.
 
-Opens on a **ready-made 3D map**. Settings hide in a side drawer so the map
-can fill the window.
+Opens on a **ready-made 3D map**. Three **static map packs** ship as JSON
+network snapshots (not 3D models). Pick **Crowded**, **Sparse**, or **Lonely
+humans** in the map toolbar — the page loads that pack from files next to the
+viewer. No live Python server is required to look around or switch packs.
 
-Shipped preview (60 ly around Sol):
-
-- Longest jump **25 ly**; short/medium **40%**, medium/long **60%** of that
-- Smallest star **0.25** Suns
-- **Human** (Sol and leftover rocky systems) and **Kessari** (sulfur-band /
-  gas-giant worlds). A little overlap where a star has both.
+Settings hide in a side drawer so the map can fill the window. Counts,
+habitability, and the knobs used for each pack are in [PRESETS.md](PRESETS.md).
 
 Rotate, zoom, highlight a culture, and trace a jump path in the browser.
 **Generate new map** (Settings) rebuilds from the same shipped star list with
@@ -41,11 +39,25 @@ This release is **v2.0**. See [HISTORY.md](HISTORY.md).
 
 ## Open the map (no install)
 
-Need a web connection once (Plotly). Then double-click:
+Python is optional for viewers. Need a web connection once (Plotly). Then
+open:
 
 `starroute/web/static/app.html`
 
 or `preview/index.html`
+
+GitHub Pages / Cloudflare Pages can host the repo (or just
+`starroute/web/static/`). The preset picker fetches
+`presets/{crowded,sparse,lonely_humans}/map.json` next to `app.html`.
+
+If you open the HTML as a local `file://` page and the browser blocks JSON
+fetch, the picker falls back to `presets/{id}/map.js`. The crowded pack also
+boots from `default-map.js`.
+
+Setting notes live in [`setting/`](setting/) as ordinary Markdown. The static
+wiki is `starroute/web/static/docs/lore/` (search titles, render pages in the
+browser). After adding a `.md` file, run `python -m starroute build-lore`.
+See `starroute/web/static/docs/lore.html`.
 
 ## Setup (only to rebuild your own map)
 
@@ -81,7 +93,15 @@ python -m starroute ingest --preview
 python -m starroute ingest --max-ly 1000 --min-mass 0.25
 python -m starroute network --max-jump 50
 python -m starroute network --max-jump 50 --no-factions
+python -m starroute build-presets
+python -m starroute build-lore
 ```
+
+`build-presets` (or `python scripts/build_presets.py`) writes JSON packs to
+`data/presets/{id}/` and copies them to `starroute/web/static/presets/{id}/`.
+If `data/raw` NASA CSVs are missing, it uses the committed sample catalog
+(`starroute/web/static/sample-systems.csv`, 60 ly around Sol). See
+[PRESETS.md](PRESETS.md).
 
 ## Layout
 
@@ -89,9 +109,11 @@ python -m starroute network --max-jump 50 --no-factions
 starroute/ingest/     NASA CSV → classified systems + Sol
 starroute/mapgen/     ranking, Sol-rooted network, faction assignment
 starroute/web/        FastAPI app + Plotly.js map
-config/               default network + faction JSON
+config/               default network, faction, and map-preset JSON
 data/raw/             NASA snapshots (local, not committed)
 data/processed/       systems.csv, sol_network.csv, route_table.csv
+data/presets/         crowded / sparse / lonely_humans JSON packs
+setting/              flat Markdown lore vault (static wiki on Pages)
 ```
 
 Faction names, counts, prefixes, and filters live in `config/factions.json`.

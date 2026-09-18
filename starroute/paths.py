@@ -22,8 +22,14 @@ FACTIONS_JSON = CONFIG_DIR / "factions.json"
 FACTIONS_DEFAULT_JSON = CONFIG_DIR / "factions.default.json"
 FACTION_PRESETS_JSON = CONFIG_DIR / "faction_presets.json"
 NETWORK_JSON = CONFIG_DIR / "network.json"
+MAP_PRESETS_JSON = CONFIG_DIR / "map_presets.json"
 SNAPSHOT_JSON = DATA_PROCESSED / "map_snapshot.json"
 ORIGIN_JSON = DATA_PROCESSED / "origin.json"
+DATA_PRESETS = ROOT / "data" / "presets"
+SAMPLE_SYSTEMS_CSV = ROOT / "starroute" / "web" / "static" / "sample-systems.csv"
+STATIC_PRESETS = ROOT / "starroute" / "web" / "static" / "presets"
+SETTING_DIR = ROOT / "setting"
+STATIC_LORE = ROOT / "starroute" / "web" / "static" / "docs" / "lore"
 
 
 def ensure_data_dirs() -> None:

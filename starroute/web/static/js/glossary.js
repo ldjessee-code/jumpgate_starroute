@@ -16,6 +16,14 @@ const GLOSSARY = [
     impact: "Use a matching pair of files from the same download date. The planet file is one row per planet; the star file is one or more rows per star.",
   },
   {
+    id: "mapPreset",
+    title: "Map pack",
+    group: "Getting started",
+    alsoCalled: "preset, crowded, sparse, lonely humans",
+    meaning: "A pre-built map of local space: which stars are kept, how long a jump can be, and which cultures live where. Three packs ship as static JSON. Switching packs does not need Python — the page just loads another snapshot.",
+    impact: "Crowded is the Turquenish neighborhood: short jumps, bio-edit Empire vs chrome Coalition, plus local alien enclaves. Sparse is the same war on a thinner gate grid. Lonely humans keeps only Sun-like stars and human factions — no local aliens. Generate new map still rebuilds from the shipped star list with the settings in the drawer.",
+  },
+  {
     id: "sol",
     title: "Sol",
     group: "Getting started",

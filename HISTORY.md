@@ -9,6 +9,28 @@ The 444 MB Python 3.9 `env/` from that era was not copied.
 
 ---
 
+## Unreleased — static lore vault
+
+`setting/*.md` is a flat lore wiki. Pages serves a committed copy at
+`docs/lore/` (Markdown rendered in the browser). Rebuild the index with
+`python -m starroute build-lore` — stdlib only; NASA CSVs are irrelevant.
+
+Three pack write-ups match the map toolbar: **crowded** is the Turquenish
+neighborhood (bio-edit Empire vs chrome Coalition, local aliens);
+**sparse** is the same war on a thinner gate grid; **lonely_humans** is
+human factions only. Tabletop notes (text only) live in `setting/source/`.
+
+---
+
+## Unreleased — static map presets
+
+Three pre-generated packs (`crowded`, `sparse`, `lonely_humans`) ship as
+`kind: network_snapshot` JSON. The static viewer can switch among them
+without a Python server. Rebuild with `python -m starroute build-presets`.
+See [PRESETS.md](PRESETS.md).
+
+---
+
 ## v2.0 — August 2026
 
 Browser engine. Same map viewer and snapshot JSON; maps are grown in

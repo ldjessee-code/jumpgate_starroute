@@ -1,0 +1,17 @@
+Shareable copies of the tabletop Turquenish–Mardat notes.
+
+Source folder (not in the git repo):
+  F:\Dropbox\Gaming\GURPS Turquenish-Mardat War\
+
+Copied here (lore text only — no player character sheets, no ship screenshots):
+  turquenish-mardat-lore.txt   core setting
+  combined-document.txt        lore plus the Smuggler's Gambit outline
+  player-intro.rtf             faction briefs for players
+
+The three map packs in this repo are local 60 ly slices of that setting:
+  crowded/         dense Turquenish neighborhood (default tabletop)
+  sparse/          same war, thinner gate grid
+  lonely_humans/   humans only — no local aliens
+
+Do not add GURPS rules text to the public wiki pages; those pages are setting
+fiction for the static map. Keep point-buy NPCs and char sheets in Dropbox.

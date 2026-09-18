@@ -12,8 +12,14 @@
     <div class="masthead-top">
       <div class="masthead-copy">
         <p class="eyebrow">v2.0 · GM / author tool</p>
+        <nav class="site-nav" aria-label="Site">
+          <a href="index.html">Home</a>
+          <a href="docs/index.html">Docs</a>
+          <a href="app.html" aria-current="page">Map</a>
+          <a href="docs/lore/index.html">Lore</a>
+        </nav>
         <h1>Jumpgate Starroute</h1>
-        <p class="lede">A 60 ly map around Sol — Humans and the Kessari. Change jump settings in the side panel and generate a new map from the same star list.</p>
+        <p class="lede" id="map-lede">A 60 ly map around Sol. Pick a pre-generated pack, or change jump settings in the side panel.</p>
       </div>
       <div class="header-actions">
         <button id="btn-drawer" class="btn header-help" type="button" aria-expanded="false">Settings</button>
@@ -136,7 +142,7 @@
     <section id="screen-map" class="screen is-active">
       <div class="map-layout" id="map-layout">
         <aside class="card controls" id="settings-drawer">
-          <p class="tab-intro sidebar-intro">The star list is already in this page (60 ly around Sol). Change jump settings below and generate a new map. Same viewer, same JSON. NASA catalog ingest is a later step.</p>
+          <p class="tab-intro sidebar-intro">Three static map packs ship with this page. Switching packs loads JSON from <code>presets/</code> — no Python server. Change jump settings and generate a new map from the shipped star list if you want a variant. NASA catalog ingest is a later step.</p>
           <h2>Route settings</h2>
           <label>
             <span class="label-row">Longest single jump <button type="button" class="info" data-term="jumpRange" aria-label="About jump range">?</button></span>
@@ -212,6 +218,14 @@
 
         <article class="card map-card">
           <div class="map-toolbar">
+            <label>
+              <span class="label-row">Map pack <button type="button" class="info" data-term="mapPreset" aria-label="About map packs">?</button></span>
+              <select id="map-preset">
+                <option value="crowded">Crowded — Turquenish neighborhood</option>
+                <option value="sparse">Sparse — thin Turquenish grid</option>
+                <option value="lonely_humans">Lonely humans</option>
+              </select>
+            </label>
             <label>
               <span class="label-row">From <button type="button" class="info" data-term="gatePath" aria-label="About routes">?</button></span>
               <select id="path-start"></select>

@@ -1,0 +1,94 @@
+GURPS 4e 
+
+Basic Game setting core idea:
+
+The crew of the Scarab class multi-role frigate, all survivors of the Turquenish-Mardat War, are trying to make it in the aftermath of this war between two large Earth lead Factions, the Turquenish Empire and the Mardat Coalition.
+
+While there are some minor alien races and some humans that have diverged genetically and societally, both of the Turquenish Empire and the Mardat Coalition were predominately (60-70%) what is referred to as 'mainstream' humans.
+
+The other races do not have the same drive and character to spread out the way humans have, so their spread in the galaxy seems smaller, more tightly knit. (See race section)
+
+FTL
+
+Faster than light is thru a network of large jump gate rings that have been around a long time. The Faertheren, an old, secretive, and apolitical race that maintains and spreads the network. They operate on a schedule and system that mostly appears to be driven by usage. The less a gate is used, the less it is maintained. If the gate in a system is used a lot, it could be that a new gate will be added in a hundred or so years. The largest ships that go thru the rings are the Methan ships. These ships are 600 meters across spheres or cylinders, the variation being length; from 600 meters to 2,000 meters long.
+
+Space Travel
+
+Outside the Faertheron Gates, space travel depends on the technological and production capabilities of the system, culture, and wealth. From chemical rockets, to ion drives, to reactionless drives. Aboreals and Methan seem to only use reactionless drives.
+
+
+Turquenish-Mardat War
+
+Fought over conflicts about technology and ideology. 
+
+Turquenish culture is open to and expects a certain amount of biological and genetic editing to improve one's life and the life of progeny.
+
+Mardat prefers mechanical/electronic improvements.
+
+There were several systems that had gates open up a couple hundred years ago that connected more distant systems of each nation to the other. This caused a less stringent aherence to the limits and boundaries on self modification that the other allowed (ie, Mardat citizens going to Turquenish 'spas' and having genetic editing and manipulation done; while Turquenish citizens would go to Mardat 'integrators' and have advanced digital interfaces implanted in their brain).
+
+These broke laws and traditions and blamed the other at memetic warfare, corrupting the poor, unwitting populations of these systems to be 'corrupted' but the other's culture.
+
+At the more established and traditional borders, there was all kinds of checks and trade and travel was tightly controlled, but these frontier systems with gates that connected to other frontier systems of the other, these controls were not followed or those who were to enforce the became corrupt, the flow of goods and services grew and only increased the traffic to these systems. It also lowered the traffic thru what had been the main route for goods to flow to and from the frontier to the core systems.
+
+Now, after the war, the devastation, the destruction, the lose of life, and chaos introduced, it seems petty.
+
+There are both hardliners of both but they no longer are a majority or seem to have political weight to push for these strict modification laws. Many have been struck down.
+
+But the damage has been done. And several systems at the end tried to leave or separate themselves from their original government... supposedly these poor systems had been mimetically attacked and subverted, according to their original government. 
+(That they just did NOT want a part of either's culture nor war anymore seemed to be ignored)
+
+
+After the war, many of the outlining systems have not been contacted frequently, have not had ships traveling there, and with the war damaging or destroying many ships and ship production, ship ownership is not as common as it was and most are former military ships now repurposed for civilian use.
+
+Both the Turquenish Empire and the Mardat Coalition are worried that if they do not maintain traffic to these systems, the gates will not be maintained and eventually dismantled. A few here or there would not be a big deal, but if key links between key resources and production systems could break the web like network of gates, which would make it impossible to have a cohesive society, culture, and government.
+
+Some of the systems have low populations and non-strategic resources... The local system administrators, governors, etc are worried that the two governments will ignore them in favor of those with larger populations, more established infrastructure/means of production, and more strategic resources. They are hiring shipments of what they have: communication, media, art, and such. And are also hoping for return shipments of things they cannot produce: tools, supplies, and resources their system lacks or has either in low amounts or is just more difficult to get to.
+
+
+Alien Races
+
+'The Aboreals' (if they are as single race and not a collection of symbiotic races) have no spoken language, they communicating thru chemical signals (scents). Obviously communication is hard, but trade is even harder, with their very peaceful, nearly pacifistic view and needing very little industrialized products. The are very advanced at biochemistry, biotechnology, and genetic manipulation at a capability and understanding not matched by any. 
+
+The Bazzar Queens relate a story about when they first encountered them. They just started colonizing a planet, not even realizing it was already being occupied by a sentient race. They just assumed a thick and lush garden world which the Bazzar were razing to grow their crops. They talk about a nightmarish biological ware that wiped all Bazzar from the planet and system in almost no time. This showed that this race had space travel, advanced technology, and when vast areas of their cities were being burned and cleared for Bazzar farming, they finally did something. The Aboreals and The Bazzar have a very tight treaty and the Bazzar act as the preferred security and traders for The Aboreals' goods. 
+
+Humans have only ever seen the Borealis acting as pacifists, to the point of making very lopsided agreements. But when dealing with them, they keep the Bazzar's story in mind and worry about crossing whatever line the Aboreals have that would result in such a devastating biological warfare attack.
+
+The Bazzar is an insect race with a hive structure. There is a limit to how many a Queen can manage, so once a group gets near that limit, there will start a split and a new person will be 'promoted' to a Queen to manage/control this new subset of the Bazzar. 'Queen' is a left over term from when Human's first encountered the Bazzar, but there are three sexes and the Queen, once 'promoted' becomes sexless, so the analogy of bees or ants does not really hold up well when the Bazzar are examined in detail. Many believe that the Queens communicate and work towards goals, but each seems to have their own personality... of a sort.
+
+The Bazzar have no problems describing their complicated reproduction process, but it is usually condensed that there is genetic donor of sex type A, genetic donor of sex type B, then the incubator which is sex type 3. Queens, which apparently can come from any of the three, change to be sexless when they are promoted. The Bazzar are not clear on what it takes and how long for a Queen to be promoted.
+
+Crystomorphs are silicon based life forms that communicate with light flashes. They are more distant in the galaxy from humans. They think in very long time periods, even though they have a...form or stage in their life cycle (they are never clear on this) that are mobile and in a rough scale to most races (the 1 to 3 meter and 39 to 200 kg mass range most of the sentient races seem to fall within).
+
+The Echryon and The Echtol, two distantly related races of cephalopods, one predominately living in liquid water and the other on 'land', respectively (when first encountered, humans compared them to turtles and tortoises, but not a great comparison). These 12 limbed carbon-oxygen based life forms are intelligent, cannot interbreed, but both agree at some point in their distant past, were the same race. They both communicate with shape, color, and even texture. They do have a written language and their most primitive examples are like flip books, you flip the pages and it shows movement of shape and color, conveying meaning. Many sapient races can understand the very basics of their language, but most rely on some translator (be it digital or biological). Their area of the galaxy is mingled and borders mostly on Mardat space, but does have two systems with gates that go to Turquenish space.
+
+The Methan is completely unwilling to communicate with almost all other races. Supposedly the Crystomorphs and the Faetheren do communicate with them, but it seems to take a very long, long time? The Methan are the exception to the size rule for sentient races it appears. They start life at 5 meters tall and 10 meters long and grow to be over a 100 meters long and up to 50 meters tall. Somewhere between a jellyfish and a blimp or zepplin, these creatures live in mid to upper-mid layers of gas giants. Either their technology or their biology emits a specific EM signal. Many races will abandon a system if the Methan show up, because they seem to take any industry, settlements, colonies, etc in orbit around the gas giants that they are colonizing as direct threats or maybe even acts of war the Methan supposedly give a single warning, but many claim to never have gotten a warning. If actually attacked, usually all other planets in the system are sterilized of all life. Even Crystomorphs say this has happened to them. The Methan space is mostly nearer the galactic core and they use the same gates as all other races.
+
+The Schettel are a race of scavengers. Their small size, very flexible skeletal structure, and extremely adaptable immune system seems to make them incapable of catching a disease, being poisoned, and can digest almost anything for sustenance. They keep no treaties, agreements, or anything for more than it suites them. They buy trash, junk, scrap, and seem to keep their society/culture going. No one has ever seen a Schettel factory or other means of production. They do not even seem to do infrastructure. No roads, power lines, etc. Whatever they put together appears to be self sufficient. The planets they inhabit seem to have scattered structures amongst massive junkyards or piles of trash. Their fleets of ships bringing what they could scrounge, buy, and some say steal back to their planets for these scavenging 'communities'. Schettel are usually the ones called to scuttle or break a ship, if the originating race sees no value in trying to dismantle it themselves.
+
+The Faetheren are so secretive, one on has seen one. Their ships move about, seemingly always busy moving resources and components to maintain, build, or decommission gates. They seem to use NAIs to communicate with the other races using light, radio (digital and analog that is sound), as well as some other way to talk to the Methan (other than EM/radio). Their ships, and a cloud of drones when working on gates, will sometimes connect/dock to each other and to the jump gate rings, but if some other race tries to connect, they immediately warn this is not permitted and if they ship does not detach the Faetheren ship will go thru a series of steps (acceleration, maneuvers, drones using cutting lasers to try to cut the connection) to try to get away and if not, then the Faetheren ship self destructs. From the wreckage, the going speculation is that they are biological entities augmented with biological, electronic/digital, and mechanical components. No other race knows of a time without the Faetheren.
+
+
+Timeline of races joining the gate network
+
+The Crystomorphs are the second oldest and the first to claim to have stumbled upon a Faetheren gate ring, but they still have ships that travel sunlight between systems. The going understanding is that they are effectively immortal. They have claimed 101 systems, out towards the galactic rim.
+
+The Methan are next oldest. They are in at least 100 systems, but some of them also have the Crystomorphs or Faetheren present.
+
+Then 10s of thousands of years later, the Echryon and Echtol found the jump gate network. They claim 61 systems.
+
+Since then, the Echryon/Echtol say that they encountered Aboreals and Bazzar's section of the network 2-3 thousand years later. They have 20-30 systems each.
+
+Humans and Schettel both found and joined the network in the last 1,500 years.
+
+Schettel lay claim to 12 systems, but are not contiguous on the network, they are scattered about, usually not more than 2 to 3 jumps on the network from each other. Separated by systems claimed by another race or unclaimed all together.
+
+Humans in total have claimed just over a hundred systems.
+
+The Turquenish Empire claimed, before the war, 39 systems and the Mardat Coalition had 38 member systems. There are varied speculation on what the numbers are now, but still over 30 each.
+
+There is the Industrial Hegemony that its corporate board of directors that incorporated 11 systems. 
+
+The League of The Faithful, an extreme theocracy, claims 3 systems.
+
+The remaining systems are individuals or pairs that remained neutral during the war. Either some corporate entity or colonists trying to get away from one of the other Human entities.

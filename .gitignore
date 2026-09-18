@@ -15,3 +15,6 @@ data/processed/*
 !data/processed/.gitkeep
 data/uploads/*
 !data/uploads/.gitkeep
+
+# Preset pack CSVs are builder scratch; committed packs are JSON
+data/presets/**/*.csv

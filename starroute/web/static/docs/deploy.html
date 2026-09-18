@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Deploy · Jumpgate Starroute</title>
+<style>:root {
+  --bg: #0b1020;
+  --panel: #141b2f;
+  --ink: #e8eefc;
+  --muted: #a9b4d0;
+  --accent: #7eb6ff;
+  --line: #2a3555;
+  --ok: #8fd39a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+a { color: var(--accent); }
+header, footer {
+  border-bottom: 1px solid var(--line);
+  padding: 1rem 1.25rem;
+  background: #0a0e1a;
+}
+footer { border-bottom: 0; border-top: 1px solid var(--line); margin-top: 3rem; color: var(--muted); font-size: 0.92rem; }
+nav a { margin-right: 1rem; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+main { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+h1, h2, h3 { line-height: 1.25; }
+h1 { font-size: 1.85rem; margin-top: 0; }
+h2 { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
+h3 { margin-top: 1.4rem; }
+.card {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1rem 1.1rem;
+  margin: 1rem 0;
+}
+.grid { display: grid; gap: 1rem; }
+@media (min-width: 720px) { .grid.two { grid-template-columns: 1fr 1fr; } }
+code, pre {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.92em;
+}
+code { background: #0a0e1a; padding: 0.1em 0.35em; border-radius: 4px; }
+pre {
+  background: #0a0e1a;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  overflow-x: auto;
+}
+.note { color: var(--muted); }
+.ok { color: var(--ok); }
+ul.compact li { margin: 0.35rem 0; }
+table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+th, td { border: 1px solid var(--line); padding: 0.55rem 0.65rem; text-align: left; vertical-align: top; }
+th { background: #0a0e1a; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Jumpgate Starroute</strong>
+  <nav style="margin-top:0.55rem">
+    <a href="../index.html">Home</a>
+    <a href="index.html">Docs</a>
+    <a href="../app.html">Map</a>
+    <a href="lore/index.html">Lore</a>
+    <a href="deploy.html">Deploy</a>
+    <a href="run-local.html">Run locally</a>
+    <a href="presets.html">Presets</a>
+  </nav>
+</header>
+<main>
+
+<h1>Two deploy strategies (one repo)</h1>
+<p>Keep <strong>one</strong> Git repository. Publish it two different ways depending on the audience.</p>
+
+<h2>1. Static host (recommended for players / GMs / demos)</h2>
+<div class="card">
+  <p><strong>Publish directory:</strong> <code>starroute/web/static/</code></p>
+  <p>That folder already contains the map UI (<code>app.html</code>), docs (<code>docs/</code>), and preset JSON under <code>presets/</code>. Visitors open the site and switch packs in the toolbar. <strong>No Python</strong> on the server.</p>
+</div>
+
+<h3>GitHub Pages (what this project uses for the public demo)</h3>
+<ul class="compact">
+  <li>Prefer a <strong>GitHub Actions</strong> workflow in the repo (see <code>.github/workflows/pages.yml</code>) that uploads <code>starroute/web/static/</code>.</li>
+  <li>In the repository’s Pages settings, set the source to <strong>GitHub Actions</strong> (wording may vary; the durable idea is “deploy from the workflow,” not “deploy a branch folder by hand”).</li>
+  <li>After the workflow runs, the site is usually at <code>https://&lt;owner&gt;.github.io/jumpgate_starroute/</code>.</li>
+  <li>Useful paths: <code>/</code> (home), <code>/app.html</code> (map), <code>/docs/</code> (these pages), <code>/docs/lore/</code> (setting wiki).</li>
+</ul>
+
+<h3>Cloudflare Pages (optional mirror)</h3>
+<ul class="compact">
+  <li>Connect the same GitHub repo.</li>
+  <li><strong>Build command:</strong> leave empty (nothing to compile for the static path).</li>
+  <li><strong>Publish directory:</strong> <code>starroute/web/static</code></li>
+  <li>Do not point Cloudflare at a Python runtime for this path. Regeneration stays on maintainer machines.</li>
+</ul>
+
+<h2>2. Builder / maintainer path (optional)</h2>
+<div class="card">
+  <p>Clone the repo, create a virtualenv, install <code>requirements.txt</code>, then regenerate packs:</p>
+  <pre>python -m starroute build-presets
+# or: python scripts/build_presets.py</pre>
+  <p>Use this when you change <code>config/map_presets.json</code>, swap catalogs, or retune jump knobs. Commit the updated JSON under <code>data/presets/</code> and <code>starroute/web/static/presets/</code>, then let the static host pick them up on the next Pages deploy.</p>
+  <p class="note">If <code>data/raw</code> NASA CSVs are missing, the builder falls back to the committed sample catalog in <code>starroute/web/static/sample-systems.csv</code>.</p>
+</div>
+
+<h2>What not to do</h2>
+<ul class="compact">
+  <li>Don’t require visitors to install Python to “see what it is.”</li>
+  <li>Don’t make Pages/Cloudflare run FastAPI for the public demo.</li>
+  <li>Don’t document vendor UIs step-by-click; document the <em>publish directory</em> and the <em>Actions source</em>.</li>
+</ul>
+
+</main>
+<footer>
+  <p>MIT licensed. Docs describe <em>what</em> to host and run, not click-paths through vendor dashboards that change often.</p>
+</footer>
+</body>
+</html>

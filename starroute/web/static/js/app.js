@@ -71,6 +71,26 @@ let factionPresets = { max_cultures: 16, presets: [] };
 let networkData = null;
 let lastSnapshot = null;
 let catalogOrigin = "Sol";
+let activePresetId = "crowded";
+let presetLoadToken = 0;
+
+const MAP_PRESETS = [
+  {
+    id: "crowded",
+    title: "Crowded — Turquenish neighborhood",
+    description: "Dense local space around Sol. Short jumps. Turquenish (bio-edit) and Mardat (chrome) plus tight-knit alien enclaves. Default tabletop slice.",
+  },
+  {
+    id: "sparse",
+    title: "Sparse — thin Turquenish grid",
+    description: "Same Turquenish–Mardat war, fewer small stars, longer jumps. Alien enclaves remain but feel isolated.",
+  },
+  {
+    id: "lonely_humans",
+    title: "Lonely humans",
+    description: "Sun-like stars only. No local aliens. Turquenish, Mardat, Hegemony, Faithful, and independents still feud and expand.",
+  },
+];
 
 const CATALOG_DEFAULTS = {
   origin: "Sol",
@@ -986,7 +1006,9 @@ function snapshotEnvelope(data) {
   return {
     starroute: (data && data.starroute) || "2.0",
     kind: "network_snapshot",
+    id: data && data.id,
     title: (data && data.title) || "Starroute map",
+    description: data && data.description,
     origin: (data && data.origin) || { origin_hostname: catalogOrigin || "Sol" },
     params: (data && data.params) || currentNetworkParams(),
     factions: data && data.factions,
@@ -994,11 +1016,121 @@ function snapshotEnvelope(data) {
   };
 }
 
+function applySnapshotParams(data) {
+  const p = (data && data.params) || {};
+  if (p.max_jump_ly != null) $("max-jump").value = String(p.max_jump_ly);
+  if (p.medium_start_pct != null) $("medium-pct").value = String(p.medium_start_pct);
+  if (p.long_start_pct != null) $("long-pct").value = String(p.long_start_pct);
+  if (p.max_neighbors != null) $("max-neighbors").value = String(p.max_neighbors);
+  if (p.max_linked_nodes != null) $("max-linked").value = String(p.max_linked_nodes);
+  if (p.hard_rank != null) $("hard-rank").value = String(p.hard_rank);
+  if (p.soft_rank != null) $("soft-rank").value = String(p.soft_rank);
+  if (p.min_stellar_mass != null) $("net-min-mass").value = String(p.min_stellar_mass);
+  if (p.root_hostname) $("root-host").value = p.root_hostname;
+  updateBandReadout();
+}
+
+function applyPresetCopy(data) {
+  const lede = $("map-lede");
+  if (!lede) return;
+  const meta = MAP_PRESETS.find((item) => item.id === (data && data.id)) || MAP_PRESETS.find((item) => item.id === activePresetId);
+  const title = (data && data.title) || (meta && meta.title) || "Starroute map";
+  const description = (data && data.description) || (meta && meta.description) || "";
+  lede.textContent = description ? `${title}. ${description}` : title;
+}
+
+function staticRoot() {
+  const script = document.querySelector("script[src*='default-map.js']");
+  if (script && script.getAttribute("src")) {
+    return script.getAttribute("src").replace(/default-map\.js.*$/, "");
+  }
+  return "";
+}
+
+function injectScript(src) {
+  return new Promise((resolve, reject) => {
+    const existing = document.querySelector(`script[data-preset-src="${src}"]`);
+    if (existing) {
+      resolve();
+      return;
+    }
+    const el = document.createElement("script");
+    el.src = src;
+    el.async = false;
+    el.dataset.presetSrc = src;
+    el.onload = () => resolve();
+    el.onerror = () => reject(new Error(`Could not load ${src}`));
+    document.head.appendChild(el);
+  });
+}
+
+async function fetchPresetSnapshot(id) {
+  if (window.STARROUTE_PRESET_PACKS && window.STARROUTE_PRESET_PACKS[id]) {
+    return window.STARROUTE_PRESET_PACKS[id];
+  }
+  const root = staticRoot();
+  try {
+    const res = await fetch(`${root}presets/${id}/map.json`, { cache: "no-cache" });
+    if (res.ok) return await res.json();
+  } catch {
+    /* file:// and some static hosts block fetch; fall through to the JS pack */
+  }
+  await injectScript(`${root}presets/${id}/map.js`);
+  if (window.STARROUTE_PRESET_PACKS && window.STARROUTE_PRESET_PACKS[id]) {
+    return window.STARROUTE_PRESET_PACKS[id];
+  }
+  if (id === "crowded" && window.STARROUTE_DEFAULT_MAP) {
+    return window.STARROUTE_DEFAULT_MAP;
+  }
+  throw new Error(`Could not load map pack “${id}”. Host this folder on a web server, or keep the presets/ files next to the page.`);
+}
+
+function rememberPreset(id) {
+  activePresetId = id;
+  try {
+    localStorage.setItem("starroute-map-preset", id);
+  } catch {
+    /* ignore quota / private mode */
+  }
+  const select = $("map-preset");
+  if (select && select.value !== id) select.value = id;
+  try {
+    const url = new URL(window.location.href);
+    if (id && id !== "crowded") url.searchParams.set("preset", id);
+    else url.searchParams.delete("preset");
+    history.replaceState(null, "", url);
+  } catch {
+    /* file:// or opaque origins may refuse history updates */
+  }
+}
+
+async function loadMapPreset(id, { silent } = {}) {
+  const token = ++presetLoadToken;
+  const data = await fetchPresetSnapshot(id);
+  if (token !== presetLoadToken) return;
+  if (!data || !data.payload || !data.payload.nodes) {
+    throw new Error("That pack is not a Starroute map snapshot.");
+  }
+  data.id = data.id || id;
+  rememberPreset(id);
+  applyNetworkResult(data);
+  if (!silent) {
+    const n = data.payload.nodes.length;
+    const e = (data.payload.edges && data.payload.edges.length) || 0;
+    toast(`Loaded ${data.title || id}: ${n} systems, ${e} jump routes.`);
+  }
+}
+
 function applyNetworkResult(data) {
   const payload = data && data.payload && data.payload.nodes ? data.payload : data;
   if (!payload || !payload.nodes) return;
   lastSnapshot = snapshotEnvelope(data && data.payload && data.payload.nodes ? data : { payload });
   networkData = payload;
+  if (data && data.origin && data.origin.origin_hostname) {
+    catalogOrigin = data.origin.origin_hostname;
+  }
+  applySnapshotParams(lastSnapshot);
+  applyPresetCopy(lastSnapshot);
   fillPathSelects(networkData.nodes);
   fillFocusOptions(networkData.nodes);
   highlightPath();
@@ -1084,6 +1216,9 @@ $("snapshot-file").addEventListener("change", async () => {
       $("root-host").value = catalogOrigin;
     }
     applyNetworkResult(data);
+    if (data.id && MAP_PRESETS.some((item) => item.id === data.id)) {
+      rememberPreset(data.id);
+    }
     toast(`Loaded snapshot (${data.payload.nodes.length} systems).`);
   } catch (err) {
     toast(err.message, true);
@@ -1145,6 +1280,7 @@ $("btn-reset-factions").addEventListener("click", async () => {
 
 $("btn-reset-map").addEventListener("click", () => {
   applyNetworkDefaults();
+  if (lastSnapshot) applySnapshotParams(lastSnapshot);
   toast("Route settings reset. The map itself is unchanged until you draw again.");
 });
 
@@ -1189,11 +1325,23 @@ document.addEventListener("input", (event) => {
   highlightPath();
 });
 
-async function boot() {
-  if (window.STARROUTE_DEFAULT_MAP) {
-    applyNetworkResult(window.STARROUTE_DEFAULT_MAP);
-    catalogOrigin = (window.STARROUTE_DEFAULT_MAP.origin && window.STARROUTE_DEFAULT_MAP.origin.origin_hostname) || "Sol";
+function requestedPresetId() {
+  try {
+    const fromUrl = new URL(window.location.href).searchParams.get("preset");
+    if (fromUrl && MAP_PRESETS.some((item) => item.id === fromUrl)) return fromUrl;
+  } catch {
+    /* ignore malformed URL */
   }
+  try {
+    const stored = localStorage.getItem("starroute-map-preset");
+    if (stored && MAP_PRESETS.some((item) => item.id === stored)) return stored;
+  } catch {
+    /* ignore quota / private mode */
+  }
+  return "crowded";
+}
+
+async function boot() {
   showScreen("map");
   $("btn-drawer").addEventListener("click", () => toggleDrawer());
   $("btn-glossary").addEventListener("click", openGlossary);
@@ -1210,13 +1358,44 @@ async function boot() {
   bindHostSearch($("root-host"), $("root-suggest"), "host-path");
   applyCatalogDefaults();
   applyNetworkDefaults();
+  if (window.STARROUTE_DEFAULT_MAP) {
+    applyNetworkResult({ ...window.STARROUTE_DEFAULT_MAP, id: window.STARROUTE_DEFAULT_MAP.id || "crowded" });
+  }
+  const presetId = requestedPresetId();
+  if ($("map-preset")) {
+    $("map-preset").value = presetId;
+    $("map-preset").addEventListener("change", async () => {
+      const id = $("map-preset").value;
+      try {
+        await loadMapPreset(id);
+      } catch (err) {
+        toast(err.message, true);
+        $("map-preset").value = activePresetId;
+      }
+    });
+  }
+  if (presetId !== "crowded" || !window.STARROUTE_DEFAULT_MAP) {
+    try {
+      await loadMapPreset(presetId, { silent: true });
+    } catch (err) {
+      toast(err.message, true);
+      if ($("map-preset")) $("map-preset").value = "crowded";
+      rememberPreset("crowded");
+    }
+  } else {
+    rememberPreset("crowded");
+  }
   try {
     await detectSources();
     factionConfig = await api("/api/factions");
     await ensurePresets();
     renderFactionEditor(factionConfig);
     $("ingest-min-mass").value = String(CATALOG_DEFAULTS.minSolarMass);
-    $("net-min-mass").value = String(NETWORK_DEFAULTS.minSolarMass);
+    if (lastSnapshot && lastSnapshot.params && lastSnapshot.params.min_stellar_mass != null) {
+      $("net-min-mass").value = String(lastSnapshot.params.min_stellar_mass);
+    } else {
+      $("net-min-mass").value = String(NETWORK_DEFAULTS.minSolarMass);
+    }
     document.body.classList.remove("no-backend");
   } catch {
     document.body.classList.add("no-backend");

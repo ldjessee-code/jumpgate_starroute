@@ -87,6 +87,7 @@ class NetworkRequest(BaseModel):
     soft_rank: float = 0.3
     max_linked_nodes: int = 101
     min_stellar_mass: float = 0.25
+    max_stellar_mass: Optional[float] = None
     root_hostname: str = "Sol"
     assign_factions: bool = True
     factions: Optional[Dict[str, Any]] = None

@@ -22,6 +22,7 @@ DEFAULT_NETWORK = {
     "soft_rank": 0.30,
     "max_linked_nodes": 101,
     "min_stellar_mass": 0.25,
+    "max_stellar_mass": None,
     "root_hostname": "Sol",
 }
 
@@ -35,7 +36,12 @@ def _band_limits(max_jump: float, medium_pct: float, long_pct: float) -> tuple[f
     return short_end, long_start
 
 
-def _valid_row(row: pd.Series, min_mass: float, origin: str) -> bool:
+def _valid_row(
+    row: pd.Series,
+    min_mass: float,
+    origin: str,
+    max_mass: float | None = None,
+) -> bool:
     coords = (row["calculated_x"], row["calculated_y"], row["calculated_z"])
     if not all(np.isfinite(c) for c in coords):
         return False
@@ -45,6 +51,8 @@ def _valid_row(row: pd.Series, min_mass: float, origin: str) -> bool:
         return True
     mass = row.get("st_mass")
     if pd.isna(mass) or float(mass) < min_mass:
+        return False
+    if max_mass is not None and float(mass) > float(max_mass):
         return False
     return True
 
@@ -113,7 +121,17 @@ def generate_network(
     if missing:
         raise ValueError(f"systems table missing columns: {sorted(missing)}")
 
-    df = df[df.apply(lambda r: _valid_row(r, cfg["min_stellar_mass"], cfg["root_hostname"]), axis=1)].reset_index(drop=True)
+    df = df[
+        df.apply(
+            lambda r: _valid_row(
+                r,
+                cfg["min_stellar_mass"],
+                cfg["root_hostname"],
+                cfg.get("max_stellar_mass"),
+            ),
+            axis=1,
+        )
+    ].reset_index(drop=True)
     if df["hostname"].duplicated().any():
         df = df.drop_duplicates(subset="hostname", keep="first").reset_index(drop=True)
 

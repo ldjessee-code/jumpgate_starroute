@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Lore · Jumpgate Starroute</title>
+<link rel="stylesheet" href="../_style.css"/>
+<link rel="stylesheet" href="lore.css"/>
+</head>
+<body>
+<header>
+  <strong>Jumpgate Starroute</strong>
+  <nav style="margin-top:0.55rem">
+    <a href="../../index.html">Home</a>
+    <a href="../index.html">Docs</a>
+    <a href="../../app.html">Map</a>
+    <a href="index.html" aria-current="page">Lore</a>
+    <a href="../lore.html">Add a page</a>
+  </nav>
+</header>
+<main>
+  <h1>Lore vault</h1>
+  <p class="note">Flat Markdown from the repo’s <code>setting/</code> folder. No accounts, no editor, no database. Search filters titles only.</p>
+  <div class="lore-layout">
+    <aside class="lore-sidebar">
+      <h2>Pages</h2>
+      <label class="note" for="lore-search">Search titles</label>
+      <input id="lore-search" type="search" placeholder="Overview, cultures…" autocomplete="off"/>
+      <ul id="lore-list"></ul>
+    </aside>
+    <div>
+      <article id="lore-article" class="lore-article">
+        <p class="lore-status">Loading pages…</p>
+      </article>
+      <p id="lore-status" class="lore-status"></p>
+    </div>
+  </div>
+</main>
+<footer>
+  <p>MIT licensed. Source files live in <code>setting/</code>; this page reads a committed copy under <code>docs/lore/pages/</code>.</p>
+</footer>
+<script src="index.js"></script>
+<script src="marked.min.js"></script>
+<script src="lore.js"></script>
+</body>
+</html>

@@ -92,6 +92,7 @@ keys = [
     "hard_rank",
     "soft_rank",
     "min_stellar_mass",
+    "max_stellar_mass",
     "root_hostname",
 ]
 raw = json.loads(js_params_json)
