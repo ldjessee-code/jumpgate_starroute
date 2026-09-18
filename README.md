@@ -147,4 +147,17 @@ See [HISTORY.md](HISTORY.md).
 
 ## License
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE).
+This is a **split** license. The map **tool** is MIT. The **setting** is not.
+
+| Tree | What | License |
+| --- | --- | --- |
+| Code, static viewer, how-to docs (`starroute/`, `config/` knobs, most of `docs/`) | Software | [MIT](LICENSE) — copyright Lloyd Douglass Jessee |
+| [`setting/`](setting/) | Turquenish–Mardat lore | [setting/COPYRIGHT.md](setting/COPYRIGHT.md) — author retains copyright; personal / tabletop use with this tool |
+| [`user_setting/`](user_setting/) | Homebrew you add | Yours. Not MIT and not the Turquenish grant |
+| NASA extracts (`data/raw/`, `sample-systems.csv`) | Star catalog | Not MIT; not fiction. See [catalog/NOTICE.md](catalog/NOTICE.md) |
+
+MIT already keeps your copyright on the **code**; it grants others broad reuse of that code. Restricting the **lore** to personal / tabletop use is a separate grant, which is why it lives in its own root folder with its own notice.
+
+Culture *names* on the generated map JSON are labels that point at `setting/`. The prose stays in `setting/`.
+
+This is not legal advice.
