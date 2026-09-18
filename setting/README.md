@@ -7,8 +7,10 @@ Turquenish–Mardat lore, split to match the three map packs.
 | `crowded/` | crowded | Dense Turquenish neighborhood. Short jumps. Local aliens. Default tabletop. |
 | `sparse/` | sparse | Same war, thinner gate grid, longer hops. |
 | `lonely_humans/` | lonely_humans | Sun-like stars, human factions only. |
-| `custom/{pack}/` | custom | Your pages, kept separate from shipped lore. |
 | `source/` | — | Copies of the tabletop notes (text only). |
+
+**Copyright:** [COPYRIGHT.md](COPYRIGHT.md) — this folder is **not** MIT.
+Put your own pages in [`user_setting/`](../user_setting/), not here.
 
 `README.md` here is not in the wiki index. Other `setting/**/*.md` files are.
 

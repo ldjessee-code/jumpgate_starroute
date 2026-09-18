@@ -809,6 +809,7 @@ function drawMap(path = []) {
   const { nodes, edges } = networkData;
   const byFaction = $("color-faction").checked;
   const focus = $("focus-faction").value || "all";
+  const reduceMotion = $("reduce-map-motion") && $("reduce-map-motion").checked;
   const lookup = Object.fromEntries(nodes.map((n) => [n.hostname, n]));
   const pathSet = new Set();
   for (let i = 0; i < path.length - 1; i += 1) {
@@ -838,7 +839,7 @@ function drawMap(path = []) {
       hzs.push(a.z, b.z, null);
       return;
     }
-    const bothFocus = focus !== "all" && a.group === focus && b.group === focus;
+    const bothFocus = !reduceMotion && focus !== "all" && a.group === focus && b.group === focus;
     if (bothFocus) {
       gxs.push(a.x, b.x, null);
       gys.push(a.y, b.y, null);
@@ -862,7 +863,7 @@ function drawMap(path = []) {
     if (focus === "all" || n.group === focus) return base;
     return Math.max(3, base * 0.7);
   });
-  const haloNodes = focus === "all" ? [] : nodes.filter((n) => n.group === focus);
+  const haloNodes = (focus === "all" || reduceMotion) ? [] : nodes.filter((n) => n.group === focus);
   const glowColor = focus === "all" ? "rgba(255,255,255,0.2)" : hexToRgba(getGroupColor(focus), 0.22);
   const glowLineColor = focus === "all" ? "rgba(255,255,255,0.18)" : hexToRgba(getGroupColor(focus), 0.2);
   const hover = (n) =>
@@ -969,14 +970,18 @@ function drawMap(path = []) {
   ];
 
   renderLegend(nodes);
+  const packKey = (lastSnapshot && (lastSnapshot.id || lastSnapshot.title)) || "map";
+  const prevCam = plot.layout && plot.layout.scene && plot.layout.scene.camera;
   Plotly.react(plot, traces, {
     paper_bgcolor: "#05070c",
     plot_bgcolor: "#05070c",
     font: { color: "#d9d2c3" },
     margin: { l: 0, r: 0, t: 8, b: 0 },
     showlegend: false,
+    uirevision: packKey,
     scene: {
       aspectmode: "data",
+      camera: prevCam,
       xaxis: { title: "X (ly)", backgroundcolor: "#05070c", gridcolor: "#2a3140", zerolinecolor: "#3a4254", color: "#c9c2b2" },
       yaxis: { title: "Y (ly)", backgroundcolor: "#05070c", gridcolor: "#2a3140", zerolinecolor: "#3a4254", color: "#c9c2b2" },
       zaxis: { title: "Z (ly)", backgroundcolor: "#05070c", gridcolor: "#2a3140", zerolinecolor: "#3a4254", color: "#c9c2b2" },
@@ -1328,6 +1333,17 @@ $("path-start").addEventListener("change", highlightPath);
 $("path-end").addEventListener("change", highlightPath);
 $("color-faction").addEventListener("change", () => highlightPath());
 $("focus-faction").addEventListener("change", () => highlightPath());
+if ($("reduce-map-motion")) {
+  try {
+    $("reduce-map-motion").checked = localStorage.getItem("starroute-reduce-map-motion") === "1";
+  } catch { /* ignore */ }
+  $("reduce-map-motion").addEventListener("change", () => {
+    try {
+      localStorage.setItem("starroute-reduce-map-motion", $("reduce-map-motion").checked ? "1" : "0");
+    } catch { /* ignore */ }
+    highlightPath();
+  });
+}
 document.addEventListener("input", (event) => {
   const pick = event.target.closest(".legend-pick");
   if (!pick) return;

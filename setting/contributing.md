@@ -11,14 +11,14 @@ Flat files. No accounts, no in-browser editor.
 
 Put Turquenish-neighborhood text under `setting/crowded/`. Thin-grid
 variants under `setting/sparse/`. Human-only expansion under
-`setting/lonely_humans/`. **Your** extra pages go in `setting/custom/{pack}/`
+`setting/lonely_humans/`. **Your** extra pages go in `user_setting/{pack}/`
 so they never mix with shipped files. Shareable tabletop notes (no char
 sheets) go in `setting/source/` as `.txt` if they should stay out of the wiki
 index.
 
 On the public site you can also **Add a page** / **Edit page** in the
 browser. Those copies stay in that browser until you Export JSON or commit
-them under `setting/custom/`.
+them under `user_setting/`.
 
 ## Add a page
 

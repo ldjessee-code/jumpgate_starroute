@@ -115,6 +115,7 @@
   function packOf(page) {
     if (page.pack && page.pack !== "custom" && page.pack !== "shared") return page.pack;
     const parts = (page.id || "").split("/");
+    if (parts[0] === "user_setting" && PACKS.some((p) => p.id === parts[1])) return parts[1];
     if (parts[0] === "custom" && PACKS.some((p) => p.id === parts[1])) return parts[1];
     if (PACKS.some((p) => p.id === parts[0])) return parts[0];
     return "shared";

@@ -19,3 +19,12 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+The MIT License above covers the Jumpgate Starroute **software** (code, map
+viewer, how-to docs). It does **not** cover:
+
+- `setting/` — Turquenish–Mardat lore; see `setting/COPYRIGHT.md`
+- `user_setting/` — files you add; your copyright, not the author’s setting
+- NASA Exoplanet Archive extracts — see `catalog/NOTICE.md`

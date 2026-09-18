@@ -268,6 +268,13 @@ const GLOSSARY = [
     impact: "Uncheck it if you want to ignore politics and just see ranking.",
   },
   {
+    id: "reduceMotion",
+    title: "Reduce map effects",
+    group: "Map",
+    meaning: "Keeps the current zoom and angle when you highlight a culture, and skips the extra halo traces. Use this on a slower machine.",
+    impact: "Highlight still fades other cultures. Pack switches still reset the view to the new neighborhood.",
+  },
+  {
     id: "wasmRebuild",
     title: "Generate new map",
     group: "Map",
@@ -300,7 +307,7 @@ const GLOSSARY = [
     title: "Add or edit a lore page",
     group: "Lore",
     meaning: "A split Markdown editor (type on the left, preview on the right). No accounts. Shipped pages are not overwritten — Edit saves a copy.",
-    impact: "Copies live in this browser until you Export JSON or commit files under setting/custom/{pack}/. Blank starters: <a href=\"docs/own-setting.html\">use the map with your own setting</a>.",
+    impact: "Copies live in this browser until you Export JSON or commit files under user_setting/{pack}/. Blank starters: <a href=\"docs/own-setting.html\">use the map with your own setting</a>.",
   },
   {
     id: "loreLoad",
@@ -320,8 +327,8 @@ const GLOSSARY = [
     id: "customLore",
     title: "Custom lore folder",
     group: "Lore",
-    meaning: "Repo path setting/custom/{crowded|sparse|lonely_humans}/ is for pages you want in git, kept apart from shipped setting text.",
-    impact: "After adding files there, run python -m starroute build-lore and commit the copies under docs/lore/pages/custom/.",
+    meaning: "Repo path user_setting/{crowded|sparse|lonely_humans}/ is for pages you want in git, kept apart from shipped Turquenish text in setting/.",
+    impact: "After adding files there, run python -m starroute build-lore and commit the copies under docs/lore/pages/user_setting/.",
   },
   {
     id: "pagesSite",

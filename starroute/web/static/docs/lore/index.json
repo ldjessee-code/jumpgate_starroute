@@ -7,6 +7,7 @@
       "order": 1,
       "pack": "shared",
       "source": "overview.md",
+      "disk": "setting/overview.md",
       "path": "pages/overview.md"
     },
     {
@@ -15,6 +16,7 @@
       "order": 10,
       "pack": "crowded",
       "source": "crowded/overview.md",
+      "disk": "setting/crowded/overview.md",
       "path": "pages/crowded/overview.md"
     },
     {
@@ -23,6 +25,7 @@
       "order": 11,
       "pack": "crowded",
       "source": "crowded/humans.md",
+      "disk": "setting/crowded/humans.md",
       "path": "pages/crowded/humans.md"
     },
     {
@@ -31,6 +34,7 @@
       "order": 12,
       "pack": "crowded",
       "source": "crowded/aliens.md",
+      "disk": "setting/crowded/aliens.md",
       "path": "pages/crowded/aliens.md"
     },
     {
@@ -39,6 +43,7 @@
       "order": 13,
       "pack": "crowded",
       "source": "crowded/war.md",
+      "disk": "setting/crowded/war.md",
       "path": "pages/crowded/war.md"
     },
     {
@@ -47,6 +52,7 @@
       "order": 14,
       "pack": "crowded",
       "source": "crowded/travel.md",
+      "disk": "setting/crowded/travel.md",
       "path": "pages/crowded/travel.md"
     },
     {
@@ -55,6 +61,7 @@
       "order": 20,
       "pack": "sparse",
       "source": "sparse/overview.md",
+      "disk": "setting/sparse/overview.md",
       "path": "pages/sparse/overview.md"
     },
     {
@@ -63,6 +70,7 @@
       "order": 21,
       "pack": "sparse",
       "source": "sparse/thin-grid.md",
+      "disk": "setting/sparse/thin-grid.md",
       "path": "pages/sparse/thin-grid.md"
     },
     {
@@ -71,6 +79,7 @@
       "order": 22,
       "pack": "sparse",
       "source": "sparse/peoples.md",
+      "disk": "setting/sparse/peoples.md",
       "path": "pages/sparse/peoples.md"
     },
     {
@@ -79,6 +88,7 @@
       "order": 30,
       "pack": "lonely_humans",
       "source": "lonely_humans/overview.md",
+      "disk": "setting/lonely_humans/overview.md",
       "path": "pages/lonely_humans/overview.md"
     },
     {
@@ -87,6 +97,7 @@
       "order": 31,
       "pack": "lonely_humans",
       "source": "lonely_humans/factions.md",
+      "disk": "setting/lonely_humans/factions.md",
       "path": "pages/lonely_humans/factions.md"
     },
     {
@@ -95,6 +106,7 @@
       "order": 32,
       "pack": "lonely_humans",
       "source": "lonely_humans/expansion.md",
+      "disk": "setting/lonely_humans/expansion.md",
       "path": "pages/lonely_humans/expansion.md"
     },
     {
@@ -103,6 +115,7 @@
       "order": 33,
       "pack": "lonely_humans",
       "source": "lonely_humans/war.md",
+      "disk": "setting/lonely_humans/war.md",
       "path": "pages/lonely_humans/war.md"
     },
     {
@@ -111,6 +124,7 @@
       "order": 90,
       "pack": "shared",
       "source": "contributing.md",
+      "disk": "setting/contributing.md",
       "path": "pages/contributing.md"
     },
     {
@@ -119,6 +133,7 @@
       "order": 95,
       "pack": "shared",
       "source": "source/player-intro.md",
+      "disk": "setting/source/player-intro.md",
       "path": "pages/source/player-intro.md"
     }
   ]

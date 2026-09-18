@@ -11,6 +11,8 @@ Live: **https://ldjessee-code.github.io/jumpgate_starroute/**
 
 **Context help:** on the map, **?** sits just left of **Terms & Help docs** (gear = Settings, above). Click **?** then a control. HTML/CSS/JS only (`js/help.js`, `js/glossary.js`).
 
+**License split:** MIT for the software; `setting/COPYRIGHT.md` for Turquenish lore; `user_setting/` for your files; `catalog/NOTICE.md` for NASA extracts. See the README.
+
 ## GitHub Pages
 
 Workflow `.github/workflows/pages.yml` deploys `starroute/web/static/` on push to `main`. Repo setting: Pages **source = GitHub Actions**.

@@ -205,6 +205,10 @@
           </div>
           <div class="row-actions">
             <button id="btn-wasm-rebuild" class="btn primary" type="button" data-help="wasmRebuild">Generate new map</button>
+          <label class="check" data-help="reduceMotion">
+            <input id="reduce-map-motion" type="checkbox" />
+            Reduce map effects (keeps view; skips culture halo)
+          </label>
             <span class="field-help">Uses the shipped star list (not a fresh NASA download). First click loads Python-in-WASM (slow once). After that, changing jump length or percents and generating again is local.</span>
           </div>
           <p id="wasm-status" class="field-help" aria-live="polite"></p>

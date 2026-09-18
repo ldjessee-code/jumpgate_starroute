@@ -76,7 +76,7 @@ nav a[aria-current="page"] { color: var(--ink); }
 <pre>setting/crowded/              shipped Turquenish neighborhood
 setting/sparse/               thin-grid variant
 setting/lonely_humans/        human-only expansion
-setting/custom/{pack}/        <em>your</em> committed pages (kept separate)
+user_setting/{pack}/          <em>your</em> committed pages (not Turquenish copyright)
 setting/source/               tabletop notes (not mixed into packs)
 
 starroute/web/static/docs/lore/   what Pages serves
@@ -89,14 +89,14 @@ starroute/web/static/docs/lore/   what Pages serves
 <p>The viewer has <strong>Add a page</strong> and <strong>Edit page</strong>. That editor is a small split Markdown box (textarea + live preview) using the already-vendored MIT <code>marked</code> parser — no extra app, no accounts.</p>
 <ul class="compact">
   <li><strong>Shipped pages</strong> are not overwritten. Edit saves a <em>copy</em> into this browser.</li>
-  <li><strong>Your pages</strong> stay in this browser (<code>localStorage</code>) until you Export JSON, or until a maintainer commits files under <code>setting/custom/{pack}/</code>.</li>
+  <li><strong>Your pages</strong> stay in this browser (<code>localStorage</code>) until you Export JSON, or until a maintainer commits files under <code>user_setting/{pack}/</code>.</li>
   <li><strong>Load files</strong> imports <code>.md</code> or an exported JSON pack into the current map pack, still separate from shipped lore.</li>
 </ul>
 <p class="note">A richer MIT editor such as <a href="https://github.com/Ionaru/easy-markdown-editor">EasyMDE</a> would also be license-safe. We kept the built-in split view so Pages does not need another library.</p>
 
 <h2>Commit a page into the repo</h2>
 <ol>
-  <li>Put Markdown in <code>setting/custom/crowded/</code> (or sparse / lonely_humans) — not next to the shipped Turquenish files.</li>
+  <li>Put Markdown in <code>user_setting/crowded/</code> (or sparse / lonely_humans) — not next to the shipped Turquenish files in <code>setting/</code>.</li>
   <li>Optional front matter:
 <pre>---
 title: Your topic
