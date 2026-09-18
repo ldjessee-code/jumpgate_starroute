@@ -1,12 +1,67 @@
+:root {
+  --ink: #1a1f2e;
+  --ink-soft: #3d4659;
+  --muted: #6b7385;
+  --paper: #f4efe4;
+  --card: #fffcf6;
+  --line: #d4c9b0;
+  --accent: #2a6f8f;
+  --gold: #c9a227;
+  --font: "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-display: "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif;
+  --bg: #f4efe4;
+  --panel: #fffcf6;
+}
+* { box-sizing: border-box; }
 html, body.lore-app {
   height: 100%;
   overflow: hidden;
+  margin: 0;
 }
 body.lore-app {
   display: flex;
   flex-direction: column;
+  background:
+    radial-gradient(ellipse at top, #fffaf0 0%, var(--paper) 50%, #ddd4c2 100%);
+  color: var(--ink);
+  font-family: var(--font);
 }
-body.lore-app > header { flex: 0 0 auto; }
+.masthead {
+  background: linear-gradient(135deg, #121826 0%, #1e3a4a 45%, #2a2418 100%);
+  color: var(--paper);
+  padding: 0.7rem 1rem 0.55rem;
+  border-bottom: 3px solid var(--gold);
+  flex: 0 0 auto;
+}
+.masthead-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+.masthead-copy { max-width: 52rem; }
+.eyebrow {
+  margin: 0;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  color: var(--gold);
+}
+.site-nav { display: flex; flex-wrap: wrap; gap: 0.35rem 0.9rem; margin: 0.35rem 0 0.15rem; font-size: 0.82rem; }
+.site-nav a { color: #d9d2c3; text-decoration: none; }
+.site-nav a:hover { color: var(--gold); text-decoration: underline; }
+.site-nav a[aria-current="page"] { color: var(--gold); }
+.masthead h1 {
+  font-family: var(--font-display);
+  font-weight: 500;
+  margin: 0.1rem 0 0.2rem;
+  font-size: 1.45rem;
+}
+.lede { margin: 0; color: #d9d2c3; max-width: 40rem; font-size: 0.88rem; }
+.header-help-row { display: flex; align-items: center; gap: 0.4rem; }
+a { color: var(--accent); }
+.note { color: var(--muted); }
+.check { display: flex; flex-direction: row; align-items: center; gap: 0.4rem; font-size: 0.88rem; }
 body.lore-app main.lore-shell {
   flex: 1 1 auto;
   min-height: 0;
@@ -32,7 +87,7 @@ body.lore-app main.lore-shell {
   padding: 0.4rem 0.5rem;
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: #0a0e1a;
+  background: var(--card);
   color: var(--ink);
   font: inherit;
 }
@@ -70,7 +125,7 @@ body.lore-app main.lore-shell {
   padding: 0.45rem 0.55rem;
   border: 1px solid var(--line);
   border-radius: 6px;
-  background: #0a0e1a;
+  background: var(--card);
   color: var(--ink);
   font: inherit;
 }
@@ -95,9 +150,9 @@ body.lore-app main.lore-shell {
   text-decoration: none;
   color: var(--ink);
 }
-#lore-list a:hover { background: #0a0e1a; }
+#lore-list a:hover { background: #efe6d4; }
 #lore-list a.is-active {
-  background: #0a0e1a;
+  background: #efe6d4;
   color: var(--accent);
 }
 .lore-side-actions {
@@ -110,7 +165,7 @@ body.lore-app main.lore-shell {
 .btn {
   display: inline-block;
   border: 1px solid var(--line);
-  background: #0a0e1a;
+  background: var(--card);
   color: var(--ink);
   border-radius: 6px;
   padding: 0.35rem 0.55rem;
@@ -206,3 +261,29 @@ nav a[aria-current="page"] { color: var(--ink); }
   overflow: auto;
 }
 .lore-editor-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.lore-editor-panel {
+  background: var(--card);
+  color: var(--ink);
+}
+.lore-editor-panel input[type="text"],
+.lore-editor-md textarea {
+  background: #fff;
+  color: var(--ink);
+}
+
+/* Same hues as the map legend; toggle with body.lore-faction-colors */
+body.lore-faction-colors .fac-turquenish { color: #1a8fb8; }
+body.lore-faction-colors .fac-mardat { color: #4a5ad4; }
+body.lore-faction-colors .fac-hegemony { color: #b8860b; }
+body.lore-faction-colors .fac-faithful { color: #8b5fbf; }
+body.lore-faction-colors .fac-other-human { color: #3a8ab8; }
+body.lore-faction-colors .fac-echryon { color: #a68b00; }
+body.lore-faction-colors .fac-crystomorphs { color: #9b2ec9; }
+body.lore-faction-colors .fac-aboreals { color: #1a9a4a; }
+body.lore-faction-colors .fac-schettel { color: #6b7380; }
+body.lore-faction-colors .fac-faetheren { color: #c9a227; }
+body.lore-faction-colors .fac-bazzar { color: #c43a55; }
+body.lore-faction-colors .fac-methan { color: #0a9a6e; }
+body.lore-faction-colors .fac-human { color: #1a7aad; }
+body:not(.lore-faction-colors) .fac { color: inherit; font-weight: inherit; }
+body.lore-faction-colors .fac { font-weight: 600; }

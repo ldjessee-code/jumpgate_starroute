@@ -1,0 +1,19 @@
+{
+  "pack": "sparse",
+  "title": "My sparse setting",
+  "note": "Load this on Lore while the map pack is Sparse. Geography stays; these pages are yours.",
+  "pages": [
+    {
+      "id": "custom/sparse/overview",
+      "pack": "sparse",
+      "title": "Overview",
+      "markdown": "# Overview\n\nThis is your thin-grid neighborhood. Longer jumps, fewer small stars. Replace this text.\n"
+    },
+    {
+      "id": "custom/sparse/peoples",
+      "pack": "sparse",
+      "title": "Peoples",
+      "markdown": "# Peoples\n\nSame map labels as crowded unless you say otherwise: **Turquenish Empire**, **Mardat Coalition**, and the rest. Write how the thinner grid changes daily life.\n"
+    }
+  ]
+}

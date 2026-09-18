@@ -300,7 +300,7 @@ const GLOSSARY = [
     title: "Add or edit a lore page",
     group: "Lore",
     meaning: "A split Markdown editor (type on the left, preview on the right). No accounts. Shipped pages are not overwritten — Edit saves a copy.",
-    impact: "Copies live in this browser until you Export JSON or a maintainer commits files under setting/custom/{pack}/.",
+    impact: "Copies live in this browser until you Export JSON or commit files under setting/custom/{pack}/. Blank starters: <a href=\"docs/own-setting.html\">use the map with your own setting</a>.",
   },
   {
     id: "loreLoad",
@@ -308,6 +308,13 @@ const GLOSSARY = [
     group: "Lore",
     meaning: "Load .md files or an exported JSON pack into the current map pack. Export downloads your pages for that pack.",
     impact: "Imported files go to Your pages, never into the shipped Turquenish folders.",
+  },
+  {
+    id: "loreColors",
+    title: "Match map colors",
+    group: "Lore",
+    meaning: "When on, culture names in the lore text use hues close to the map legend (Turquenish cyan, Mardat blue-violet, and so on). When off, the article is plain text color.",
+    impact: "This is only a display switch in this browser. It does not change the Markdown files.",
   },
   {
     id: "customLore",
@@ -328,22 +335,22 @@ const GLOSSARY = [
     title: "Tabs that are not on this site",
     group: "Getting started",
     alsoCalled: "self-host, later, ghosted tabs",
-    meaning: "The gray tabs are real features, parked on the public Pages site. This host only serves finished map packs and lore. No Python runs here.",
-    impact: "To turn them on, run the app on your own machine (`python -m starroute serve`) with NASA CSVs in data/raw. Docs → Run locally and Deploy explain that split.",
+    meaning: "The gray tabs are real features, parked on the public Pages site. This host only serves finished map packs and lore. No Python runs here. See <a href=\"docs/self-host.html\">what self-hosting adds</a>.",
+    impact: "To turn them on, run the app on your machine (`python -m starroute serve`) with NASA files in data/raw. <a href=\"docs/run-local.html\">Run locally</a> starts easy (just the webpage) and then covers the Python path.",
   },
   {
     id: "laterFactions",
     title: "Who lives where (self-host)",
     group: "Getting started",
-    meaning: "A full culture editor: rename polities, change how many systems they claim, and preview habitat rules. The public site already paints Turquenish, Mardat, and the rest onto the three packs.",
-    impact: "Enable it by self-hosting the Python app. Changing rules there does not rewrite the JSON packs until you run build-presets.",
+    meaning: "A full culture editor: rename polities, change how many systems they claim, and preview habitat rules. The public site already paints Turquenish, Mardat, and the rest onto the three packs. Details: <a href=\"docs/self-host.html\">self-hosting features</a>.",
+    impact: "Enable it by running the Python app locally. Changing rules there does not rewrite the JSON packs until you run build-presets.",
   },
   {
     id: "laterStars",
     title: "Choose the stars (self-host)",
     group: "Getting started",
-    meaning: "NASA catalog ingest: load planet and host CSVs, pick a home star, and decide how far out to keep. Not on GitHub Pages — the shipped packs already use a 60 ly sample around Sol.",
-    impact: "Self-host with files in data/raw, then ingest. Until then this tab stays available so you can see it exists, but it will not switch screens.",
+    meaning: "NASA catalog ingest: load planet and host CSVs, pick a home star, and decide how far out to keep. Not on GitHub Pages — the shipped packs already use a 60 ly sample around Sol. See <a href=\"docs/self-host.html\">self-hosting features</a>.",
+    impact: "Put files in data/raw and run the Python app. Until then this tab stays visible so you can see it exists, but it will not switch screens.",
   },
 ];
 

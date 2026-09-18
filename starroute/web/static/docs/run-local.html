@@ -6,57 +6,24 @@
 <title>Run locally · Jumpgate Starroute</title>
 <link rel="stylesheet" href="../css/help.css"/>
 <style>:root {
-  --bg: #0b1020;
-  --panel: #141b2f;
-  --ink: #e8eefc;
-  --muted: #a9b4d0;
-  --accent: #7eb6ff;
-  --line: #2a3555;
-  --ok: #8fd39a;
+  --bg: #0b1020; --panel: #141b2f; --ink: #e8eefc; --muted: #a9b4d0;
+  --accent: #7eb6ff; --line: #2a3555; --ok: #8fd39a;
 }
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  margin: 0;
-  font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--ink);
-}
+body { margin: 0; font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--ink); }
 a { color: var(--accent); }
-header, footer {
-  border-bottom: 1px solid var(--line);
-  padding: 1rem 1.25rem;
-  background: #0a0e1a;
-}
+header, footer { border-bottom: 1px solid var(--line); padding: 1rem 1.25rem; background: #0a0e1a; }
 footer { border-bottom: 0; border-top: 1px solid var(--line); margin-top: 3rem; color: var(--muted); font-size: 0.92rem; }
 nav a { margin-right: 1rem; text-decoration: none; }
 nav a:hover { text-decoration: underline; }
 main { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
-h1, h2, h3 { line-height: 1.25; }
 h1 { font-size: 1.85rem; margin-top: 0; }
 h2 { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
 h3 { margin-top: 1.4rem; }
-.card {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  border-radius: 10px;
-  padding: 1rem 1.1rem;
-  margin: 1rem 0;
-}
-.grid { display: grid; gap: 1rem; }
-@media (min-width: 720px) { .grid.two { grid-template-columns: 1fr 1fr; } }
-code, pre {
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  font-size: 0.92em;
-}
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; margin: 1rem 0; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
 code { background: #0a0e1a; padding: 0.1em 0.35em; border-radius: 4px; }
-pre {
-  background: #0a0e1a;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.9rem 1rem;
-  overflow-x: auto;
-}
+pre { background: #0a0e1a; border: 1px solid var(--line); border-radius: 8px; padding: 0.9rem 1rem; overflow-x: auto; }
 .note { color: var(--muted); }
 .ok { color: var(--ok); }
 ul.compact li { margin: 0.35rem 0; }
@@ -72,78 +39,51 @@ th { background: #0a0e1a; }
 </header>
 <main>
 
-<h1>Run the webpage locally</h1>
-<p>The map loads preset JSON with normal web fetches. Opening <code>app.html</code> as a raw <code>file://</code> URL often fails in Chromium browsers because local file fetches are restricted. Use a tiny static file server, or use the hosted GitHub Pages site.</p>
+<h1>Run locally</h1>
+<p>Two different things get called “local.” The first is enough for most people. The second is extra power.</p>
+<ol>
+  <li><strong>Just the webpage</strong> — open the static files. No Python.</li>
+  <li><strong>The Python app</strong> — optional. Turns on the gray tabs and catalog tools. See <a href="self-host.html">what that adds</a>.</li>
+</ol>
 
-<h2>What you need</h2>
-<ul class="compact">
-  <li>A copy of the repo (or at least <code>starroute/web/static/</code>).</li>
-  <li>Any static file server pointed at that folder.</li>
-  <li>A current desktop browser with WebGL (Chrome, Edge, Firefox, or Safari).</li>
-</ul>
+<h2>1. Easiest: open the webpage from files you already have</h2>
+<p>You need a copy of <code>starroute/web/static/</code> (a git clone, a zip, a USB stick, a NAS share, or a cloud folder mounted as a drive: OneDrive, Dropbox, iCloud, and similar).</p>
+<p>You need a <strong>recent</strong> desktop browser with WebGL: Chrome, Edge, Firefox, or Safari. Phones can look around; a laptop or Chromebook is more comfortable for GM use. No extra browser add-ons.</p>
 
-<h2>Windows</h2>
 <div class="card">
-  <p>In PowerShell or Command Prompt, from the repo root:</p>
-  <pre>cd starroute\web\static
-python -m http.server 8765</pre>
-  <p>Then open <code>http://127.0.0.1:8765/</code> or <code>http://127.0.0.1:8765/app.html</code>.</p>
-  <p>If <code>python</code> is missing, install Python 3 from python.org and ensure “Add to PATH” is checked, or use:</p>
-  <pre>py -3 -m http.server 8765</pre>
-  <p>Alternative with Node.js installed:</p>
-  <pre>npx --yes serve -l 8765 starroute/web/static</pre>
+  <p><strong>Try this first:</strong> in File Explorer (Windows), Finder (macOS), or your file manager, open the <code>static</code> folder and drag <code>app.html</code> (or <code>index.html</code>) onto a browser window.</p>
+  <p class="note">If the map stays empty or lore pages fail to load, the browser blocked local file fetches. That is common in Chrome and Edge. Then use a tiny server (below) or the <a href="https://ldjessee-code.github.io/jumpgate_starroute/">hosted site</a>.</p>
 </div>
 
-<h2>macOS</h2>
-<div class="card">
-  <pre>cd starroute/web/static
-python3 -m http.server 8765</pre>
-  <p>Open <code>http://127.0.0.1:8765/</code>. Python 3 ships with recent macOS; if <code>python3</code> is missing, install via python.org or Homebrew.</p>
-  <pre>npx --yes serve -l 8765 starroute/web/static</pre>
-</div>
+<h3>If drag-and-drop is blocked</h3>
+<p>Point any small static server at that same folder — still no Python app, just a way to serve files over <code>http://</code>:</p>
+<pre>cd starroute/web/static
+python -m http.server 8765
+# Windows without python on PATH: py -3 -m http.server 8765
+# then open http://127.0.0.1:8765/</pre>
+<p class="note">Node users can run <code>npx --yes serve -l 8765 starroute/web/static</code>. The files can still live on a USB drive or mounted cloud folder; the server only needs to see that path.</p>
 
-<h2>Linux</h2>
-<div class="card">
-  <pre>cd starroute/web/static
-python3 -m http.server 8765</pre>
-  <p>Or:</p>
-  <pre>npx --yes serve -l 8765 starroute/web/static
-# or: php -S 127.0.0.1:8765 -t starroute/web/static
-# or: ruby -run -ehttpd starroute/web/static -p8765</pre>
-</div>
-
-<h2>Browsers: Chrome, ChromeOS, Android</h2>
-<table>
-  <thead><tr><th>Client</th><th>Hosted Pages</th><th>Local static server</th><th>Raw file://</th></tr></thead>
-  <tbody>
-    <tr><td>Desktop Chrome / Edge</td><td class="ok">Yes</td><td class="ok">Yes</td><td>Unreliable (fetch blocked)</td></tr>
-    <tr><td>Firefox / Safari (desktop)</td><td class="ok">Yes</td><td class="ok">Yes</td><td>Unreliable</td></tr>
-    <tr><td>ChromeOS</td><td class="ok">Yes — best path</td><td class="ok">Yes via Linux (Crostini) terminal + python3/npx</td><td>Avoid</td></tr>
-    <tr><td>Android Chrome</td><td class="ok">Yes for viewing the hosted demo</td><td>Possible with Termux or a remote server; awkward</td><td>Avoid</td></tr>
-  </tbody>
-</table>
-<p class="note">The map is a WebGL-style viewer. Phones work for a look-around; a desktop or Chromebook is more comfortable for GM use. Android is fine as a <em>client</em> of GitHub Pages; it is a poor place to host the builder.</p>
-
-<h2>Optional: Python builder on your machine</h2>
-<p>Only needed to regenerate packs, not to view them:</p>
+<h2>2. Optional: the Python backend</h2>
+<p>Only if you want the parked tabs and command-line rebuilds. <a href="self-host.html">Feature list compared to Pages</a>.</p>
 <pre>python3 -m venv .venv
 # Windows: .venv\Scripts\activate
-# Mac/Linux: source .venv/bin/activate
+# macOS/Linux: source .venv/bin/activate
 pip install -r requirements.txt
-python -m starroute build-presets</pre>
+python -m starroute serve</pre>
+<p>Open <code>http://127.0.0.1:8050</code> (the app’s port). That is FastAPI, not the tiny static server above.</p>
+<p><strong>Libraries that pip installs</strong> (from <code>requirements.txt</code>): pandas, numpy, scipy, networkx, FastAPI, uvicorn, python-multipart, Jinja2. Python 3.9 or newer (3.11+ preferred). No extra OS packages beyond that for the default path. NASA CSVs in <code>data/raw/</code> are optional; without them, pack rebuilds use the committed sample catalog.</p>
+<p>Publishing a copy for other people: <a href="deploy.html">Deploy</a>.</p>
 
-<h2>Quick checks</h2>
+<h2>Quick checks (static webpage)</h2>
 <ul class="compact">
-  <li><code>/presets/index.json</code> returns JSON listing crowded / sparse / lonely_humans.</li>
-  <li><code>/app.html</code> shows a preset control in the map UI.</li>
-  <li><code>/docs/lore/</code> lists pages for the current map pack; Add/Edit works in the browser.</li>
-  <li>Header <code>?</code> enters help mode; click the map or a control for a popup.</li>
-  <li>Browser developer tools → Network shows the chosen <code>presets/&lt;id&gt;/map.json</code> loading with status 200.</li>
+  <li>Map pack control is on <code>app.html</code>.</li>
+  <li><code>docs/lore/</code> follows the pack you picked; Add/Edit works in the browser.</li>
+  <li>Header <strong>?</strong> then a control shows a help card.</li>
 </ul>
 
 </main>
 <footer>
-  <p>MIT licensed. Docs describe <em>what</em> to host and run, not click-paths through vendor dashboards that change often.</p>
+  <p>MIT licensed. Lowest effort first; Python is a later step, not a door fee.</p>
 </footer>
 <script src="../js/site-nav.js"></script>
 <script src="../js/glossary.js"></script>

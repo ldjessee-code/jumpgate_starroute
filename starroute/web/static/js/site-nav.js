@@ -6,6 +6,7 @@
     { href: "app.html", label: "Map", match: "map" },
     { href: "docs/lore/", label: "Lore", match: "lore" },
     { href: "docs/deploy.html", label: "Deploy", match: "deploy" },
+    { href: "docs/self-host.html", label: "Self-host", match: "self-host" },
     { href: "docs/run-local.html", label: "Run locally", match: "run-local" },
     { href: "docs/presets.html", label: "Presets", match: "presets" },
   ];
@@ -27,6 +28,8 @@
     if (/\/docs\/lore(\/|$)/.test(p) || /\/docs\/lore\.html$/.test(p)) return "lore";
     if (/\/app\.html$/.test(p)) return "map";
     if (/\/docs\/deploy\.html$/.test(p)) return "deploy";
+    if (/\/docs\/self-host\.html$/.test(p)) return "self-host";
+    if (/\/docs\/own-setting\.html$/.test(p)) return "docs-index";
     if (/\/docs\/run-local\.html$/.test(p)) return "run-local";
     if (/\/docs\/presets\.html$/.test(p)) return "presets";
     if (/\/docs\/(index\.html)?$/.test(p)) return "docs-index";

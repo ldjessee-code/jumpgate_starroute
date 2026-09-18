@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Your own setting · Jumpgate Starroute</title>
+<link rel="stylesheet" href="../css/help.css"/>
+<style>:root {
+  --bg: #0b1020; --panel: #141b2f; --ink: #e8eefc; --muted: #a9b4d0;
+  --accent: #7eb6ff; --line: #2a3555; --ok: #8fd39a;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font: 16px/1.55 system-ui, -apple-system, Segoe UI, Roboto, sans-serif; background: var(--bg); color: var(--ink); }
+a { color: var(--accent); }
+header, footer { border-bottom: 1px solid var(--line); padding: 1rem 1.25rem; background: #0a0e1a; }
+footer { border-bottom: 0; border-top: 1px solid var(--line); margin-top: 3rem; color: var(--muted); font-size: 0.92rem; }
+nav a { margin-right: 1rem; text-decoration: none; }
+nav a:hover { text-decoration: underline; }
+main { max-width: 52rem; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+h1 { font-size: 1.85rem; margin-top: 0; }
+h2 { margin-top: 2rem; border-top: 1px solid var(--line); padding-top: 1.25rem; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; margin: 1rem 0; }
+code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+code { background: #0a0e1a; padding: 0.1em 0.35em; border-radius: 4px; }
+.note { color: var(--muted); }
+ul.compact li { margin: 0.35rem 0; }
+</style>
+</head>
+<body>
+<header>
+  <strong>Jumpgate Starroute</strong>
+  <nav data-site-nav aria-label="Site" style="margin-top:0.55rem"></nav>
+</header>
+<main>
+
+<h1>Use the map with your own setting</h1>
+<p>The three map packs keep their stars and jump routes. You can replace the <em>story pages</em> without rebuilding the sky.</p>
+
+<h2>Blank templates</h2>
+<div class="card">
+  <ul class="compact">
+    <li><a href="templates/crowded.json" download>crowded.json</a> — dense neighborhood</li>
+    <li><a href="templates/sparse.json" download>sparse.json</a> — thin grid</li>
+    <li><a href="templates/lonely_humans.json" download>lonely_humans.json</a> — humans only</li>
+  </ul>
+</div>
+<ol>
+  <li>Download the template that matches the pack you play.</li>
+  <li>Open it in any text editor. Change the Markdown inside <code>pages</code>. Keep <code>pack</code> and the <code>id</code> prefix (<code>custom/crowded/…</code>).</li>
+  <li>On <a href="lore/index.html">Lore</a>, pick that map pack, then <strong>Load files</strong> and choose your JSON (or separate <code>.md</code> files).</li>
+  <li>Your pages show under <strong>Your pages</strong>. Shipped Turquenish text stays; it is not overwritten.</li>
+</ol>
+<p class="note">Load is per browser. Export JSON if you want a backup, or commit Markdown under <code>setting/custom/{pack}/</code> and run <code>python -m starroute build-lore</code>.</p>
+
+<h2>What does not change</h2>
+<ul class="compact">
+  <li>The 3D map still uses the pack’s stars, routes, and painted culture labels (unless you self-host and rebuild).</li>
+  <li>Legend colors stay until you click a swatch on the map.</li>
+  <li>Lore can <em>display</em> those hues on culture names (Match map colors). That switch is display-only.</li>
+</ul>
+
+<p><a href="lore.html">Add / edit a page in the browser →</a></p>
+
+</main>
+<footer>
+  <p>MIT licensed. Templates are starters, not a second map engine.</p>
+</footer>
+<script src="../js/site-nav.js"></script>
+<script src="../js/glossary.js"></script>
+<script src="../js/help.js"></script>
+</body>
+</html>

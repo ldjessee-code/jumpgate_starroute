@@ -55,8 +55,8 @@ If JSON fetch fails, it falls back to `map.js`. Crowded also boots from
 **Lore:** [`setting/`](setting/) is the Markdown vault. The viewer is
 `docs/lore/` and lists only the current pack. Add/Edit in the browser saves a
 copy in that browser (`setting/custom/{pack}/` is the git folder so your files
-stay separate). Rebuild the committed index with `python -m starroute build-lore`.
-Details: `starroute/web/static/docs/lore.html`.
+stay separate). Blank JSON starters: `docs/own-setting.html`. Rebuild the
+committed index with `python -m starroute build-lore`.
 
 ## Setup (only to rebuild your own map)
 

@@ -4,20 +4,30 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <title>Lore · Jumpgate Starroute</title>
-<link rel="stylesheet" href="../_style.css"/>
 <link rel="stylesheet" href="../../css/help.css"/>
 <link rel="stylesheet" href="lore.css"/>
 </head>
-<body class="lore-app">
-<header>
-  <strong>Jumpgate Starroute</strong>
-  <nav data-site-nav aria-label="Site" style="margin-top:0.55rem"></nav>
+<body class="lore-app lore-faction-colors">
+<header class="masthead compact">
+  <div class="masthead-top">
+    <div class="masthead-copy">
+      <p class="eyebrow">v2.0 · GM / author tool</p>
+      <nav class="site-nav" data-site-nav data-help="siteNav" aria-label="Site"></nav>
+      <h1>Jumpgate Starroute</h1>
+      <p class="lede">Lore for the neighborhood on the map. Same packs, same names.</p>
+    </div>
+    <div class="header-help-row"></div>
+  </div>
 </header>
 <main class="lore-shell">
   <div class="lore-toolbar">
     <label data-help="lorePackSelect">
       Map pack
       <select id="lore-pack"></select>
+    </label>
+    <label class="check" data-help="loreColors">
+      <input id="lore-match-colors" type="checkbox" checked />
+      Match map colors
     </label>
     <p id="lore-pack-note" class="note"></p>
   </div>
