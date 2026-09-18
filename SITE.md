@@ -9,7 +9,7 @@ Live: **https://ldjessee-code.github.io/jumpgate_starroute/**
 - Lore: `docs/lore/` (wiki follows the selected map pack; add/edit your own pages in the browser)
 - Packs: `presets/{crowded,sparse,lonely_humans}/`
 
-**Context help:** click **?** in the header, then click a control. HTML/CSS/JS only (`js/help.js`, `js/glossary.js`).
+**Context help:** on the map, **?** sits just left of **Terms & Help docs** (gear = Settings, above). Click **?** then a control. HTML/CSS/JS only (`js/help.js`, `js/glossary.js`).
 
 ## GitHub Pages
 

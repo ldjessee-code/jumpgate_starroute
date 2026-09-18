@@ -222,8 +222,8 @@ const GLOSSARY = [
     title: "Context help",
     group: "Getting started",
     alsoCalled: "what's this, inspect help",
-    meaning: "Click the ? in the header (or press ? on the keyboard), then click a control, heading, the map, the legend, or a lore panel. A short card explains that item. This is ordinary HTML, CSS, and JavaScript — no extra app.",
-    impact: "Click ? again or press Esc to leave help mode. The small ? next to a label still works without turning inspect mode on. Terms & help opens the full glossary.",
+    meaning: "Click the ? next to Terms & Help docs (or press ? on the keyboard), then click a control, heading, the map, the legend, or a lore panel. A short card explains that item. Ordinary HTML, CSS, and JavaScript — no extra app.",
+    impact: "Click ? again or press Esc to leave help mode. Terms & Help docs opens the full glossary.",
   },
   {
     id: "contextHelpMiss",

@@ -1,8 +1,21 @@
 /* Context help: click ? then click a control. HTML/CSS/JS only. */
+body:not(.map-first) > header {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  column-gap: 1rem;
+}
+body:not(.map-first) > header > strong { grid-column: 1; }
+body:not(.map-first) > header > .header-tools { grid-column: 2; grid-row: 1; }
+body:not(.map-first) > header > nav { grid-column: 1 / -1; }
+header .header-tools {
+  display: flex;
+  align-items: center;
+}
 .help-mode-btn {
   width: 1.7rem;
   height: 1.7rem;
-  margin: 0.15rem 0 0 0.35rem;
+  margin: 0;
   border-radius: 999px;
   border: 1px solid #c9a227;
   background: transparent;
@@ -17,7 +30,7 @@
   background: #c9a227;
   color: #121826;
 }
-body.map-first .masthead .help-mode-btn { color: #f4efe4; align-self: center; }
+body.map-first .masthead .help-mode-btn { color: #f4efe4; }
 body.help-inspect, body.help-inspect * { cursor: help !important; }
 body.help-inspect [data-help],
 body.help-inspect [data-term],

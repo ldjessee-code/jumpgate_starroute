@@ -18,8 +18,16 @@
         <p class="lede" id="map-lede">A 60 ly map around Sol. Pick a pre-generated pack, or change jump settings in the side panel.</p>
       </div>
       <div class="header-actions">
-        <button id="btn-drawer" class="btn header-help" type="button" aria-expanded="false">Settings</button>
-        <button id="btn-glossary" class="btn header-help" type="button">Terms &amp; help</button>
+        <button id="btn-drawer" class="icon-btn" type="button" aria-expanded="false" aria-label="Settings" title="Settings" data-help="settingsDrawer">
+          <svg class="icon-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+        </button>
+        <div class="header-help-row">
+          <button type="button" id="btn-context-help" class="help-mode-btn" aria-pressed="false" aria-label="Context help. Click, then click something on the page." title="Click, then click a control, the map, or a heading" data-help="contextHelp">?</button>
+          <button id="btn-glossary" class="btn header-help" type="button" data-help="howItWorks">Terms &amp; Help docs</button>
+        </div>
       </div>
     </div>
     <nav class="tabs" role="tablist">
@@ -34,20 +42,19 @@
       <p class="tab-intro">Later step. Load NASA’s lists, pick which star is “home,” and decide how big a neighborhood to keep. v2.0 generates maps from the shipped star list instead.</p>
 
       <article class="card">
-        <h2>
+        <h2 data-help="nasaFiles">
           <span>NASA star and planet lists</span>
-          <button type="button" class="info" data-term="nasaFiles" aria-label="About NASA catalog files">?</button>
         </h2>
         <p class="hint">Use a matching pair of files from the NASA Exoplanet Archive. You can accept the ones this computer already has, or upload your own.</p>
         <div class="file-grid">
-          <label>
-            <span class="label-row">Planet list <button type="button" class="info" data-term="nasaFiles" aria-label="About the planet list">?</button></span>
+          <label data-help="nasaFiles">
+            <span class="label-row">Planet list</span>
             <span class="jargon">One row per known planet</span>
             <input id="planet-path" type="text" spellcheck="false" placeholder="Choose or keep the planet file…" />
             <input id="planet-file" type="file" accept=".csv" />
           </label>
-          <label>
-            <span class="label-row">Star list <button type="button" class="info" data-term="hostname" aria-label="About the star list">?</button></span>
+          <label data-help="hostname">
+            <span class="label-row">Star list</span>
             <span class="jargon">The stars those planets orbit</span>
             <input id="host-path" type="text" spellcheck="false" placeholder="Choose or keep the star file…" />
             <input id="host-file" type="file" accept=".csv" />
@@ -64,19 +71,19 @@
         <h2>Home star and neighborhood</h2>
         <p class="hint">Our Sun (Sol) is added automatically because NASA skips it. Distances are shown in light-years — how far light travels in a year.</p>
         <div class="param-grid">
-          <label class="combo-label">
-            <span class="label-row">Map center (home star) <button type="button" class="info" data-term="origin" aria-label="About the map center">?</button></span>
+          <label data-help="origin" class="combo-label">
+            <span class="label-row">Map center (home star)</span>
             <span class="jargon">Default: Sol, our Sun</span>
             <input id="origin-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
             <ul id="origin-suggest" class="suggest" hidden></ul>
           </label>
-          <label>
-            <span class="label-row">How far from home to include <button type="button" class="info" data-term="catalogRadius" aria-label="About catalog size">?</button></span>
+          <label data-help="catalogRadius">
+            <span class="label-row">How far from home to include</span>
             <span class="jargon">Light-years · shipped preview is 60</span>
             <input id="ingest-max-ly" name="starroute-catalog-radius-ly" type="number" min="10" step="10" value="60" autocomplete="off" />
           </label>
-          <label>
-            <span class="label-row">Smallest stars to keep <button type="button" class="info" data-term="solarMass" aria-label="About star mass">?</button></span>
+          <label data-help="solarMass">
+            <span class="label-row">Smallest stars to keep</span>
             <span class="jargon">Compared with the Sun = 1.0 · default 0.25 · this is not a distance</span>
             <input id="ingest-min-mass" name="starroute-catalog-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
           </label>
@@ -94,19 +101,18 @@
       <p class="tab-intro">Optional story layer. Decide which cultures prefer which kinds of worlds (warm gas giants, Earth-like temperatures, and so on). Save the rules here. They are painted onto the map when you generate a new map.</p>
 
       <article class="card">
-        <h2>
+        <h2 data-help="humanHome">
           <span>Human starting place</span>
-          <button type="button" class="info" data-term="humanHome" aria-label="About the human home star">?</button>
         </h2>
         <div class="param-grid">
-          <label class="combo-label">
-            <span class="label-row">Human home star <button type="button" class="info" data-term="humanHome" aria-label="About human home star">?</button></span>
+          <label data-help="humanHome" class="combo-label">
+            <span class="label-row">Human home star</span>
             <span class="jargon">Can differ from the map center</span>
             <input id="human-root" type="text" value="Sol" autocomplete="off" spellcheck="false" />
             <ul id="human-root-suggest" class="suggest" hidden></ul>
           </label>
-          <label>
-            <span class="label-row">Human nation that owns it <button type="button" class="info" data-term="faction" aria-label="About factions">?</button></span>
+          <label data-help="faction">
+            <span class="label-row">Human nation that owns it</span>
             <span class="jargon">Usually the first human culture on the list</span>
             <input id="human-root-group" type="text" value="Human" />
           </label>
@@ -117,7 +123,7 @@
         <h2>Cultures</h2>
         <p class="hint">Name each people. Species are placed first, then leftover stars go to human nations. Start from a built-in template (Methan gas-giant stations, living crystal, a sky quarter, the rim…) or a blank custom culture. You can have up to 16.</p>
         <div class="add-culture">
-          <span class="label-row">Add from a template <button type="button" class="info" data-term="faction" aria-label="About cultures">?</button></span>
+          <span class="label-row">Add from a template</span>
           <div class="add-culture-row">
             <select id="preset-pick"></select>
             <button id="btn-add-culture" class="btn" type="button">Add culture</button>
@@ -140,49 +146,49 @@
         <aside class="card controls" id="settings-drawer">
           <p class="tab-intro sidebar-intro">Three static map packs ship with this page. Switching packs loads JSON from <code>presets/</code> — no Python server. Change jump settings and generate a new map from the shipped star list if you want a variant. NASA catalog ingest is a later step.</p>
           <h2>Route settings</h2>
-          <label>
-            <span class="label-row">Longest single jump <button type="button" class="info" data-term="jumpRange" aria-label="About jump range">?</button></span>
+          <label data-help="jumpRange">
+            <span class="label-row">Longest single jump</span>
             <span class="jargon">Light-years · not star mass · default 50</span>
             <input id="max-jump" name="starroute-jump-range-ly" type="number" min="1" step="1" value="25" autocomplete="off" />
           </label>
-          <label>
-            <span class="label-row">Short jumps go up to <button type="button" class="info" data-term="jumpBands" aria-label="About short/medium/long">?</button></span>
+          <label data-help="jumpBands">
+            <span class="label-row">Short jumps go up to</span>
             <span class="jargon">Percent of the longest jump · not light-years · preview 40%</span>
             <span class="pct-field"><input id="medium-pct" name="starroute-medium-pct" type="number" min="10" max="90" step="5" value="40" autocomplete="off" /> <span class="pct-suffix">%</span></span>
           </label>
-          <label>
-            <span class="label-row">Long jumps start at <button type="button" class="info" data-term="jumpBands" aria-label="About long jumps">?</button></span>
+          <label data-help="jumpBands">
+            <span class="label-row">Long jumps start at</span>
             <span class="jargon">Percent of the longest jump · not light-years · preview 60%</span>
             <span class="pct-field"><input id="long-pct" name="starroute-long-pct" type="number" min="15" max="95" step="5" value="60" autocomplete="off" /> <span class="pct-suffix">%</span></span>
           </label>
           <p id="band-readout" class="band-readout"></p>
-          <label>
-            <span class="label-row">Jump routes from one star <button type="button" class="info" data-term="neighbors" aria-label="About jump routes per star">?</button></span>
+          <label data-help="neighbors">
+            <span class="label-row">Jump routes from one star</span>
             <span class="jargon">Preview uses 6</span>
             <input id="max-neighbors" name="starroute-max-neighbors" type="number" min="1" max="16" step="1" value="6" autocomplete="off" />
           </label>
-          <label>
-            <span class="label-row">How many stars get jump routes <button type="button" class="info" data-term="linkedCap" aria-label="About how many stars get jump routes">?</button></span>
+          <label data-help="linkedCap">
+            <span class="label-row">How many stars get jump routes</span>
             <span class="jargon">Extra stars still appear as dots · preview 80</span>
             <input id="max-linked" name="starroute-linked-cap" type="number" min="2" step="1" value="80" autocomplete="off" />
           </label>
-          <label>
-            <span class="label-row">Picky-ness for medium jumps <button type="button" class="info" data-term="rank" aria-label="About medium pickiness">?</button></span>
+          <label data-help="rank">
+            <span class="label-row">Picky-ness for medium jumps</span>
             <span class="jargon">0 = take anyone · 1 = only prize worlds · preview 0.15</span>
             <input id="hard-rank" name="starroute-hard-rank" type="number" min="0" max="1" step="0.05" value="0.15" autocomplete="off" />
           </label>
-          <label>
-            <span class="label-row">Picky-ness for long jumps <button type="button" class="info" data-term="rank" aria-label="About long pickiness">?</button></span>
+          <label data-help="rank">
+            <span class="label-row">Picky-ness for long jumps</span>
             <span class="jargon">Preview 0.25 · short jumps ignore this</span>
             <input id="soft-rank" name="starroute-soft-rank" type="number" min="0" max="1" step="0.05" value="0.25" autocomplete="off" />
           </label>
-          <label>
-            <span class="label-row">Smallest stars on the grid <button type="button" class="info" data-term="solarMass" aria-label="About star mass">?</button></span>
+          <label data-help="solarMass">
+            <span class="label-row">Smallest stars on the grid</span>
             <span class="jargon">Sun = 1.0 · default 0.25 · this is not a distance</span>
             <input id="net-min-mass" name="starroute-network-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
           </label>
-          <label class="combo-label">
-            <span class="label-row">Where jump routes start growing <button type="button" class="info" data-term="root" aria-label="About network start">?</button></span>
+          <label data-help="root" class="combo-label">
+            <span class="label-row">Where jump routes start growing</span>
             <span class="jargon">Usually the same as the map center</span>
             <input id="root-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
             <ul id="root-suggest" class="suggest" hidden></ul>
@@ -206,7 +212,6 @@
             <label class="link file-link">Open a saved map
               <input id="snapshot-file" type="file" accept=".json,application/json" />
             </label>
-            <button type="button" class="info inline" data-term="snapshot" aria-label="About saved maps">?</button>
             <a class="link" href="/api/download/sol_network.csv">Spreadsheet of routes</a>
             <a class="link" href="/api/download/route_table.csv">Faction route table</a>
           </div>
@@ -214,36 +219,37 @@
 
         <article class="card map-card">
           <div class="map-toolbar">
-            <label>
-              <span class="label-row">Map pack <button type="button" class="info" data-term="mapPreset" aria-label="About map packs">?</button></span>
+            <label data-help="mapPreset">
+              <span class="label-row">Map pack</span>
               <select id="map-preset">
                 <option value="crowded">Crowded — Turquenish neighborhood</option>
                 <option value="sparse">Sparse — thin Turquenish grid</option>
                 <option value="lonely_humans">Lonely humans</option>
               </select>
             </label>
-            <label>
-              <span class="label-row">From <button type="button" class="info" data-term="gatePath" aria-label="About routes">?</button></span>
+            <label data-help="gatePath">
+              <span class="label-row">From</span>
               <select id="path-start"></select>
             </label>
-            <label>To
+            <label data-help="gatePath">
+              <span class="label-row">To</span>
               <select id="path-end"></select>
             </label>
-            <label>
-              <span class="label-row">Highlight one culture <button type="button" class="info" data-term="focusFaction" aria-label="About highlighting a culture">?</button></span>
+            <label data-help="focusFaction">
+              <span class="label-row">Highlight one culture</span>
               <select id="focus-faction">
                 <option value="all">Everyone (full color)</option>
               </select>
             </label>
-            <label class="check">
+            <label class="check" data-help="colorByCulture">
               <input id="color-faction" type="checkbox" checked />
               Color by culture
             </label>
           </div>
-          <div id="path-readout" class="path-readout"></div>
+          <div id="path-readout" class="path-readout" data-help="gatePath"></div>
           <div class="map-stage">
-            <div id="star-map"></div>
-            <aside id="map-legend" class="map-legend" aria-label="Map color legend"></aside>
+            <div id="star-map" data-help="starMap"></div>
+            <aside id="map-legend" class="map-legend" data-help="mapLegend" aria-label="Map color legend"></aside>
           </div>
         </article>
       </div>

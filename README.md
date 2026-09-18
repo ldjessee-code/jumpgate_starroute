@@ -28,9 +28,10 @@ Switch packs in the map toolbar. Lore follows the pack you last picked.
 Settings sit in a side drawer. **Generate new map** rebuilds from the shipped
 star list in the browser (Pyodide). NASA ingest is still grayed out.
 
-**Context help:** click the **?** next to the site links (or press `?`), then
-click a control, the map, the legend, or a lore panel. That is HTML/CSS/JS
-only. See [docs/help.html](starroute/web/static/docs/help.html).
+**Context help:** on the map, click the **?** next to **Terms & Help docs**
+(or press `?`), then click a control, the map, the legend, or a lore panel.
+Settings is the gear above those. HTML/CSS/JS only. See
+[docs/help.html](starroute/web/static/docs/help.html).
 
 Counts and knobs: [PRESETS.md](PRESETS.md). How we got here: [HISTORY.md](HISTORY.md).
 

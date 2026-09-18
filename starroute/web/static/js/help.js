@@ -64,11 +64,54 @@
     placePop(pop, x, y);
   }
 
-  function helpIdFrom(el) {
+  function idFromNode(el) {
     if (!el || !el.closest) return null;
-    const hit = el.closest("[data-help], [data-term], button.info");
+    const hit = el.closest("[data-help], [data-term]");
     if (!hit) return null;
     return hit.getAttribute("data-help") || hit.getAttribute("data-term");
+  }
+
+  function helpIdFrom(el, event) {
+    const direct = idFromNode(el);
+    if (direct) return direct;
+    if (!event || !document.elementsFromPoint) return null;
+    for (const node of document.elementsFromPoint(event.clientX, event.clientY)) {
+      const id = idFromNode(node);
+      if (id) return id;
+    }
+    return null;
+  }
+
+  function makeHelpButton() {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.id = "btn-context-help";
+    btn.className = "help-mode-btn";
+    btn.setAttribute("aria-pressed", "false");
+    btn.setAttribute("aria-label", "Context help. Click, then click something on the page.");
+    btn.title = "Click, then click a control, the map, or a heading";
+    btn.setAttribute("data-help", "contextHelp");
+    btn.textContent = "?";
+    return btn;
+  }
+
+  function ensureHelpButton() {
+    if (document.getElementById("btn-context-help")) return;
+    const btn = makeHelpButton();
+    const row = document.querySelector(".header-help-row");
+    if (row) {
+      row.insertBefore(btn, row.firstChild);
+      return;
+    }
+    const header = document.querySelector("header");
+    if (!header) return;
+    let tools = header.querySelector(".header-tools");
+    if (!tools) {
+      tools = document.createElement("div");
+      tools.className = "header-tools";
+      header.appendChild(tools);
+    }
+    tools.appendChild(btn);
   }
 
   function setInspect(on) {
@@ -94,7 +137,7 @@
     if (event.target.closest && event.target.closest("#term-pop")) return;
 
     if (Help.inspect) {
-      const id = helpIdFrom(event.target);
+      const id = helpIdFrom(event.target, event);
       event.preventDefault();
       event.stopPropagation();
       if (id) {
@@ -134,5 +177,10 @@
 
   document.addEventListener("click", onClick, true);
   document.addEventListener("keydown", onKey);
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", ensureHelpButton);
+  } else {
+    ensureHelpButton();
+  }
   window.StarrouteHelp = { setInspect, showTerm, helpIdFrom };
 })();

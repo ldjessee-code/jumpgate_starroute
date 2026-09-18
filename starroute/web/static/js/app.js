@@ -218,7 +218,8 @@ function toggleDrawer(force) {
   layout.classList.toggle("drawer-open", open);
   if (btn) {
     btn.setAttribute("aria-expanded", open ? "true" : "false");
-    btn.textContent = open ? "Hide settings" : "Settings";
+    btn.title = open ? "Hide settings" : "Settings";
+    btn.setAttribute("aria-label", open ? "Hide settings" : "Settings");
   }
   window.setTimeout(resizeStarMap, 80);
 }
@@ -597,8 +598,8 @@ function renderFactionEditor(config) {
       </label>
       ${placeExtraHtml(item)}
       <div class="faction-fields">
-        <label>
-          <span class="label-row">How many systems <button type="button" class="info" data-term="factionCount" aria-label="About culture size">?</button></span>
+        <label data-help="factionCount">
+          <span class="label-row">How many systems</span>
           <input data-field="count" type="number" min="0" value="${item.count || 0}" />
         </label>
         <label>Prefix
