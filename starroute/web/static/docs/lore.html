@@ -63,56 +63,48 @@ nav a[aria-current="page"] { color: var(--ink); }
 <body>
 <header>
   <strong>Jumpgate Starroute</strong>
-  <nav style="margin-top:0.55rem">
-    <a href="../index.html">Home</a>
-    <a href="index.html">Docs</a>
-    <a href="../app.html">Map</a>
-    <a href="lore/index.html">Lore</a>
-    <a href="lore.html" aria-current="page">Add a page</a>
-    <a href="deploy.html">Deploy</a>
-    <a href="run-local.html">Run locally</a>
-    <a href="presets.html">Presets</a>
-  </nav>
+  <nav data-site-nav aria-label="Site" style="margin-top:0.55rem"></nav>
 </header>
 <main>
 <h1>Lore vault (static wiki)</h1>
-<p>Setting text lives as ordinary Markdown in the repo. GitHub Pages visitors browse a <strong>committed copy</strong> in the browser. There is no Wiki.js, Obsidian, Postgres, or edit-in-browser.</p>
+<p>Setting text is ordinary Markdown. The viewer follows the <strong>map pack</strong> you last picked (crowded / sparse / lonely humans). There is no Wiki.js, Obsidian, or database.</p>
 <p><a href="lore/index.html"><strong>Open the lore viewer →</strong></a></p>
 
 <h2>Layout</h2>
 <div class="card">
-<pre>setting/                      source of truth (git clone)
-  README.md                   tooling notes; not in the wiki index
-  overview.md
-  systems.md
-  cultures.md
-  history.md
-  contributing.md
+<pre>setting/crowded/              shipped Turquenish neighborhood
+setting/sparse/               thin-grid variant
+setting/lonely_humans/        human-only expansion
+setting/custom/{pack}/        <em>your</em> committed pages (kept separate)
+setting/source/               tabletop notes (not mixed into packs)
 
-starroute/web/static/docs/lore/   what Pages actually serves
-  index.html                  viewer
-  index.json / index.js       page list
-  pages/*.md                  copies of the vault
+starroute/web/static/docs/lore/   what Pages serves
+  pages/…                     copies of the vault
   marked.min.js               MIT Markdown renderer (vendored)</pre>
 </div>
 
-<h2>Add a page</h2>
+<h2>Add or edit a page</h2>
+<p>The viewer has <strong>Add a page</strong> and <strong>Edit page</strong>. That editor is a small split Markdown box (textarea + live preview) using the already-vendored MIT <code>marked</code> parser — no extra app, no accounts.</p>
+<ul class="compact">
+  <li><strong>Shipped pages</strong> are not overwritten. Edit saves a <em>copy</em> into this browser.</li>
+  <li><strong>Your pages</strong> stay in this browser (<code>localStorage</code>) until you Export JSON, or until a maintainer commits files under <code>setting/custom/{pack}/</code>.</li>
+  <li><strong>Load files</strong> imports <code>.md</code> or an exported JSON pack into the current map pack, still separate from shipped lore.</li>
+</ul>
+<p class="note">A richer MIT editor such as <a href="https://github.com/Ionaru/easy-markdown-editor">EasyMDE</a> would also be license-safe. We kept the built-in split view so Pages does not need another library.</p>
+
+<h2>Commit a page into the repo</h2>
 <ol>
-  <li>Create <code>setting/your-topic.md</code>. Subfolders are allowed (<code>setting/cultures/kessari.md</code>).</li>
+  <li>Put Markdown in <code>setting/custom/crowded/</code> (or sparse / lonely_humans) — not next to the shipped Turquenish files.</li>
   <li>Optional front matter:
 <pre>---
 title: Your topic
 order: 40
+pack: crowded
 ---</pre>
-    Without it, the first <code># heading</code> or the file name becomes the title.
   </li>
-  <li>Regenerate the index. This walk is <strong>stdlib Python</strong> — missing NASA CSVs do not matter:
-<pre>python -m starroute build-lore
-# or: python scripts/build_lore.py</pre>
-  </li>
-  <li>Commit the new <code>.md</code> <em>and</em> the updated files under <code>starroute/web/static/docs/lore/</code>.</li>
+  <li><code>python -m starroute build-lore</code></li>
+  <li>Commit the new <code>.md</code> and <code>starroute/web/static/docs/lore/</code>.</li>
 </ol>
-<p class="note">The public site only publishes <code>starroute/web/static/</code>. If you add a vault file and skip the index rebuild, Pages will not list it.</p>
 
 <h2>Try it locally</h2>
 <div class="card">
@@ -133,5 +125,6 @@ python -m http.server 8765</pre>
 <footer>
   <p>MIT licensed. Docs describe folders and commands, not vendor dashboard click-paths.</p>
 </footer>
+<script src="../js/site-nav.js"></script>
 </body>
 </html>

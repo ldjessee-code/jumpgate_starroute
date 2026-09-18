@@ -259,10 +259,17 @@ function toggleDrawer(force) {
     btn.setAttribute("aria-expanded", open ? "true" : "false");
     btn.textContent = open ? "Hide settings" : "Settings";
   }
-  window.setTimeout(() => {
-    const plot = $("star-map");
-    if (plot && window.Plotly) Plotly.Plots.resize(plot);
-  }, 80);
+  window.setTimeout(resizeStarMap, 80);
+}
+
+function resizeStarMap() {
+  const plot = $("star-map");
+  if (!plot || !window.Plotly) return;
+  try {
+    Plotly.Plots.resize(plot);
+  } catch {
+    /* map not plotted yet */
+  }
 }
 
 function shortestPathLocal(start, end) {
@@ -1134,6 +1141,7 @@ function applyNetworkResult(data) {
   fillPathSelects(networkData.nodes);
   fillFocusOptions(networkData.nodes);
   highlightPath();
+  window.setTimeout(resizeStarMap, 50);
 }
 
 $("btn-network").addEventListener("click", async () => {
@@ -1343,6 +1351,7 @@ function requestedPresetId() {
 
 async function boot() {
   showScreen("map");
+  window.addEventListener("resize", resizeStarMap);
   $("btn-drawer").addEventListener("click", () => toggleDrawer());
   $("btn-glossary").addEventListener("click", openGlossary);
   $("glossary-close").addEventListener("click", closeGlossary);

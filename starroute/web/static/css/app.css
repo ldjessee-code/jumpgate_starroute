@@ -30,6 +30,13 @@ html, body.map-first {
   height: 100%;
   overflow: hidden;
 }
+body.map-first {
+  display: flex;
+  flex-direction: column;
+}
+body.map-first > header {
+  flex: 0 0 auto;
+}
 .header-actions { display: flex; gap: 0.45rem; flex-shrink: 0; align-items: flex-start; }
 .masthead.compact { padding: 0.7rem 1rem 0; }
 .masthead.compact h1 { font-size: 1.45rem; margin: 0.1rem 0 0.2rem; }
@@ -37,15 +44,26 @@ html, body.map-first {
 body.map-first main {
   max-width: none;
   padding: 0.55rem 0.7rem 0.7rem;
-  height: calc(100vh - 7.2rem);
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
   box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 body.map-first #screen-map.is-active {
-  height: 100%;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  display: flex;
+  flex-direction: column;
 }
 body.map-first .map-layout {
   grid-template-columns: 1fr;
   height: 100%;
+  min-height: 0;
+  flex: 1 1 auto;
   gap: 0.55rem;
   align-items: stretch;
 }
@@ -69,7 +87,7 @@ body.map-first .map-card {
 }
 body.map-first #star-map {
   flex: 1 1 auto;
-  height: auto;
+  height: 100%;
   min-height: 0;
 }
 body.no-backend .backend-only { display: none !important; }
@@ -82,6 +100,7 @@ body.no-backend .needs-backend { opacity: 0.55; pointer-events: none; }
 body.map-first:not(.map-tab) main {
   height: auto;
   overflow: auto;
+  display: block;
 }
 
 .masthead {
@@ -416,8 +435,13 @@ input[type="file"] { font-size: 0.8rem; }
 .map-card { min-height: 70vh; }
 #star-map { height: 64vh; min-height: 420px; background: #05070c; border-radius: 8px; }
 .map-stage { position: relative; flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; }
+body.map-first .map-card { min-height: 0; height: 100%; }
 body.map-first .map-stage { flex: 1 1 auto; min-height: 0; }
-body.map-first .map-stage #star-map { flex: 1 1 auto; height: auto; min-height: 0; }
+body.map-first .map-stage #star-map {
+  flex: 1 1 auto;
+  height: 100%;
+  min-height: 0;
+}
 .map-legend {
   position: absolute;
   left: 0.7rem;
@@ -592,4 +616,5 @@ body.map-first .map-stage #star-map { flex: 1 1 auto; height: auto; min-height: 
 @media (max-width: 900px) {
   .file-grid, .param-grid, .map-layout, .place-extra { grid-template-columns: 1fr; }
   #star-map { height: 50vh; }
+  body.map-first #star-map { height: 100%; }
 }

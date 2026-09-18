@@ -15,6 +15,7 @@ from typing import Any
 from starroute.paths import ROOT, SETTING_DIR, STATIC_LORE
 
 SKIP_NAMES = {"readme.md"}
+PACK_FOLDERS = {"crowded", "sparse", "lonely_humans", "custom"}
 FRONT_MATTER_RE = re.compile(r"\A---\s*\n(.*?)\n---\s*\n?", re.DOTALL)
 HEADING_RE = re.compile(r"^#\s+(.+?)\s*$", re.MULTILINE)
 
@@ -59,18 +60,28 @@ def collect_pages(vault: Path) -> list[dict[str, Any]]:
         if not path.is_file():
             continue
         rel = path.relative_to(vault).as_posix()
-        if path.name.lower() in SKIP_NAMES and rel.lower() == "readme.md":
+        if path.name.lower() in SKIP_NAMES:
             continue
         text = path.read_text(encoding="utf-8")
         meta, body = _parse_front_matter(text)
         stem = rel[: -len(".md")] if rel.lower().endswith(".md") else rel
         title = str(meta.get("title") or _title_from_body(body, Path(stem).name))
         order = meta.get("order", 100)
+        parts = rel.split("/")
+        if meta.get("pack"):
+            pack = str(meta["pack"])
+        elif parts[0] == "custom" and len(parts) > 1 and parts[1] in PACK_FOLDERS:
+            pack = parts[1]
+        elif parts[0] in PACK_FOLDERS:
+            pack = parts[0]
+        else:
+            pack = "shared"
         pages.append(
             {
                 "id": stem.replace("\\", "/"),
                 "title": title,
                 "order": order,
+                "pack": pack,
                 "source": rel,
                 "path": f"pages/{rel}",
             }

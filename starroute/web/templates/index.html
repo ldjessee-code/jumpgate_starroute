@@ -12,12 +12,7 @@
     <div class="masthead-top">
       <div class="masthead-copy">
         <p class="eyebrow">v2.0 · GM / author tool</p>
-        <nav class="site-nav" aria-label="Site">
-          <a href="/static/index.html">Home</a>
-          <a href="/static/docs/index.html">Docs</a>
-          <a href="/" aria-current="page">Map</a>
-          <a href="/static/docs/lore/index.html">Lore</a>
-        </nav>
+        <nav class="site-nav" data-site-nav data-root="/static/" aria-label="Site"></nav>
         <h1>Jumpgate Starroute</h1>
         <p class="lede" id="map-lede">A 60 ly map around Sol. Pick a pre-generated pack, or change jump settings in the side panel.</p>
       </div>
@@ -268,6 +263,7 @@
   </div>
   <div id="toast" class="toast hidden" role="status"></div>
   <script src="/static/default-map.js"></script>
+  <script src="/static/js/site-nav.js"></script>
   <script src="/static/js/glossary.js"></script>
   <script src="/static/js/wasm-engine.js"></script>
   <script src="/static/js/app.js"></script>
