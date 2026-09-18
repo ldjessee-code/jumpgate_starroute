@@ -1,11 +1,51 @@
+html, body.lore-app {
+  height: 100%;
+  overflow: hidden;
+}
+body.lore-app {
+  display: flex;
+  flex-direction: column;
+}
+body.lore-app > header { flex: 0 0 auto; }
+body.lore-app main.lore-shell {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0.85rem 1.1rem 0.7rem;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.lore-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.2rem;
+  align-items: end;
+  margin-bottom: 0.7rem;
+}
+.lore-toolbar label { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.88rem; color: var(--muted); }
+.lore-toolbar select {
+  min-width: 16rem;
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #0a0e1a;
+  color: var(--ink);
+  font: inherit;
+}
 .lore-layout {
+  flex: 1 1 auto;
+  min-height: 0;
   display: grid;
   gap: 1rem;
-  align-items: start;
+  align-items: stretch;
 }
 @media (min-width: 840px) {
   .lore-layout {
-    grid-template-columns: 16.5rem minmax(0, 1fr);
+    grid-template-columns: 17.5rem minmax(0, 1fr);
   }
 }
 .lore-sidebar {
@@ -13,6 +53,10 @@
   border: 1px solid var(--line);
   border-radius: 10px;
   padding: 0.85rem 0.9rem;
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
 }
 .lore-sidebar h2 {
   margin: 0 0 0.65rem;
@@ -34,8 +78,16 @@
   list-style: none;
   margin: 0;
   padding: 0;
+  flex: 1 1 auto;
 }
 #lore-list li { margin: 0; }
+#lore-list .lore-group {
+  margin: 0.7rem 0 0.2rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
 #lore-list a {
   display: block;
   padding: 0.35rem 0.4rem;
@@ -48,6 +100,35 @@
   background: #0a0e1a;
   color: var(--accent);
 }
+.lore-side-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.8rem;
+}
+.lore-sidebar .tiny { margin: 0.55rem 0 0; font-size: 0.78rem; }
+.btn {
+  display: inline-block;
+  border: 1px solid var(--line);
+  background: #0a0e1a;
+  color: var(--ink);
+  border-radius: 6px;
+  padding: 0.35rem 0.55rem;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.btn:hover { border-color: var(--accent); }
+.btn.primary { border-color: var(--accent); color: var(--accent); }
+.btn.danger { border-color: #a45; color: #f88; }
+.file-btn { position: relative; overflow: hidden; }
+.file-btn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.lore-main {
+  min-height: 0;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
 .lore-article {
   background: var(--panel);
   border: 1px solid var(--line);
@@ -58,5 +139,70 @@
 .lore-article h1:first-child { margin-top: 0; }
 .lore-article h2 { border-top: 1px solid var(--line); padding-top: 1rem; }
 .lore-article table { font-size: 0.95rem; }
-.lore-status { color: var(--muted); margin: 0; }
+.lore-status { color: var(--muted); margin: 0.45rem 0 0; }
 nav a[aria-current="page"] { color: var(--ink); }
+
+.lore-editor {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(5, 8, 16, 0.72);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  padding: 1rem;
+}
+.hidden { display: none !important; }
+.lore-editor.hidden { display: none !important; }
+.lore-editor-panel {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  width: min(72rem, 100%);
+  max-height: 100%;
+  overflow: auto;
+  padding: 1rem 1.1rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.lore-editor-panel header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 0;
+  padding: 0;
+  background: transparent;
+}
+.lore-editor-panel h2 { margin: 0; border: 0; padding: 0; }
+.lore-editor-panel input[type="text"],
+.lore-editor-md textarea {
+  width: 100%;
+  margin-top: 0.3rem;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: #0a0e1a;
+  color: var(--ink);
+  font: inherit;
+}
+.lore-editor-split {
+  display: grid;
+  gap: 0.8rem;
+  min-height: 18rem;
+}
+@media (min-width: 900px) {
+  .lore-editor-split { grid-template-columns: 1fr 1fr; }
+}
+.lore-editor-md textarea {
+  min-height: 16rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9rem;
+  resize: vertical;
+}
+#lore-editor-preview {
+  min-height: 16rem;
+  max-height: 24rem;
+  overflow: auto;
+}
+.lore-editor-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }

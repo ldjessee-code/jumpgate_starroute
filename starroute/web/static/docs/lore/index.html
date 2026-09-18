@@ -7,28 +7,36 @@
 <link rel="stylesheet" href="../_style.css"/>
 <link rel="stylesheet" href="lore.css"/>
 </head>
-<body>
+<body class="lore-app">
 <header>
   <strong>Jumpgate Starroute</strong>
-  <nav style="margin-top:0.55rem">
-    <a href="../../index.html">Home</a>
-    <a href="../index.html">Docs</a>
-    <a href="../../app.html">Map</a>
-    <a href="index.html" aria-current="page">Lore</a>
-    <a href="../lore.html">Add a page</a>
-  </nav>
+  <nav data-site-nav aria-label="Site" style="margin-top:0.55rem"></nav>
 </header>
-<main>
-  <h1>Lore vault</h1>
-  <p class="note">Flat Markdown from the repo’s <code>setting/</code> folder. No accounts, no editor, no database. Search filters titles only.</p>
+<main class="lore-shell">
+  <div class="lore-toolbar">
+    <label>
+      Map pack
+      <select id="lore-pack"></select>
+    </label>
+    <p id="lore-pack-note" class="note"></p>
+  </div>
   <div class="lore-layout">
     <aside class="lore-sidebar">
       <h2>Pages</h2>
       <label class="note" for="lore-search">Search titles</label>
       <input id="lore-search" type="search" placeholder="Overview, cultures…" autocomplete="off"/>
       <ul id="lore-list"></ul>
+      <div class="lore-side-actions">
+        <button id="btn-lore-new" class="btn" type="button">Add a page</button>
+        <button id="btn-lore-edit" class="btn" type="button">Edit page</button>
+        <label class="btn file-btn">Load files
+          <input id="lore-import" type="file" accept=".md,.markdown,.json,text/markdown,application/json" multiple />
+        </label>
+        <button id="btn-lore-export" class="btn" type="button">Export yours</button>
+      </div>
+      <p class="note tiny">Shipped pages stay in <code>setting/</code>. Your pages live in this browser (and optionally <code>setting/custom/</code> in the repo).</p>
     </aside>
-    <div>
+    <div class="lore-main">
       <article id="lore-article" class="lore-article">
         <p class="lore-status">Loading pages…</p>
       </article>
@@ -36,9 +44,34 @@
     </div>
   </div>
 </main>
-<footer>
-  <p>MIT licensed. Source files live in <code>setting/</code>; this page reads a committed copy under <code>docs/lore/pages/</code>.</p>
-</footer>
+
+<div id="lore-editor" class="lore-editor hidden" role="dialog" aria-labelledby="lore-editor-title">
+  <div class="lore-editor-panel">
+    <header>
+      <h2 id="lore-editor-title">Edit page</h2>
+      <button id="lore-editor-close" class="btn" type="button">Close</button>
+    </header>
+    <p id="lore-editor-note" class="note"></p>
+    <label>Title
+      <input id="lore-editor-title-input" type="text" autocomplete="off" />
+    </label>
+    <div class="lore-editor-split">
+      <label class="lore-editor-md">Markdown
+        <textarea id="lore-editor-md" spellcheck="true"></textarea>
+      </label>
+      <div>
+        <p class="note">Preview</p>
+        <div id="lore-editor-preview" class="lore-article"></div>
+      </div>
+    </div>
+    <div class="lore-editor-actions">
+      <button id="lore-editor-save" class="btn primary" type="button">Save to this browser</button>
+      <button id="lore-editor-delete" class="btn danger" type="button">Delete your copy</button>
+    </div>
+  </div>
+</div>
+
+<script src="../../js/site-nav.js"></script>
 <script src="index.js"></script>
 <script src="marked.min.js"></script>
 <script src="lore.js"></script>
