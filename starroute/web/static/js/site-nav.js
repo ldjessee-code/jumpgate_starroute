@@ -58,7 +58,7 @@
     return (
       '<a class="tej-brand" href="https://trueeyedjack.com/" rel="noopener noreferrer">' +
       `<img src="${img}" alt="True Eyed Jack" width="36" height="36" />` +
-      "<span>A True Eyed Jack app: Local First, Always Intelligent.</span>" +
+      "<span>A True Eyed Jack app: Local First. Always Intelligent.</span>" +
       "</a>"
     );
   }

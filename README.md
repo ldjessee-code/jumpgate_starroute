@@ -10,7 +10,7 @@ Stars come from NASA catalog data (plus Sol). You decide jump length, who
 lives where, and which roads stay lit. The result is a 3D map you can rotate,
 trace a path on, and brief a table from — not a video-game 3D model pack.
 
-A [True Eyed Jack](https://trueeyedjack.com/) app: Local First, Always Intelligent.
+A [True Eyed Jack](https://trueeyedjack.com/) app: Local First. Always Intelligent.
 
 Try it with no install:
 **https://ldjessee-code.github.io/jumpgate_starroute/**
