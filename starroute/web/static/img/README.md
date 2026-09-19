@@ -9,6 +9,6 @@ Copied from `F:\Dropbox\Projects\True-Eyed-Jack-Logo-Designs` (V1, the shipping 
 | `favicon-16.png` / `favicon-32.png` | `Favicon/` |
 | `apple-touch-icon.png` | `App Icon/512w/V1_app_512.png` |
 
-Candidates V2–V6 live only in that Dropbox folder, not in this repo.
+**Do not use** `Candidates\` (V2–V6). Those are unused drafts.
 
 Brand site: https://trueeyedjack.com/
