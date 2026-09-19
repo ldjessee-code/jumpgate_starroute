@@ -53,8 +53,35 @@
     }).join("");
   }
 
+  function brandHtml(pre) {
+    const img = (pre || "") + "img/true-eyed-jack.svg";
+    return (
+      '<a class="tej-brand" href="https://trueeyedjack.com/" rel="noopener noreferrer">' +
+      `<img src="${img}" alt="True Eyed Jack" width="36" height="36" />` +
+      "<span>A True Eyed Jack app: Local First, Always Intelligent.</span>" +
+      "</a>"
+    );
+  }
+
+  function fillBrand() {
+    const nav = document.querySelector("[data-site-nav]");
+    const pre = nav && nav.getAttribute("data-root") !== null ? nav.getAttribute("data-root") : prefix();
+    const html = brandHtml(pre);
+    document.querySelectorAll("[data-tej-brand]").forEach((el) => {
+      el.innerHTML = html;
+    });
+    document.querySelectorAll("footer").forEach((foot) => {
+      if (foot.querySelector(".tej-brand")) return;
+      const p = document.createElement("p");
+      p.className = "tej-wrap";
+      p.innerHTML = html;
+      foot.insertBefore(p, foot.firstChild);
+    });
+  }
+
   function boot() {
     document.querySelectorAll("[data-site-nav]").forEach(fill);
+    fillBrand();
   }
 
   if (document.readyState === "loading") {
