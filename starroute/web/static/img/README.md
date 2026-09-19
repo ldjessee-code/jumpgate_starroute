@@ -1,6 +1,14 @@
-# True Eyed Jack mark
+# True Eyed Jack marks
 
-`true-eyed-jack.svg` is the True Eyed Jack logo, copied from
-https://trueeyedjack.com/assets/logo.svg for local/Pages use (no hotlink).
+Copied from `F:\Dropbox\Projects\True-Eyed-Jack-Logo-Designs` (V1, the shipping set).
+
+| File | Source |
+| --- | --- |
+| `true-eyed-jack.svg` | `SVG/V1_SVG.svg` |
+| `true-eyed-jack.png` | `Website/V1_web_512.png` |
+| `favicon-16.png` / `favicon-32.png` | `Favicon/` |
+| `apple-touch-icon.png` | `App Icon/512w/V1_app_512.png` |
+
+Candidates V2–V6 live only in that Dropbox folder, not in this repo.
 
 Brand site: https://trueeyedjack.com/
