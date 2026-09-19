@@ -2,61 +2,56 @@
 
 **Version 2.0** — August 2026
 
-A local tool for GMs and authors. It takes real NASA exoplanet catalog data
-and builds a **Sol-centered jump-drive or star-gate network** you can steer
-with range, ranking, and optional species/nation rules, then shows the map
-in a browser.
+A tool for **tabletop RPG GMs and players**, and for **authors**, to **create,
+track, and manage jump-gate (or other FTL) routes** through a neighborhood of
+real nearby stars, painted with factions and cultures.
 
-Ptah v3 / Worldstack / Gamer Eye development continues in
-[star_network](https://github.com/ldjessee-code/star_network). This repository
-stays at the v2.0 map tool.
+Stars come from NASA catalog data (plus Sol). You decide jump length, who
+lives where, and which roads stay lit. The result is a 3D map you can rotate,
+trace a path on, and brief a table from — not a video-game 3D model pack.
 
-How the project got here is in [HISTORY.md](HISTORY.md). Future releases
-increment the version number there and here.
+Try it with no install:
+**https://ldjessee-code.github.io/jumpgate_starroute/**
 
-## Current state (v2.0)
+Ptah v3 / Worldstack / Gamer Eye work continues in
+[star_network](https://github.com/ldjessee-code/star_network). This repo is
+the v2.0 map tool. History: [HISTORY.md](HISTORY.md).
 
-Public site (no Python): **https://ldjessee-code.github.io/jumpgate_starroute/**
+## Example neighborhoods
 
-Three **static map packs** ship as JSON network snapshots (not 3D models):
+Three **example** packs ship as finished JSON snapshots (same star catalog,
+different rules). Switch them in the map toolbar. They are samples, not the
+only way to play.
 
-- **Crowded** — Turquenish neighborhood (short jumps, bio vs chrome, local aliens)
-- **Sparse** — same war on a thinner gate grid
-- **Lonely humans** — Sun-like stars only; human factions, no local aliens
+| Pack | Map | Included setting text |
+| --- | --- | --- |
+| **Crowded** | Short jumps, small stars kept. Dense local space. | Turquenish Empire (bio-edit) vs Mardat Coalition (chrome), plus local aliens |
+| **Sparse** | Same war, fewer tiny red dwarfs, longer hops | Same peoples; thinner gate grid |
+| **Lonely humans** | Sun-like stars only | Human factions only; no local aliens |
 
-Switch packs in the map toolbar. Lore follows the pack you last picked.
-Settings sit in a side drawer. **Generate new map** rebuilds from the shipped
-star list in the browser (Pyodide). NASA ingest is still grayed out.
+Lore pages follow the pack you last picked: [setting/](setting/) (author
+copyright — not MIT). Counts and knobs: [PRESETS.md](PRESETS.md).
 
-**Context help:** on the map, click the **?** next to **Terms & Help docs**
-(or press `?`), then click a control, the map, the legend, or a lore panel.
-Settings is the gear above those. HTML/CSS/JS only. See
-[docs/help.html](starroute/web/static/docs/help.html).
+## Your own systems, routes, and setting
 
-Counts and knobs: [PRESETS.md](PRESETS.md). How we got here: [HISTORY.md](HISTORY.md).
+**Look around (no Python):** open the [hosted site](https://ldjessee-code.github.io/jumpgate_starroute/),
+or copy `starroute/web/static/` and open it from disk / USB / NAS. Drag
+`app.html` onto a browser; if fetches fail, use a tiny static server. See
+[Run locally](starroute/web/static/docs/run-local.html).
 
-## Open the map (no install)
+**Add your own setting details** on top of a pack (lore only, same map):
+blank JSON templates and steps in
+[Your own setting](starroute/web/static/docs/own-setting.html). Commit
+Markdown under [`user_setting/`](user_setting/) so it never mixes with the
+example Turquenish text.
 
-Hosted: https://ldjessee-code.github.io/jumpgate_starroute/app.html
+**Generate your own systems and routes** (optional Python): ingest NASA CSVs,
+retune jump knobs, rebuild packs. That is the gray “self-host” path —
+[what it adds](starroute/web/static/docs/self-host.html), then
+[how to deploy](starroute/web/static/docs/deploy.html).
 
-Or locally (do not use raw `file://` — fetches get blocked):
-
-```bash
-cd starroute/web/static
-python -m http.server 8765
-```
-
-Then http://127.0.0.1:8765/
-
-The preset picker loads `presets/{crowded,sparse,lonely_humans}/map.json`.
-If JSON fetch fails, it falls back to `map.js`. Crowded also boots from
-`default-map.js`.
-
-**Lore:** [`setting/`](setting/) is the Markdown vault. The viewer is
-`docs/lore/` and lists only the current pack. Add/Edit in the browser saves a
-copy in that browser (`setting/custom/{pack}/` is the git folder so your files
-stay separate). Blank JSON starters: `docs/own-setting.html`. Rebuild the
-committed index with `python -m starroute build-lore`.
+**Context help:** click **?** next to **Terms & Help docs**, then click a
+control. Gear = Settings.
 
 ## Setup (only to rebuild your own map)
 
