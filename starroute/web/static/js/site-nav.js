@@ -63,9 +63,27 @@
     );
   }
 
-  function fillBrand() {
+  function preFromNav() {
     const nav = document.querySelector("[data-site-nav]");
-    const pre = nav && nav.getAttribute("data-root") !== null ? nav.getAttribute("data-root") : prefix();
+    return nav && nav.getAttribute("data-root") !== null ? nav.getAttribute("data-root") : prefix();
+  }
+
+  function addFavicons(pre) {
+    if (document.querySelector("link[data-tej-icon]")) return;
+    [
+      { rel: "icon", type: "image/png", sizes: "32x32", href: (pre || "") + "img/favicon-32.png" },
+      { rel: "icon", type: "image/png", sizes: "16x16", href: (pre || "") + "img/favicon-16.png" },
+      { rel: "apple-touch-icon", href: (pre || "") + "img/apple-touch-icon.png" },
+    ].forEach((spec) => {
+      const link = document.createElement("link");
+      Object.entries(spec).forEach(([key, value]) => link.setAttribute(key, value));
+      link.setAttribute("data-tej-icon", "1");
+      document.head.appendChild(link);
+    });
+  }
+
+  function fillBrand() {
+    const pre = preFromNav();
     const html = brandHtml(pre);
     document.querySelectorAll("[data-tej-brand]").forEach((el) => {
       el.innerHTML = html;
@@ -82,6 +100,7 @@
   function boot() {
     document.querySelectorAll("[data-site-nav]").forEach(fill);
     fillBrand();
+    addFavicons(preFromNav());
   }
 
   if (document.readyState === "loading") {
