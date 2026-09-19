@@ -1,6 +1,8 @@
 # Public site (static)
 
-Jumpgate Starroute publishes a **static** demo and docs site from `starroute/web/static/`.
+Jumpgate Starroute is a **tabletop RPG / author** tool: jump-gate (or other
+FTL) routes through nearby stars and factions. The public site is a **static**
+demo from `starroute/web/static/`.
 
 Live: **https://ldjessee-code.github.io/jumpgate_starroute/**
 
