@@ -1,5 +1,7 @@
 # Table Top RPGs - How to Use/Integrate into different systems
 
+Publisher links, free starters, and each game's world format are written up in [GAME_SYSTEMS.md](GAME_SYSTEMS.md). The same notes are in the sibling folder `../orbit_match/`. Routes, faction stance, and the thin system card are listed in [TODO-between-stars.md](TODO-between-stars.md). Planets and in-system transfers are Orbit Match (`../orbit_match/BRIEF.md`).
+
 ## Homebrew settings
 
 ## Example Game systems to include
