@@ -40,8 +40,8 @@ What we *do* adapt:
 - File paths (`Path` on a real disk) → Pyodide’s virtual filesystem.
 - First **Generate new map** click downloads the interpreter plus SciPy
   (tens of MB). Slow once; then cached.
-- Culture coloring uses the shipped Human / Kessari rules that match the
-  preview map. The culture editor still talks to FastAPI when that is running.
+- Culture coloring uses the Turquenish rules in `engine/config/factions.json`.
+  The culture editor still talks to FastAPI when that is running.
 
 ## How to try it locally
 

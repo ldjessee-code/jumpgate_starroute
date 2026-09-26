@@ -1,0 +1,57 @@
+/* Docs and other pages follow the color set chosen on the map gear. */
+html[data-theme="light"] body {
+  background: #f4efe4 !important;
+  color: #1a1f2e !important;
+}
+html[data-theme="light"] header,
+html[data-theme="light"] footer {
+  background: linear-gradient(135deg, #121826 0%, #1e3a4a 45%, #2a2418 100%) !important;
+  color: #f4efe4 !important;
+  border-color: #c9a227 !important;
+}
+html[data-theme="light"] header,
+html[data-theme="light"] header strong,
+html[data-theme="light"] header a,
+html[data-theme="light"] footer,
+html[data-theme="light"] footer a { color: #f4efe4 !important; }
+.site-foot {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.45rem 1rem;
+  margin-top: 0;
+  font-size: 0.82rem;
+}
+.foot-left { display: flex; flex-direction: row; align-items: center; gap: 0.85rem; }
+.foot-mid { margin: 0; text-align: center; }
+.foot-right { margin: 0; text-align: right; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.72rem; }
+.tej-brand { text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; color: inherit; }
+html[data-theme="light"] .card {
+  background: #fffcf6 !important;
+  color: #1a1f2e !important;
+  border-color: #b8a98a !important;
+}
+html[data-theme="light"] code,
+html[data-theme="light"] pre,
+html[data-theme="light"] th {
+  background: #e8e0d0 !important;
+  color: #1a1f2e !important;
+}
+html[data-theme="dim"] body {
+  background: #0b1020 !important;
+  color: #e8eefc !important;
+}
+html[data-theme="black"] body {
+  background: #000 !important;
+  color: #d5d5d5 !important;
+}
+html[data-theme="black"] header,
+html[data-theme="black"] footer {
+  background: #000 !important;
+  color: #d5d5d5 !important;
+  border-color: #8a8a8a !important;
+}
+html[data-theme="black"] header a,
+html[data-theme="black"] footer a { color: #d5d5d5; }

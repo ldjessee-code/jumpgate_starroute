@@ -1,14 +1,9 @@
-/** Shared Home / Docs / Map / Lore / Deploy / Run locally / Presets links. */
+/** Home, Docs, and Map. The other guides are cards on the docs page. */
 (function () {
   const LINKS = [
     { href: "index.html", label: "Home", match: "home" },
     { href: "docs/index.html", label: "Docs", match: "docs-index" },
     { href: "app.html", label: "Map", match: "map" },
-    { href: "docs/lore/", label: "Lore", match: "lore" },
-    { href: "docs/deploy.html", label: "Deploy", match: "deploy" },
-    { href: "docs/self-host.html", label: "Self-host", match: "self-host" },
-    { href: "docs/run-local.html", label: "Run locally", match: "run-local" },
-    { href: "docs/presets.html", label: "Presets", match: "presets" },
   ];
 
   function path() {
@@ -24,15 +19,9 @@
 
   function currentMatch() {
     const p = path();
-    if (/\/docs\/help\.html$/.test(p)) return "docs-index";
-    if (/\/docs\/lore(\/|$)/.test(p) || /\/docs\/lore\.html$/.test(p)) return "lore";
     if (/\/app\.html$/.test(p)) return "map";
-    if (/\/docs\/deploy\.html$/.test(p)) return "deploy";
-    if (/\/docs\/self-host\.html$/.test(p)) return "self-host";
-    if (/\/docs\/own-setting\.html$/.test(p)) return "docs-index";
-    if (/\/docs\/run-local\.html$/.test(p)) return "run-local";
-    if (/\/docs\/presets\.html$/.test(p)) return "presets";
-    if (/\/docs\/(index\.html)?$/.test(p)) return "docs-index";
+    if (/\/docs(\/|$)/.test(p)) return "docs-index";
+    if (/\/(index\.html)?$/.test(p)) return "home";
     return "home";
   }
 
@@ -45,20 +34,28 @@
     const attr = nav.getAttribute("data-root");
     const pre = attr !== null ? attr : prefix();
     const here = document.body.classList.contains("map-first") ? "map" : currentMatch();
+    const onServer = path().startsWith("/static/") || pre === "/static/";
     nav.innerHTML = LINKS.map((link) => {
       let href = pre + link.href;
-      if (link.match === "map" && pre === "/static/") href = "/";
+      if (link.match === "map" && onServer) href = "/";
+      if (link.match === "home" && onServer) href = "/static/index.html";
       const current = link.match === here;
       return `<a href="${href}"${current ? ' aria-current="page"' : ""}>${link.label}</a>`;
     }).join("");
   }
 
-  function brandHtml(pre) {
+  function brandInner(pre) {
     const img = (pre || "") + "img/true-eyed-jack.svg";
     return (
-      '<a class="tej-brand" href="https://trueeyedjack.com/" rel="noopener noreferrer">' +
-      `<img src="${img}" alt="True Eyed Jack" width="36" height="36" />` +
-      "<span>A True Eyed Jack app: Local First. Always Intelligent.</span>" +
+      `<img src="${img}" alt="" width="36" height="36" />` +
+      "<span>A True Eyed Jack app: Local First. Always Intelligent.</span>"
+    );
+  }
+
+  function brandHtml(pre) {
+    return (
+      '<a class="tej-brand" href="https://trueeyedjack.com/" target="_blank" rel="noopener noreferrer">' +
+      brandInner(pre) +
       "</a>"
     );
   }
@@ -86,6 +83,14 @@
     const pre = preFromNav();
     const html = brandHtml(pre);
     document.querySelectorAll("[data-tej-brand]").forEach((el) => {
+      if (el.tagName === "A") {
+        el.href = "https://trueeyedjack.com/";
+        el.target = "_blank";
+        el.rel = "noopener noreferrer";
+        el.classList.add("tej-brand");
+        if (!el.querySelector("img")) el.innerHTML = brandInner(pre);
+        return;
+      }
       el.innerHTML = html;
     });
     document.querySelectorAll("footer").forEach((foot) => {
@@ -97,7 +102,38 @@
     });
   }
 
+  function applyStoredTheme() {
+    let theme = "light";
+    try { theme = localStorage.getItem("starroute-theme") || "light"; } catch { /* ignore */ }
+    if (theme !== "dim" && theme !== "black") theme = "light";
+    document.documentElement.dataset.theme = theme;
+  }
+
+  function ensureFooter() {
+    if (document.body.classList.contains("map-first")) return;
+    let foot = document.querySelector("footer");
+    if (!foot) {
+      foot = document.createElement("footer");
+      document.body.appendChild(foot);
+    }
+    foot.className = "site-foot";
+    foot.innerHTML =
+      '<div class="foot-left"><a class="tej-brand" data-tej-brand href="https://trueeyedjack.com/" target="_blank" rel="noopener noreferrer"></a>' +
+      '<a href="https://github.com/ldjessee-code/jumpgate_starroute/blob/main/LICENSE">MIT License</a></div>' +
+      '<p class="foot-mid">Turquenish setting, characters, and fiction © Lloyd Douglass Jessee 2025–2026</p>' +
+      '<p class="foot-right">v2.0 · GM / author tool</p>';
+  }
+
   function boot() {
+    applyStoredTheme();
+    ensureFooter();
+    if (!document.body.classList.contains("map-first") && !document.querySelector("link[data-starroute-chrome]")) {
+      const link = document.createElement("link");
+      link.rel = "stylesheet";
+      link.href = (preFromNav() || "") + "css/chrome.css";
+      link.setAttribute("data-starroute-chrome", "1");
+      document.head.appendChild(link);
+    }
     document.querySelectorAll("[data-site-nav]").forEach(fill);
     fillBrand();
     addFavicons(preFromNav());

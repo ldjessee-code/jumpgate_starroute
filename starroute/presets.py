@@ -249,17 +249,14 @@ def write_index(config: dict[str, Any], built: list[dict[str, Any]]) -> None:
     _write_json(DATA_PRESETS / "index.json", index)
 
 
-def write_default_map_copies(crowded: dict[str, Any]) -> None:
-    """Keep the existing default-map.js boot path in sync with the crowded pack."""
-    blob = json.dumps(crowded, separators=(",", ":"))
-    js = f"window.STARROUTE_DEFAULT_MAP = {blob};\n"
-    static_root = STATIC_PRESETS.parent
-    (static_root / "default-map.json").write_text(blob, encoding="utf-8")
-    (static_root / "default-map.js").write_text(js, encoding="utf-8")
-    preview = ROOT / "preview"
-    if preview.is_dir():
-        (preview / "default-map.json").write_text(blob, encoding="utf-8")
-        (preview / "default-map.js").write_text(js, encoding="utf-8")
+def write_default_map_copies(_crowded: dict[str, Any]) -> None:
+    """Leave the page-open map alone.
+
+    ``default-map.js`` is the saved neighborhood the page opens
+    (Downloads/starroute-map.json). Preset packs stay under ``presets/``.
+    Rebuilding those packs must not put Crowded back on first load.
+    """
+    return
 
 
 def write_presets_markdown(config: dict[str, Any], built: list[dict[str, Any]], catalog_note: str) -> Path:

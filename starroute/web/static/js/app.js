@@ -1,7 +1,6 @@
 const FACTION_COLORS = {
   Sol: "#ffffff",
   Human: "#3dbbff",
-  Kessari: "#ff8c1a",
   Methan: "#00c48c",
   Crystomorphs: "#d14cff",
   "Echryon & Echtol": "#ffe14a",
@@ -211,11 +210,9 @@ function showScreen(name) {
 }
 
 function toggleDrawer(force) {
-  const layout = $("map-layout");
   const btn = $("btn-drawer");
-  if (!layout) return;
-  const open = force === undefined ? !layout.classList.contains("drawer-open") : force;
-  layout.classList.toggle("drawer-open", open);
+  const open = force === undefined ? !document.body.classList.contains("drawer-open") : force;
+  document.body.classList.toggle("drawer-open", open);
   if (btn) {
     btn.setAttribute("aria-expanded", open ? "true" : "false");
     btn.title = open ? "Hide settings" : "Settings";
@@ -383,12 +380,12 @@ $("btn-ingest").addEventListener("click", async () => {
     $("root-host").value = catalogOrigin;
     $("ingest-box").classList.remove("hidden");
     $("ingest-box").textContent = JSON.stringify(data, null, 2);
-    toast(`Star list ready: ${data.systems_written} systems around ${catalogOrigin}.`);
+    toast(`Star list ready: ${data.systems_written} systems around ${catalogOrigin}. Next: Generate the map from this list.`);
   } catch (err) {
     toast(err.message, true);
   } finally {
     $("btn-ingest").disabled = false;
-    $("btn-ingest").textContent = "Build the star list";
+    $("btn-ingest").textContent = "Build neighborhood (star list)";
   }
 });
 
@@ -618,6 +615,13 @@ function renderFactionEditor(config) {
     box.appendChild(card);
   });
   updateCultureCount();
+  const roster = $("culture-roster");
+  if (roster) {
+    const names = cultureList.map((item) => item.name).filter(Boolean);
+    roster.textContent = names.length
+      ? `Turquenish cultures on this list: ${names.join(", ")}.`
+      : "No cultures loaded.";
+  }
 }
 
 function collectFactions() {
@@ -777,16 +781,18 @@ function renderLegend(nodes) {
   if (!box) return;
   const byFaction = $("color-faction") && $("color-faction").checked;
   const groups = groupsOnMap(nodes);
+  const routes = (networkData && networkData.edges && networkData.edges.length) || 0;
   const rows = [];
+  rows.push(`<div class="legend-row"><span>${nodes.length} stars · ${routes} routes</span></div>`);
   rows.push(`<div class="legend-row"><span class="legend-swatch" style="background:#fff"></span><span>Sol / map center</span></div>`);
   if (byFaction) {
     groups.forEach((g) => {
       const color = getGroupColor(g);
       const focusOn = ($("focus-faction").value || "all") === g;
-      rows.push(`<label class="legend-row${focusOn ? " is-focus" : ""}">
+      rows.push(`<div class="legend-row${focusOn ? " is-focus" : ""}">
         <input type="color" class="legend-pick" data-group="${esc(g)}" value="${color}" title="Change ${esc(g)} color" />
-        <span>${esc(g)}${focusOn ? " · highlighted" : ""}</span>
-      </label>`);
+        <button type="button" class="legend-name" data-group="${esc(g)}">${esc(g)}${focusOn ? " · highlighted" : ""}</button>
+      </div>`);
     });
   } else {
     rows.push(`<div class="legend-row"><span class="legend-swatch heat"></span><span>Color = world score</span></div>`);
@@ -1050,7 +1056,7 @@ function applySnapshotParams(data) {
 function applyPresetCopy(data) {
   const lede = $("map-lede");
   if (!lede) return;
-  const meta = MAP_PRESETS.find((item) => item.id === (data && data.id)) || MAP_PRESETS.find((item) => item.id === activePresetId);
+  const meta = MAP_PRESETS.find((item) => item.id === (data && data.id));
   const title = (data && data.title) || (meta && meta.title) || "Starroute map";
   const description = (data && data.description) || (meta && meta.description) || "";
   lede.textContent = description ? `${title}. ${description}` : title;
@@ -1156,7 +1162,7 @@ function applyNetworkResult(data) {
 
 $("btn-network").addEventListener("click", async () => {
   $("btn-network").disabled = true;
-  $("btn-network").textContent = "Drawing routes…";
+  $("btn-network").textContent = "Generating the map…";
   try {
     await api("/api/factions", {
       method: "POST",
@@ -1192,11 +1198,12 @@ $("btn-network").addEventListener("click", async () => {
     }, null, 2);
     applyNetworkResult(data);
     toast(`Routes drawn: ${data.linked_nodes} stars on the grid, ${data.nodes} shown.`);
+    showScreen("map");
   } catch (err) {
     toast(err.message, true);
   } finally {
     $("btn-network").disabled = false;
-    $("btn-network").textContent = "Draw the routes";
+    $("btn-network").textContent = "Generate the map";
   }
 });
 
@@ -1236,6 +1243,8 @@ $("snapshot-file").addEventListener("change", async () => {
     applyNetworkResult(data);
     if (data.id && MAP_PRESETS.some((item) => item.id === data.id)) {
       rememberPreset(data.id);
+    } else {
+      showOpenedMap(data);
     }
     toast(`Loaded snapshot (${data.payload.nodes.length} systems).`);
   } catch (err) {
@@ -1280,9 +1289,25 @@ function updateBandReadout() {
     `Long is ${lng}–100% (long picky-ness).`;
 }
 
+if ($("btn-quick-generate")) {
+  $("btn-quick-generate").addEventListener("click", () => {
+    const button = $("btn-network");
+    if (button) button.click();
+  });
+}
+
+if ($("btn-detailed-generate")) {
+  $("btn-detailed-generate").addEventListener("click", () => {
+    const card = $("route-settings-card");
+    if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+    const field = $("max-jump");
+    if (field) field.focus();
+  });
+}
+
 $("btn-reset-ingest").addEventListener("click", () => {
   applyCatalogDefaults();
-  toast("Choose-the-stars settings reset. File paths were left alone.");
+  toast("Neighborhood reset. The NASA files were left alone.");
 });
 
 $("btn-reset-factions").addEventListener("click", async () => {
@@ -1354,20 +1379,94 @@ document.addEventListener("input", (event) => {
   highlightPath();
 });
 
-function requestedPresetId() {
-  try {
-    const fromUrl = new URL(window.location.href).searchParams.get("preset");
-    if (fromUrl && MAP_PRESETS.some((item) => item.id === fromUrl)) return fromUrl;
-  } catch {
-    /* ignore malformed URL */
+document.addEventListener("click", (event) => {
+  const name = event.target.closest(".legend-name");
+  if (!name) return;
+  const select = $("focus-faction");
+  if (!select) return;
+  const group = name.dataset.group;
+  select.value = select.value === group ? "all" : group;
+  highlightPath();
+});
+
+function downloadNamed(url, filename) {
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+}
+
+if ($("btn-open-map")) {
+  $("btn-open-map").addEventListener("click", () => {
+    const input = $("snapshot-file");
+    if (input) input.click();
+  });
+}
+if ($("btn-save-routes")) {
+  $("btn-save-routes").addEventListener("click", () => downloadNamed("/api/download/sol_network.csv", "sol_network.csv"));
+}
+if ($("btn-save-faction-routes")) {
+  $("btn-save-faction-routes").addEventListener("click", () => downloadNamed("/api/download/route_table.csv", "route_table.csv"));
+}
+
+function applyTheme(name) {
+  const theme = name === "dim" || name === "black" ? name : "light";
+  document.documentElement.dataset.theme = theme;
+  try { localStorage.setItem("starroute-theme", theme); } catch { /* ignore */ }
+  const select = $("color-theme");
+  if (select) select.value = theme;
+}
+
+if ($("color-theme")) {
+  let stored = "light";
+  try { stored = localStorage.getItem("starroute-theme") || "light"; } catch { /* ignore */ }
+  applyTheme(stored);
+  $("color-theme").addEventListener("change", () => applyTheme($("color-theme").value));
+}
+
+if ($("btn-fullscreen")) {
+  $("btn-fullscreen").addEventListener("click", () => {
+    document.body.classList.toggle("map-fullscreen");
+    const on = document.body.classList.contains("map-fullscreen");
+    $("btn-fullscreen").setAttribute("aria-pressed", on ? "true" : "false");
+    $("btn-fullscreen").setAttribute("aria-label", on ? "Exit full screen" : "Full screen");
+    $("btn-fullscreen").title = on ? "Exit full screen" : "Full screen";
+    window.setTimeout(resizeStarMap, 80);
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && document.body.classList.contains("map-fullscreen")) {
+      document.body.classList.remove("map-fullscreen");
+      $("btn-fullscreen").setAttribute("aria-pressed", "false");
+      $("btn-fullscreen").setAttribute("aria-label", "Full screen");
+      $("btn-fullscreen").title = "Full screen";
+      window.setTimeout(resizeStarMap, 80);
+    }
+  });
+}
+
+function showOpenedMap(map) {
+  const select = $("map-preset");
+  if (!select || !map) return;
+  let opened = select.querySelector('option[value="opened"]');
+  if (!opened) {
+    opened = document.createElement("option");
+    opened.value = "opened";
+    select.insertBefore(opened, select.firstChild);
   }
+  const count = map.payload && map.payload.nodes ? map.payload.nodes.length : 0;
+  opened.textContent = `Your map (${count} stars)`;
+  select.value = "opened";
+  activePresetId = "opened";
+  try { localStorage.removeItem("starroute-map-preset"); } catch { /* ignore */ }
   try {
-    const stored = localStorage.getItem("starroute-map-preset");
-    if (stored && MAP_PRESETS.some((item) => item.id === stored)) return stored;
-  } catch {
-    /* ignore quota / private mode */
-  }
-  return "crowded";
+    const url = new URL(window.location.href);
+    if (url.searchParams.has("preset")) {
+      url.searchParams.delete("preset");
+      history.replaceState(null, "", url);
+    }
+  } catch { /* file:// */ }
 }
 
 async function boot() {
@@ -1388,32 +1487,28 @@ async function boot() {
   bindHostSearch($("root-host"), $("root-suggest"), "host-path");
   applyCatalogDefaults();
   applyNetworkDefaults();
-  if (window.STARROUTE_DEFAULT_MAP) {
-    applyNetworkResult({ ...window.STARROUTE_DEFAULT_MAP, id: window.STARROUTE_DEFAULT_MAP.id || "crowded" });
+  const select = $("map-preset");
+  if (window.STARROUTE_DEFAULT_MAP && window.STARROUTE_DEFAULT_MAP.payload) {
+    applyNetworkResult(window.STARROUTE_DEFAULT_MAP);
+    showOpenedMap(window.STARROUTE_DEFAULT_MAP);
   }
-  const presetId = requestedPresetId();
-  if ($("map-preset")) {
-    $("map-preset").value = presetId;
-    $("map-preset").addEventListener("change", async () => {
-      const id = $("map-preset").value;
+  if (select) {
+    select.addEventListener("change", async () => {
+      const id = select.value;
+      if (id === "opened") {
+        if (window.STARROUTE_DEFAULT_MAP) {
+          applyNetworkResult(window.STARROUTE_DEFAULT_MAP);
+          showOpenedMap(window.STARROUTE_DEFAULT_MAP);
+        }
+        return;
+      }
       try {
         await loadMapPreset(id);
       } catch (err) {
         toast(err.message, true);
-        $("map-preset").value = activePresetId;
+        if (window.STARROUTE_DEFAULT_MAP) showOpenedMap(window.STARROUTE_DEFAULT_MAP);
       }
     });
-  }
-  if (presetId !== "crowded" || !window.STARROUTE_DEFAULT_MAP) {
-    try {
-      await loadMapPreset(presetId, { silent: true });
-    } catch (err) {
-      toast(err.message, true);
-      if ($("map-preset")) $("map-preset").value = "crowded";
-      rememberPreset("crowded");
-    }
-  } else {
-    rememberPreset("crowded");
   }
   try {
     await detectSources();
@@ -1435,7 +1530,14 @@ async function boot() {
     });
   } catch {
     document.body.classList.add("no-backend");
+    const card = $("route-settings-card");
+    const slot = $("drawer-route-slot");
+    if (card && slot) slot.appendChild(card);
   }
+  try {
+    const screen = new URL(window.location.href).searchParams.get("screen");
+    if (screen === "map" || screen === "factions" || screen === "ingest") showScreen(screen);
+  } catch { /* ignore */ }
 }
 
 boot();

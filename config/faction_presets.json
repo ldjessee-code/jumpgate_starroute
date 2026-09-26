@@ -2,22 +2,6 @@
   "max_cultures": 16,
   "presets": [
     {
-      "id": "kessari",
-      "name": "Kessari",
-      "kind": "species",
-      "count": 20,
-      "prefix": "KS",
-      "label": "Kessari — hot, high-pressure worlds (Hail Mary–style)",
-      "description": "A people at home in sulfur-band climates and around Jupiter-like gas giants. They overlap humans only where a star has both a rocky Goldilocks world and a giant.",
-      "filters": [{
-        "any": [
-          { "column": "sulfur_ranking", "op": "gt", "value": 0 },
-          { "column": "gas_giant_count", "op": "gt", "value": 0 }
-        ]
-      }],
-      "sort": { "column": "sulfur_ranking", "ascending": false }
-    },
-    {
       "id": "methan",
       "name": "Methan",
       "kind": "species",

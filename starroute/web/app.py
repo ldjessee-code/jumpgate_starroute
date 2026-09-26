@@ -110,9 +110,9 @@ def create_app() -> FastAPI:
     app.mount("/static", StaticFiles(directory=WEB_DIR / "static"), name="static")
 
     @app.get("/", response_class=HTMLResponse)
-    def home() -> str:
+    def home() -> HTMLResponse:
         template = TEMPLATES.get_template("index.html")
-        return template.render()
+        return HTMLResponse(template.render(), headers={"Cache-Control": "no-store"})
 
     @app.get("/api/status")
     def status() -> dict[str, Any]:

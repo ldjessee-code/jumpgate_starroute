@@ -257,8 +257,8 @@ const GLOSSARY = [
     id: "settingsDrawer",
     title: "Settings",
     group: "Map",
-    meaning: "Side drawer for jump length, short/medium/long percents, and Generate new map. Those rebuilds use the shipped star list in the browser (Python-in-WASM, slow once).",
-    impact: "Switching Map pack loads a finished snapshot and does not need Generate. NASA ingest is still grayed out.",
+    meaning: "On this computer the gear is for viewing: save the map, open a saved map, and reduce motion. Building the neighborhood and drawing routes is on Choose the stars.",
+    impact: "Switching Map pack loads a finished snapshot. It does not use the neighborhood you just built.",
   },
   {
     id: "colorByCulture",
@@ -276,10 +276,10 @@ const GLOSSARY = [
   },
   {
     id: "wasmRebuild",
-    title: "Generate new map",
+    title: "Rebuild the shipped sample",
     group: "Map",
-    meaning: "Rebuilds jump routes in this tab from the shipped 60 ly star list and the settings in the drawer. First click downloads a Python engine (Pyodide).",
-    impact: "Does not re-download NASA. Does not switch lore packs by itself — change Map pack for the three finished neighborhoods.",
+    meaning: "Rebuilds jump routes from the small star list that shipped with the page, not from a NASA download. Hidden while the local server is running, so it cannot replace the list you just built.",
+    impact: "On the public site this is the only generator. It does not switch lore packs by itself.",
   },
   {
     id: "lorePackSelect",

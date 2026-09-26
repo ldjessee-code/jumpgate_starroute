@@ -35,7 +35,7 @@
       <button class="tab is-active" data-screen="map" type="button">Map</button>
       <span class="later-tabs" data-help="laterTabs">
         <button class="tab backend-only is-disabled" data-screen="factions" type="button" aria-disabled="true" data-help="laterFactions">Who lives where <span class="tab-later">self-host</span></button>
-        <button class="tab is-disabled" data-screen="ingest" type="button" aria-disabled="true" data-help="laterStars">Choose the stars <span class="tab-later">self-host</span></button>
+        <button class="tab backend-only is-disabled" data-screen="ingest" type="button" aria-disabled="true" data-help="laterStars">Choose the stars <span class="tab-later">self-host</span></button>
       </span>
     </nav>
   </header>
@@ -91,8 +91,10 @@
             <input id="ingest-min-mass" name="starroute-catalog-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
           </label>
         </div>
+        <p class="field-help server-only">The list is not the map. Build it, then <strong>Generate the map from this list</strong>. That opens the map and draws the routes.</p>
         <div class="row-actions">
           <button id="btn-ingest" class="btn primary" type="button">Build the star list</button>
+          <button id="btn-go-generate" class="btn primary server-only" type="button">Generate the map from this list</button>
           <button id="btn-reset-ingest" class="btn" type="button">Reset this tab</button>
           <a class="link" href="/api/download/systems.csv">Download the star list</a>
         </div>
@@ -101,7 +103,7 @@
     </section>
 
     <section id="screen-factions" class="screen">
-      <p class="tab-intro">Optional story layer. Decide which cultures prefer which kinds of worlds (warm gas giants, Earth-like temperatures, and so on). Save the rules here. They are painted onto the map when you generate a new map.</p>
+      <p class="tab-intro">These are the Turquenish cultures. Species are placed first, then human nations take what is left. Save if you change a number. The map paints whoever is on this list when you generate.</p>
 
       <article class="card">
         <h2 data-help="humanHome">
@@ -117,14 +119,15 @@
           <label data-help="faction">
             <span class="label-row">Human nation that owns it</span>
             <span class="jargon">Usually the first human culture on the list</span>
-            <input id="human-root-group" type="text" value="Human" />
+            <input id="human-root-group" type="text" value="Turquenish Empire" />
           </label>
         </div>
       </article>
 
       <article class="card">
         <h2>Cultures</h2>
-        <p class="hint">Name each people. Species are placed first, then leftover stars go to human nations. Start from a built-in template (Methan gas-giant stations, living crystal, a sky quarter, the rim…) or a blank custom culture. You can have up to 16.</p>
+        <p id="culture-roster" class="hint">Loading the Turquenish cultures…</p>
+        <p class="hint">The names below are the cultures for this setting. Add one only if you need a copy or a blank culture. You can have up to 16.</p>
         <div class="add-culture">
           <span class="label-row">Add from a template</span>
           <div class="add-culture-row">
@@ -147,7 +150,7 @@
     <section id="screen-map" class="screen is-active">
       <div class="map-layout" id="map-layout">
         <aside class="card controls" id="settings-drawer">
-          <p class="tab-intro sidebar-intro">Three static map packs ship with this page. Switching packs loads JSON from <code>presets/</code> — no Python server. Change jump settings and generate a new map from the shipped star list if you want a variant. NASA catalog ingest is a later step.</p>
+          <p class="tab-intro sidebar-intro">Finished packs are in the Map pack menu. To use a star list you just built, stay in this drawer and click <strong>Generate the map</strong>. That draws the routes and paints the Turquenish cultures.</p>
           <h2>Route settings</h2>
           <label data-help="jumpRange">
             <span class="label-row">Longest single jump</span>
@@ -201,17 +204,18 @@
             Color stars by the cultures I saved
           </label>
           <div class="row-actions needs-backend">
-            <button id="btn-network" class="btn primary" type="button">Draw the routes</button>
-            <button id="btn-reset-map" class="btn" type="button">Reset this tab</button>
+            <button id="btn-network" class="btn primary" type="button">Generate the map</button>
+            <button id="btn-reset-map" class="btn" type="button">Reset these settings</button>
           </div>
-          <div class="row-actions">
-            <button id="btn-wasm-rebuild" class="btn primary" type="button" data-help="wasmRebuild">Generate new map</button>
+          <p class="field-help needs-backend">Uses the star list from Choose the stars, and the cultures under Who lives where.</p>
+          <div class="row-actions sample-only">
+            <button id="btn-wasm-rebuild" class="btn" type="button" data-help="wasmRebuild">Rebuild the shipped sample</button>
+            <span class="field-help">Ignores a NASA download. Uses the small sample that shipped with this page. First click loads a Python engine in the browser.</span>
+          </div>
           <label class="check" data-help="reduceMotion">
             <input id="reduce-map-motion" type="checkbox" />
             Reduce map effects (keeps view; skips culture halo)
           </label>
-            <span class="field-help">Uses the shipped star list (not a fresh NASA download). First click loads Python-in-WASM (slow once). After that, changing jump length or percents and generating again is local.</span>
-          </div>
           <p id="wasm-status" class="field-help" aria-live="polite"></p>
           <pre id="network-box" class="output hidden"></pre>
           <div class="downloads" data-help="snapshot">
@@ -225,10 +229,12 @@
         </aside>
 
         <article class="card map-card">
+          <p class="next-step server-only">The gear opens Settings. <strong>Generate the map</strong> there draws routes on the star list from Choose the stars and paints the Turquenish cultures. The Map pack menu loads an older finished snapshot instead.</p>
           <div class="map-toolbar">
             <label data-help="mapPreset">
               <span class="label-row">Map pack</span>
               <select id="map-preset">
+                <option value="opened" selected>Your map (309 stars)</option>
                 <option value="crowded">Crowded — Turquenish neighborhood</option>
                 <option value="sparse">Sparse — thin Turquenish grid</option>
                 <option value="lonely_humans">Lonely humans</option>
@@ -276,11 +282,11 @@
     </div>
   </div>
   <div id="toast" class="toast hidden" role="status"></div>
-  <script src="default-map.js"></script>
+  <script src="default-map.js?v=20260926g"></script>
   <script src="js/site-nav.js"></script>
   <script src="js/glossary.js"></script>
   <script src="js/help.js"></script>
   <script src="js/wasm-engine.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=20260926g"></script>
 </body>
 </html>

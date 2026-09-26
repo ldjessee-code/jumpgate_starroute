@@ -3,52 +3,73 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>Jumpgate Starroute</title>
-  <link rel="stylesheet" href="/static/css/app.css" />
+  <link rel="stylesheet" href="/static/css/app.css?v=20260926f" />
   <link rel="stylesheet" href="/static/css/help.css" />
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <script>
+    try {
+      var theme = localStorage.getItem("starroute-theme");
+      if (theme === "dim" || theme === "black" || theme === "light") {
+        document.documentElement.dataset.theme = theme;
+      }
+    } catch (e) { /* private mode */ }
+  </script>
 </head>
 <body class="map-first map-tab">
   <header class="masthead compact">
     <div class="masthead-top">
       <div class="masthead-copy">
-        <p class="eyebrow">v2.0 · GM / author tool</p>
-        <nav class="site-nav" data-site-nav data-root="/static/" aria-label="Site"></nav>
         <h1>Jumpgate Starroute</h1>
-        <p class="lede" id="map-lede">A 60 ly map around Sol. Pick a pre-generated pack, or change jump settings in the side panel.</p>
-        <p class="tej-wrap" data-tej-brand></p>
+        <p class="lede">A tool for drawing routes between real stars, for game masters and authors.</p>
       </div>
       <div class="header-actions">
+        <button type="button" id="btn-context-help" class="help-mode-btn" aria-pressed="false" aria-label="Context help. Click, then click something on the page." title="Click, then click a control, the map, or a heading" data-help="contextHelp">?</button>
+        <button id="btn-glossary" class="btn header-help" type="button" data-help="howItWorks">Terms &amp; Help docs</button>
         <button id="btn-drawer" class="icon-btn" type="button" aria-expanded="false" aria-label="Settings" title="Settings" data-help="settingsDrawer">
           <svg class="icon-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="3"></circle>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
           </svg>
         </button>
-        <div class="header-help-row">
-          <button type="button" id="btn-context-help" class="help-mode-btn" aria-pressed="false" aria-label="Context help. Click, then click something on the page." title="Click, then click a control, the map, or a heading" data-help="contextHelp">?</button>
-          <button id="btn-glossary" class="btn header-help" type="button" data-help="howItWorks">Terms &amp; Help docs</button>
-        </div>
       </div>
     </div>
+    <nav class="site-nav" data-site-nav data-root="/static/" aria-label="Site"></nav>
     <nav class="tabs" role="tablist">
       <button class="tab is-active" data-screen="map" type="button">Map</button>
       <span class="later-tabs" data-help="laterTabs">
         <button class="tab backend-only is-disabled" data-screen="factions" type="button" aria-disabled="true" data-help="laterFactions">Who lives where <span class="tab-later">self-host</span></button>
-        <button class="tab is-disabled" data-screen="ingest" type="button" aria-disabled="true" data-help="laterStars">Choose the stars <span class="tab-later">self-host</span></button>
+        <button class="tab backend-only is-disabled" data-screen="ingest" type="button" aria-disabled="true" data-help="laterStars">Choose the stars <span class="tab-later">self-host</span></button>
       </span>
     </nav>
   </header>
 
+  <aside class="card controls" id="settings-drawer">
+    <p class="tab-intro sidebar-intro">Color set for the whole tool. Building a neighborhood and drawing routes stays on Choose the stars.</p>
+    <label>
+      <span class="label-row">Color set</span>
+      <select id="color-theme">
+        <option value="light">Light (cream)</option>
+        <option value="dim">Dim (blue)</option>
+        <option value="black">Dark (black)</option>
+      </select>
+    </label>
+    <div id="drawer-route-slot"></div>
+    <div class="row-actions sample-only">
+      <button id="btn-wasm-rebuild" class="btn" type="button">Rebuild the shipped sample</button>
+      <span class="field-help">Ignores a NASA download. Uses the small sample that shipped with this page. First click loads a Python engine in the browser.</span>
+    </div>
+    <p id="wasm-status" class="field-help" aria-live="polite"></p>
+  </aside>
+
   <main>
     <section id="screen-ingest" class="screen">
-      <p class="tab-intro">Later step. Load NASA’s lists, pick which star is “home,” and decide how big a neighborhood to keep. v2.0 generates maps from the shipped star list instead.</p>
-
       <article class="card">
         <h2 data-help="nasaFiles">
           <span>NASA star and planet lists</span>
         </h2>
-        <p class="hint">Use a matching pair of files from the NASA Exoplanet Archive. You can accept the ones this computer already has, or upload your own.</p>
+        <p class="hint">Load NASA’s planet list and star list. Use a matching pair from the same day. You can keep the files already on this computer, or choose your own. Sol is added later, because NASA does not include it.</p>
         <div class="file-grid">
           <label data-help="nasaFiles">
             <span class="label-row">Planet list</span>
@@ -70,38 +91,105 @@
         <pre id="preview-box" class="output hidden"></pre>
       </article>
 
-      <article class="card">
-        <h2>Home star and neighborhood</h2>
-        <p class="hint">Our Sun (Sol) is added automatically because NASA skips it. Distances are shown in light-years — how far light travels in a year.</p>
+      <article class="card" id="neighborhood-card">
+        <header class="card-head">
+          <h2>Neighborhood</h2>
+          <button id="btn-reset-ingest" class="btn" type="button">Reset Neighborhood</button>
+        </header>
+        <p class="hint">Sol is added automatically, because NASA skips it. Reset Neighborhood clears these three fields only. It does not change the NASA files.</p>
         <div class="param-grid">
           <label data-help="origin" class="combo-label">
-            <span class="label-row">Map center (home star)</span>
-            <span class="jargon">Default: Sol, our Sun</span>
+            <span class="label-row">Map center (Neighborhood)</span>
+            <span class="jargon">Click the field or type. Matching star names open below.</span>
             <input id="origin-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
             <ul id="origin-suggest" class="suggest" hidden></ul>
           </label>
           <label data-help="catalogRadius">
-            <span class="label-row">How far from home to include</span>
-            <span class="jargon">Light-years · shipped preview is 60</span>
+            <span class="label-row">Radius (light years from center)</span>
+            <span class="jargon">How far out to keep · shipped preview is 60</span>
             <input id="ingest-max-ly" name="starroute-catalog-radius-ly" type="number" min="10" step="10" value="60" autocomplete="off" />
           </label>
           <label data-help="solarMass">
-            <span class="label-row">Smallest stars to keep</span>
-            <span class="jargon">Compared with the Sun = 1.0 · default 0.25 · this is not a distance</span>
+            <span class="label-row">Minimum (stellar mass)</span>
+            <span class="jargon">Sun = 1.0 · default 0.25 · this is not a distance</span>
             <input id="ingest-min-mass" name="starroute-catalog-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
           </label>
         </div>
-        <div class="row-actions">
-          <button id="btn-ingest" class="btn primary" type="button">Build the star list</button>
-          <button id="btn-reset-ingest" class="btn" type="button">Reset this tab</button>
+        <div class="row-actions neighborhood-actions">
+          <button id="btn-ingest" class="btn primary" type="button">Build neighborhood (star list)</button>
           <a class="link" href="/api/download/systems.csv">Download the star list</a>
+          <span class="action-spacer"></span>
+          <button id="btn-quick-generate" class="btn primary server-only" type="button">Quick generate map from list</button>
+          <button id="btn-detailed-generate" class="btn server-only" type="button">Detailed generate map from list</button>
         </div>
         <pre id="ingest-box" class="output hidden"></pre>
+      </article>
+
+      <article class="card" id="route-settings-card">
+        <h2>Route settings</h2>
+        <p class="hint">Set these, then Generate the map. Quick generate uses whatever is already here and opens the map. Detailed generate stays here so you can change them first.</p>
+        <label data-help="jumpRange">
+          <span class="label-row">Longest single jump</span>
+          <span class="jargon">Light-years · not star mass · default 50</span>
+          <input id="max-jump" name="starroute-jump-range-ly" type="number" min="1" step="1" value="25" autocomplete="off" />
+        </label>
+        <label data-help="jumpBands">
+          <span class="label-row">Short jumps go up to</span>
+          <span class="jargon">Percent of the longest jump · not light-years · preview 40%</span>
+          <span class="pct-field"><input id="medium-pct" name="starroute-medium-pct" type="number" min="10" max="90" step="5" value="40" autocomplete="off" /> <span class="pct-suffix">%</span></span>
+        </label>
+        <label data-help="jumpBands">
+          <span class="label-row">Long jumps start at</span>
+          <span class="jargon">Percent of the longest jump · not light-years · preview 60%</span>
+          <span class="pct-field"><input id="long-pct" name="starroute-long-pct" type="number" min="15" max="95" step="5" value="60" autocomplete="off" /> <span class="pct-suffix">%</span></span>
+        </label>
+        <p id="band-readout" class="band-readout"></p>
+        <label data-help="neighbors">
+          <span class="label-row">Jump routes from one star</span>
+          <span class="jargon">Preview uses 6</span>
+          <input id="max-neighbors" name="starroute-max-neighbors" type="number" min="1" max="16" step="1" value="6" autocomplete="off" />
+        </label>
+        <label data-help="linkedCap">
+          <span class="label-row">How many stars get jump routes</span>
+          <span class="jargon">Extra stars still appear as dots · preview 80</span>
+          <input id="max-linked" name="starroute-linked-cap" type="number" min="2" step="1" value="80" autocomplete="off" />
+        </label>
+        <label data-help="rank">
+          <span class="label-row">Picky-ness for medium jumps</span>
+          <span class="jargon">0 = take anyone · 1 = only prize worlds · preview 0.15</span>
+          <input id="hard-rank" name="starroute-hard-rank" type="number" min="0" max="1" step="0.05" value="0.15" autocomplete="off" />
+        </label>
+        <label data-help="rank">
+          <span class="label-row">Picky-ness for long jumps</span>
+          <span class="jargon">Preview 0.25 · short jumps ignore this</span>
+          <input id="soft-rank" name="starroute-soft-rank" type="number" min="0" max="1" step="0.05" value="0.25" autocomplete="off" />
+        </label>
+        <label data-help="solarMass">
+          <span class="label-row">Smallest stars on the grid</span>
+          <span class="jargon">Sun = 1.0 · default 0.25 · this is not a distance</span>
+          <input id="net-min-mass" name="starroute-network-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
+        </label>
+        <label data-help="root" class="combo-label">
+          <span class="label-row">Where jump routes start growing</span>
+          <span class="jargon">Usually the same as the map center</span>
+          <input id="root-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
+          <ul id="root-suggest" class="suggest" hidden></ul>
+        </label>
+        <label class="check">
+          <input id="assign-factions" type="checkbox" checked />
+          Color stars by the cultures on Who lives where
+        </label>
+        <div class="row-actions">
+          <button id="btn-network" class="btn primary" type="button">Generate the map</button>
+          <button id="btn-reset-map" class="btn" type="button">Reset these settings</button>
+        </div>
+        <p class="field-help">Uses the neighborhood you built and the cultures under Who lives where.</p>
+        <pre id="network-box" class="output hidden"></pre>
       </article>
     </section>
 
     <section id="screen-factions" class="screen">
-      <p class="tab-intro">Optional story layer. Decide which cultures prefer which kinds of worlds (warm gas giants, Earth-like temperatures, and so on). Save the rules here. They are painted onto the map when you generate a new map.</p>
+      <p class="tab-intro">These are the Turquenish cultures. Species are placed first, then human nations take what is left. Save if you change a number. The map paints whoever is on this list when you generate.</p>
 
       <article class="card">
         <h2 data-help="humanHome">
@@ -117,14 +205,15 @@
           <label data-help="faction">
             <span class="label-row">Human nation that owns it</span>
             <span class="jargon">Usually the first human culture on the list</span>
-            <input id="human-root-group" type="text" value="Human" />
+            <input id="human-root-group" type="text" value="Turquenish Empire" />
           </label>
         </div>
       </article>
 
       <article class="card">
         <h2>Cultures</h2>
-        <p class="hint">Name each people. Species are placed first, then leftover stars go to human nations. Start from a built-in template (Methan gas-giant stations, living crystal, a sky quarter, the rim…) or a blank custom culture. You can have up to 16.</p>
+        <p id="culture-roster" class="hint">Loading the Turquenish cultures…</p>
+        <p class="hint">The names below are the cultures for this setting. Add one only if you need a copy or a blank culture. You can have up to 16.</p>
         <div class="add-culture">
           <span class="label-row">Add from a template</span>
           <div class="add-culture-row">
@@ -146,117 +235,65 @@
 
     <section id="screen-map" class="screen is-active">
       <div class="map-layout" id="map-layout">
-        <aside class="card controls" id="settings-drawer">
-          <p class="tab-intro sidebar-intro">Three static map packs ship with this page. Switching packs loads JSON from <code>presets/</code> — no Python server. Change jump settings and generate a new map from the shipped star list if you want a variant. NASA catalog ingest is a later step.</p>
-          <h2>Route settings</h2>
-          <label data-help="jumpRange">
-            <span class="label-row">Longest single jump</span>
-            <span class="jargon">Light-years · not star mass · default 50</span>
-            <input id="max-jump" name="starroute-jump-range-ly" type="number" min="1" step="1" value="25" autocomplete="off" />
-          </label>
-          <label data-help="jumpBands">
-            <span class="label-row">Short jumps go up to</span>
-            <span class="jargon">Percent of the longest jump · not light-years · preview 40%</span>
-            <span class="pct-field"><input id="medium-pct" name="starroute-medium-pct" type="number" min="10" max="90" step="5" value="40" autocomplete="off" /> <span class="pct-suffix">%</span></span>
-          </label>
-          <label data-help="jumpBands">
-            <span class="label-row">Long jumps start at</span>
-            <span class="jargon">Percent of the longest jump · not light-years · preview 60%</span>
-            <span class="pct-field"><input id="long-pct" name="starroute-long-pct" type="number" min="15" max="95" step="5" value="60" autocomplete="off" /> <span class="pct-suffix">%</span></span>
-          </label>
-          <p id="band-readout" class="band-readout"></p>
-          <label data-help="neighbors">
-            <span class="label-row">Jump routes from one star</span>
-            <span class="jargon">Preview uses 6</span>
-            <input id="max-neighbors" name="starroute-max-neighbors" type="number" min="1" max="16" step="1" value="6" autocomplete="off" />
-          </label>
-          <label data-help="linkedCap">
-            <span class="label-row">How many stars get jump routes</span>
-            <span class="jargon">Extra stars still appear as dots · preview 80</span>
-            <input id="max-linked" name="starroute-linked-cap" type="number" min="2" step="1" value="80" autocomplete="off" />
-          </label>
-          <label data-help="rank">
-            <span class="label-row">Picky-ness for medium jumps</span>
-            <span class="jargon">0 = take anyone · 1 = only prize worlds · preview 0.15</span>
-            <input id="hard-rank" name="starroute-hard-rank" type="number" min="0" max="1" step="0.05" value="0.15" autocomplete="off" />
-          </label>
-          <label data-help="rank">
-            <span class="label-row">Picky-ness for long jumps</span>
-            <span class="jargon">Preview 0.25 · short jumps ignore this</span>
-            <input id="soft-rank" name="starroute-soft-rank" type="number" min="0" max="1" step="0.05" value="0.25" autocomplete="off" />
-          </label>
-          <label data-help="solarMass">
-            <span class="label-row">Smallest stars on the grid</span>
-            <span class="jargon">Sun = 1.0 · default 0.25 · this is not a distance</span>
-            <input id="net-min-mass" name="starroute-network-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
-          </label>
-          <label data-help="root" class="combo-label">
-            <span class="label-row">Where jump routes start growing</span>
-            <span class="jargon">Usually the same as the map center</span>
-            <input id="root-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
-            <ul id="root-suggest" class="suggest" hidden></ul>
-          </label>
-          <label class="check">
-            <input id="assign-factions" type="checkbox" checked />
-            Color stars by the cultures I saved
-          </label>
-          <div class="row-actions needs-backend">
-            <button id="btn-network" class="btn primary" type="button">Draw the routes</button>
-            <button id="btn-reset-map" class="btn" type="button">Reset this tab</button>
-          </div>
-          <div class="row-actions">
-            <button id="btn-wasm-rebuild" class="btn primary" type="button">Generate new map</button>
-          <label class="check" data-help="reduceMotion">
-            <input id="reduce-map-motion" type="checkbox" />
-            Reduce map effects (keeps view; skips culture halo)
-          </label>
-            <span class="field-help">Uses the shipped star list (not a fresh NASA download). First click loads Python-in-WASM (slow once). After that, changing jump length or percents and generating again is local.</span>
-          </div>
-          <p id="wasm-status" class="field-help" aria-live="polite"></p>
-          <pre id="network-box" class="output hidden"></pre>
-          <div class="downloads">
-            <button id="btn-snapshot" class="btn" type="button">Save this map</button>
-            <label class="link file-link">Open a saved map
-              <input id="snapshot-file" type="file" accept=".json,application/json" />
-            </label>
-            <a class="link" href="/api/download/sol_network.csv">Spreadsheet of routes</a>
-            <a class="link" href="/api/download/route_table.csv">Faction route table</a>
-          </div>
-        </aside>
-
         <article class="card map-card">
-          <div class="map-toolbar">
-            <label data-help="mapPreset">
-              <span class="label-row">Map pack</span>
-              <select id="map-preset">
-                <option value="crowded">Crowded — Turquenish neighborhood</option>
-                <option value="sparse">Sparse — thin Turquenish grid</option>
-                <option value="lonely_humans">Lonely humans</option>
-              </select>
-            </label>
-            <label data-help="gatePath">
-              <span class="label-row">From</span>
-              <select id="path-start"></select>
-            </label>
-            <label data-help="gatePath">
-              <span class="label-row">To</span>
-              <select id="path-end"></select>
-            </label>
-            <label data-help="focusFaction">
-              <span class="label-row">Highlight one culture</span>
-              <select id="focus-faction">
-                <option value="all">Everyone (full color)</option>
-              </select>
-            </label>
-            <label class="check" data-help="colorByCulture">
-              <input id="color-faction" type="checkbox" checked />
-              Color by culture
-            </label>
-          </div>
-          <div id="path-readout" class="path-readout" data-help="gatePath"></div>
-          <div class="map-stage">
-            <div id="star-map" data-help="starMap"></div>
+          <div class="map-work">
             <aside id="map-legend" class="map-legend" data-help="mapLegend" aria-label="Map color legend"></aside>
+            <div class="map-main">
+              <div class="map-stage">
+                <div id="star-map" data-help="starMap"></div>
+                <button id="btn-fullscreen" class="map-fs" type="button" aria-pressed="false" aria-label="Full screen" title="Full screen">
+                  <svg class="icon-fs icon-fs-enter" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"></path>
+                  </svg>
+                  <svg class="icon-fs icon-fs-exit" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                    <path d="M4 9V4h5M9 9L4 4M20 9V4h-5M15 9l5-5M4 15v5h5M9 15l-5 5M20 15v5h-5M15 15l5 5"></path>
+                  </svg>
+                </button>
+              </div>
+              <div id="path-readout" class="path-readout" data-help="gatePath"></div>
+            </div>
+            <aside class="map-side">
+              <div class="map-routes">
+                <label class="check" data-help="colorByCulture">
+                  <input id="color-faction" type="checkbox" checked />
+                  Color by faction
+                </label>
+                <label class="check" data-help="reduceMotion">
+                  <input id="reduce-map-motion" type="checkbox" />
+                  Reduce map effects
+                </label>
+                <label data-help="mapPreset">
+                  <span class="label-row">Map pack</span>
+                  <select id="map-preset">
+                    <option value="opened" selected>Your map (309 stars)</option>
+                    <option value="crowded">Crowded — Turquenish neighborhood</option>
+                    <option value="sparse">Sparse — thin Turquenish grid</option>
+                    <option value="lonely_humans">Lonely humans</option>
+                  </select>
+                </label>
+                <label data-help="focusFaction">
+                  <span class="label-row">Highlight faction</span>
+                  <select id="focus-faction" title="Same as clicking a faction name in the legend">
+                    <option value="all">Everyone (full color)</option>
+                  </select>
+                </label>
+                <label data-help="gatePath">
+                  <span class="label-row">From</span>
+                  <select id="path-start"></select>
+                </label>
+                <label data-help="gatePath">
+                  <span class="label-row">To</span>
+                  <select id="path-end"></select>
+                </label>
+              </div>
+              <div class="map-saves">
+                <button id="btn-snapshot" class="btn" type="button">Save this map</button>
+                <button id="btn-open-map" class="btn" type="button">Open a saved map</button>
+                <input id="snapshot-file" type="file" accept=".json,application/json" hidden />
+                <button id="btn-save-routes" class="btn server-only" type="button">Save all routes</button>
+                <button id="btn-save-faction-routes" class="btn server-only" type="button">Save faction routes</button>
+              </div>
+            </aside>
           </div>
         </article>
       </div>
@@ -276,11 +313,22 @@
     </div>
   </div>
   <div id="toast" class="toast hidden" role="status"></div>
-  <script src="/static/default-map.js"></script>
-  <script src="/static/js/site-nav.js"></script>
+  <footer class="site-foot">
+    <div class="foot-left">
+      <a class="tej-brand" data-tej-brand href="https://trueeyedjack.com/" target="_blank" rel="noopener noreferrer">
+        <img src="/static/img/true-eyed-jack.svg" alt="" width="36" height="36" />
+        <span>A True Eyed Jack app: Local First. Always Intelligent.</span>
+      </a>
+      <a href="https://github.com/ldjessee-code/jumpgate_starroute/blob/main/LICENSE">MIT License</a>
+    </div>
+    <p class="foot-mid">Turquenish setting, characters, and fiction © Lloyd Douglass Jessee 2025–2026</p>
+    <p class="foot-right">v2.0 · GM / author tool</p>
+  </footer>
+  <script src="/static/default-map.js?v=20260926g"></script>
+  <script src="/static/js/site-nav.js?v=20260926e"></script>
   <script src="/static/js/glossary.js"></script>
   <script src="/static/js/help.js"></script>
   <script src="/static/js/wasm-engine.js"></script>
-  <script src="/static/js/app.js"></script>
+  <script src="/static/js/app.js?v=20260926g"></script>
 </body>
 </html>
