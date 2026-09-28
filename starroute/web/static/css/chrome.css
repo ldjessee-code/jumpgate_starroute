@@ -28,6 +28,70 @@ html[data-theme="light"] footer a { color: #f4efe4 !important; }
 .foot-mid { margin: 0; text-align: center; }
 .foot-right { margin: 0; text-align: right; letter-spacing: 0.08em; text-transform: uppercase; font-size: 0.72rem; }
 .tej-brand { text-decoration: none; display: inline-flex; align-items: center; gap: 0.45rem; color: inherit; }
+
+/* Wide window: header and footer stay on screen. The article scrolls between them. */
+@media (min-width: 901px) {
+  html,
+  body:not(.map-first) {
+    height: 100%;
+  }
+  body:not(.map-first) {
+    display: flex;
+    flex-direction: column;
+    max-height: 100vh;
+    overflow: hidden;
+  }
+  body:not(.map-first) > header,
+  body:not(.map-first) > .site-foot {
+    flex: 0 0 auto;
+  }
+  body:not(.map-first) > main {
+    flex: 1 1 auto;
+    min-height: 0;
+  }
+  body:not(.map-first):not(.lore-app) > main {
+    overflow: auto;
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 1.5rem max(1.25rem, calc((100% - 52rem) / 2)) 2.5rem;
+  }
+}
+
+/* Phone and small tablet: header and footer scroll with the page. Footer stacks. */
+@media (max-width: 900px) {
+  html,
+  body.lore-app {
+    height: auto;
+    overflow: visible;
+  }
+  body.lore-app {
+    max-height: none;
+  }
+  body.lore-app main.lore-shell,
+  body.lore-app .lore-layout,
+  body.lore-app .lore-sidebar,
+  body.lore-app .lore-main {
+    overflow: visible;
+    min-height: auto;
+    height: auto;
+    flex: none;
+  }
+  .site-foot {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.7rem;
+  }
+  .foot-left {
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+  .foot-mid { text-align: center; }
+  .foot-right {
+    text-align: right;
+    white-space: normal;
+  }
+}
 html[data-theme="light"] .card {
   background: #fffcf6 !important;
   color: #1a1f2e !important;

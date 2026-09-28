@@ -130,7 +130,7 @@
     if (!document.body.classList.contains("map-first") && !document.querySelector("link[data-starroute-chrome]")) {
       const link = document.createElement("link");
       link.rel = "stylesheet";
-      link.href = (preFromNav() || "") + "css/chrome.css";
+      link.href = (preFromNav() || "") + "css/chrome.css?v=20260926j";
       link.setAttribute("data-starroute-chrome", "1");
       document.head.appendChild(link);
     }

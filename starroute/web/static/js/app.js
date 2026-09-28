@@ -34,6 +34,10 @@ const CONTRAST_PALETTE = [
 ];
 
 const colorOverrides = loadColorOverrides();
+const ORBIT_MATCH_PAGE = "https://ldjessee-code.github.io/orbit_match/manual/";
+let pinnedStar = null;
+let pathRoster = [];
+const pathValue = { "path-start": "", "path-end": "" };
 
 function loadColorOverrides() {
   try {
@@ -732,16 +736,61 @@ $("btn-faction-preview").addEventListener("click", async () => {
 });
 
 function fillPathSelects(nodes) {
-  const connected = nodes
+  pathRoster = (nodes || [])
     .filter((n) => n.gate_distance !== null && n.gate_distance !== undefined)
-    .sort((a, b) => (a.gate_distance - b.gate_distance) || a.hostname.localeCompare(b.hostname));
-  const opts = connected.map((n) => `<option value="${n.hostname}">${n.hostname} (${n.gate_distance})</option>`).join("");
-  $("path-start").innerHTML = opts;
-  $("path-end").innerHTML = opts;
+    .sort((a, b) => (a.gate_distance - b.gate_distance) || a.hostname.localeCompare(b.hostname))
+    .map((n) => ({ hostname: n.hostname, sy_name: n.sy_name || "", gate_distance: n.gate_distance }));
   const root = $("root-host").value || catalogOrigin || "Sol";
-  $("path-start").value = connected.some((n) => n.hostname === root) ? root : (connected[0] && connected[0].hostname);
-  const farthest = connected[connected.length - 1];
-  if (farthest) $("path-end").value = farthest.hostname;
+  pathValue["path-start"] = pathRoster.some((n) => n.hostname === root) ? root : ((pathRoster[0] && pathRoster[0].hostname) || "");
+  const farthest = pathRoster[pathRoster.length - 1];
+  pathValue["path-end"] = (farthest && farthest.hostname) || "";
+  ["path-start", "path-end"].forEach((id) => {
+    const box = $(`${id}-search`);
+    if (box) box.value = "";
+    renderPathOptions(id);
+  });
+}
+
+function pathLabel(row) {
+  const hops = row.gate_distance != null && row.gate_distance !== "" ? ` (${row.gate_distance})` : "";
+  const name = row.sy_name && row.sy_name !== row.hostname ? ` · ${row.sy_name}` : "";
+  return `${row.hostname}${name}${hops}`;
+}
+
+function renderPathOptions(id) {
+  const sel = $(id);
+  if (!sel) return;
+  const q = (($(`${id}-search`) && $(`${id}-search`).value) || "").trim().toLowerCase();
+  const keep = pathValue[id] || "";
+  const rows = pathRoster.filter((row) => {
+    if (!q) return true;
+    return row.hostname.toLowerCase().includes(q) || (row.sy_name || "").toLowerCase().includes(q);
+  });
+  const current = pathRoster.find((row) => row.hostname === keep);
+  let html = "";
+  if (keep && current && !rows.some((row) => row.hostname === keep)) {
+    html += `<option value="${esc(keep)}" hidden>${esc(pathLabel(current))}</option>`;
+  }
+  if (!rows.length) html += `<option value="" disabled>No match</option>`;
+  html += rows.map((row) => `<option value="${esc(row.hostname)}">${esc(pathLabel(row))}</option>`).join("");
+  sel.innerHTML = html || `<option value="" disabled>No match</option>`;
+  if (keep) sel.value = keep;
+}
+
+function bindPathSearch(id) {
+  const box = $(`${id}-search`);
+  const sel = $(id);
+  if (!box || !sel) return;
+  box.addEventListener("input", () => renderPathOptions(id));
+  box.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" || !box.value.trim()) return;
+    event.preventDefault();
+    const first = [...sel.options].find((opt) => opt.value && !opt.hidden);
+    if (!first) return;
+    pathValue[id] = first.value;
+    sel.value = first.value;
+    sel.dispatchEvent(new Event("change"));
+  });
 }
 
 function fillFocusOptions(nodes) {
@@ -758,6 +807,16 @@ function hexToRgba(hex, alpha) {
   const r = (n >> 16) & 255;
   const g = (n >> 8) & 255;
   const b = n & 255;
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function haloRgba(hex, towardWhite, alpha) {
+  const raw = hex.replace("#", "");
+  const n = parseInt(raw, 16);
+  const mix = (c) => Math.round(c + (255 - c) * towardWhite);
+  const r = mix((n >> 16) & 255);
+  const g = mix((n >> 8) & 255);
+  const b = mix(n & 255);
   return `rgba(${r},${g},${b},${alpha})`;
 }
 
@@ -800,10 +859,154 @@ function renderLegend(nodes) {
   const focus = $("focus-faction") && $("focus-faction").value || "all";
   if (focus !== "all") {
     rows.push(`<div class="legend-row is-focus"><span class="legend-swatch" style="background:${getGroupColor(focus)};box-shadow:0 0 12px ${getGroupColor(focus)}"></span><span>Halo = ${esc(focus)}</span></div>`);
+    rows.push(`<div class="legend-row"><span class="legend-line" style="border-top-color:${getGroupColor(focus)}"></span><span>Route inside this faction</span></div>`);
+    rows.push(`<div class="legend-row"><span class="legend-line"></span><span>Other route</span></div>`);
+  } else if (byFaction) {
+    rows.push(`<div class="legend-row"><span class="legend-line"></span><span>Color = both stars in that faction</span></div>`);
+  } else {
+    rows.push(`<div class="legend-row"><span class="legend-line"></span><span>Jump route</span></div>`);
   }
-  rows.push(`<div class="legend-row"><span class="legend-line"></span><span>Jump route</span></div>`);
   rows.push(`<div class="legend-row"><span class="legend-line path"></span><span>Highlighted path</span></div>`);
   box.innerHTML = `<p class="legend-title">Legend</p>${rows.join("")}`;
+}
+
+function lineBucket() {
+  return { x: [], y: [], z: [] };
+}
+
+function pushSegment(bucket, a, b) {
+  bucket.x.push(a.x, b.x, null);
+  bucket.y.push(a.y, b.y, null);
+  bucket.z.push(a.z, b.z, null);
+}
+
+function lineTrace(name, bucket, color, width) {
+  if (!bucket.x.length) return null;
+  return {
+    type: "scatter3d",
+    mode: "lines",
+    x: bucket.x,
+    y: bucket.y,
+    z: bucket.z,
+    line: { color, width },
+    hoverinfo: "none",
+    name,
+  };
+}
+
+function ensureStarCard() {
+  let card = $("star-card");
+  if (!card) {
+    const stage = document.querySelector(".map-stage");
+    if (!stage) return null;
+    card = document.createElement("aside");
+    card.id = "star-card";
+    card.className = "star-card hidden";
+    stage.appendChild(card);
+  }
+  if (!card.dataset.bound) {
+    card.dataset.bound = "1";
+    card.addEventListener("click", onStarCardClick);
+  }
+  return card;
+}
+
+function onStarCardClick(event) {
+  const action = event.target.closest("[data-star-action]");
+  if (!action) return;
+  const host = event.currentTarget.dataset.host;
+  const kind = action.dataset.starAction;
+  if (kind === "close") hideStarCard();
+  if (kind === "start") assignRouteEnd("path-start", host);
+  if (kind === "end") assignRouteEnd("path-end", host);
+}
+
+function assignRouteEnd(selectId, hostname) {
+  const sel = $(selectId);
+  if (!sel || !hostname) return;
+  if (!pathRoster.some((row) => row.hostname === hostname)) {
+    const node = ((networkData && networkData.nodes) || []).find((n) => n.hostname === hostname);
+    pathRoster.push({
+      hostname,
+      sy_name: (node && node.sy_name) || "",
+      gate_distance: node ? node.gate_distance : null,
+    });
+  }
+  pathValue[selectId] = hostname;
+  const box = $(`${selectId}-search`);
+  if (box) box.value = "";
+  renderPathOptions(selectId);
+  sel.value = hostname;
+  highlightPath();
+  if (pinnedStar) showStarCard(pinnedStar);
+}
+
+function orbitMatchHref(node) {
+  const q = new URLSearchParams();
+  q.set("h", "1");
+  q.set("host", node.hostname);
+  if (node.setting_name) q.set("name", node.setting_name);
+  if (node.spectype) q.set("spec", node.spectype);
+  if (node.sy_pnum != null) q.set("planets", String(node.sy_pnum));
+  if (node.group) q.set("holder", node.group);
+  ["x", "y", "z"].forEach((key) => {
+    if (node[key] != null) q.set(key, String(Math.round(Number(node[key]) * 100) / 100));
+  });
+  const from = new Set();
+  ((networkData && networkData.edges) || []).forEach((edge) => {
+    if (edge.a === node.hostname) from.add(edge.b);
+    else if (edge.b === node.hostname) from.add(edge.a);
+  });
+  from.forEach((host) => q.append("from", host));
+  return `${ORBIT_MATCH_PAGE}#${q.toString()}`;
+}
+
+function showStarCard(hostname) {
+  const node = ((networkData && networkData.nodes) || []).find((n) => n.hostname === hostname);
+  const card = ensureStarCard();
+  if (!node || !card) return;
+  pinnedStar = hostname;
+  card.dataset.host = hostname;
+  card.classList.remove("hidden");
+  const isStart = $("path-start") && $("path-start").value === hostname;
+  const isEnd = $("path-end") && $("path-end").value === hostname;
+  const lines = [
+    node.group || node.species || "No faction",
+    node.spectype ? `Spectral type ${node.spectype}` : "",
+    node.sy_pnum != null ? `Planets ${node.sy_pnum}` : "",
+    node.dist_ly != null ? `${Number(node.dist_ly).toFixed(2)} ly from Sol` : "",
+    node.gate_distance != null && node.gate_distance !== "" ? `${node.gate_distance} gates from the root` : "Not on the route grid",
+  ].filter(Boolean);
+  card.innerHTML = `
+    <button type="button" class="star-card-close" data-star-action="close" aria-label="Close">×</button>
+    <h3>${esc(node.sy_name || node.hostname)}</h3>
+    <p class="star-card-host">${esc(node.hostname)}</p>
+    ${lines.map((line) => `<p>${esc(line)}</p>`).join("")}
+    <div class="star-card-actions">
+      <button type="button" class="btn" data-star-action="start">${isStart ? "Start" : "Set as start"}</button>
+      <button type="button" class="btn" data-star-action="end">${isEnd ? "End" : "Set as end"}</button>
+      <a class="btn" href="${esc(orbitMatchHref(node))}" target="_blank" rel="noopener noreferrer">Orbit Match</a>
+    </div>
+  `;
+}
+
+function hideStarCard() {
+  pinnedStar = null;
+  const card = $("star-card");
+  if (!card) return;
+  card.classList.add("hidden");
+  card.innerHTML = "";
+  delete card.dataset.host;
+}
+
+function bindStarClicks(plot) {
+  if (!plot || plot.__starClick || typeof plot.on !== "function") return;
+  plot.__starClick = true;
+  plot.on("plotly_click", (ev) => {
+    const pt = ev.points && ev.points[0];
+    const host = pt && pt.customdata;
+    if (typeof host === "string" && host) showStarCard(host);
+  });
 }
 
 function drawMap(path = []) {
@@ -822,42 +1025,40 @@ function drawMap(path = []) {
     pathSet.add([path[i], path[i + 1]].sort().join("|"));
   }
 
-  const dimXs = [];
-  const dimYs = [];
-  const dimZs = [];
-  const xs = [];
-  const ys = [];
-  const zs = [];
-  const gxs = [];
-  const gys = [];
-  const gzs = [];
-  const hxs = [];
-  const hys = [];
-  const hzs = [];
+  const dim = lineBucket();
+  const plain = lineBucket();
+  const glow = lineBucket();
+  const pathLine = lineBucket();
+  const factionLines = new Map();
+  const factionBucket = (group) => {
+    let bucket = factionLines.get(group);
+    if (!bucket) {
+      bucket = lineBucket();
+      factionLines.set(group, bucket);
+    }
+    return bucket;
+  };
   edges.forEach((edge) => {
     const a = lookup[edge.a];
     const b = lookup[edge.b];
     if (!a || !b) return;
     const key = [edge.a, edge.b].sort().join("|");
     if (pathSet.has(key)) {
-      hxs.push(a.x, b.x, null);
-      hys.push(a.y, b.y, null);
-      hzs.push(a.z, b.z, null);
+      pushSegment(pathLine, a, b);
       return;
     }
-    const bothFocus = !reduceMotion && focus !== "all" && a.group === focus && b.group === focus;
-    if (bothFocus) {
-      gxs.push(a.x, b.x, null);
-      gys.push(a.y, b.y, null);
-      gzs.push(a.z, b.z, null);
+    const shared = a.group && a.group === b.group;
+    if (focus !== "all") {
+      if (shared && a.group === focus) {
+        if (!reduceMotion) pushSegment(glow, a, b);
+        pushSegment(factionBucket(focus), a, b);
+      } else {
+        pushSegment(dim, a, b);
+      }
+      return;
     }
-    const focused = focus === "all" || a.group === focus || b.group === focus;
-    const bucketX = focused ? xs : dimXs;
-    const bucketY = focused ? ys : dimYs;
-    const bucketZ = focused ? zs : dimZs;
-    bucketX.push(a.x, b.x, null);
-    bucketY.push(a.y, b.y, null);
-    bucketZ.push(a.z, b.z, null);
+    if (byFaction && shared) pushSegment(factionBucket(a.group), a, b);
+    else pushSegment(plain, a, b);
   });
 
   const originName = catalogOrigin || "Sol";
@@ -870,52 +1071,22 @@ function drawMap(path = []) {
     return Math.max(3, base * 0.7);
   });
   const haloNodes = (focus === "all" || reduceMotion) ? [] : nodes.filter((n) => n.group === focus);
-  const glowColor = focus === "all" ? "rgba(255,255,255,0.2)" : hexToRgba(getGroupColor(focus), 0.22);
-  const glowLineColor = focus === "all" ? "rgba(255,255,255,0.18)" : hexToRgba(getGroupColor(focus), 0.2);
-  const hover = (n) =>
-    `<b>${n.sy_name}</b> (${n.hostname})<br>` +
-    `Founding order: ${n.process_order ?? "—"}<br>` +
-    `Spectral type: ${n.spectype || "—"}<br>` +
-    `Planets: ${n.sy_pnum ?? "—"}<br>` +
-    `Ranking: ${n.ranking ?? "—"}<br>` +
-    `Distance from Sol: ${n.dist_ly != null ? n.dist_ly.toFixed(2) : "—"} ly<br>` +
-    `Distance from origin: ${n.dist_origin_ly != null ? n.dist_origin_ly.toFixed(2) : "—"} ly<br>` +
-    `Gates from root: ${n.gate_distance ?? "unlinked"}<br>` +
-    `${n.group || n.species || ""}`;
+  const factionHex = getGroupColor(focus);
+  const glowColor = focus === "all" ? "rgba(255,255,255,0.2)" : haloRgba(factionHex, 0.55, 0.55);
+  const factionTraces = [...factionLines.entries()].map(([group, bucket]) => lineTrace(
+    group,
+    bucket,
+    hexToRgba(getGroupColor(group), focus === "all" ? 0.8 : 0.95),
+    focus === "all" ? 2 : 3,
+  ));
 
   const traces = [
-    {
-      type: "scatter3d",
-      mode: "lines",
-      x: dimXs, y: dimYs, z: dimZs,
-      line: { color: "rgba(160,150,140,0.12)", width: 1 },
-      hoverinfo: "none",
-      name: "Other gates",
-    },
-    {
-      type: "scatter3d",
-      mode: "lines",
-      x: gxs, y: gys, z: gzs,
-      line: { color: glowLineColor, width: 14 },
-      hoverinfo: "none",
-      name: "Culture glow routes",
-    },
-    {
-      type: "scatter3d",
-      mode: "lines",
-      x: xs, y: ys, z: zs,
-      line: { color: focus === "all" ? "rgba(180,190,200,0.45)" : hexToRgba(getGroupColor(focus), 0.7), width: focus === "all" ? 2 : 3 },
-      hoverinfo: "none",
-      name: "Gates",
-    },
-    {
-      type: "scatter3d",
-      mode: "lines",
-      x: hxs, y: hys, z: hzs,
-      line: { color: "#e24a3b", width: 7 },
-      hoverinfo: "none",
-      name: "Highlighted path",
-    },
+    lineTrace("Other routes", dim, "rgba(160,150,140,0.12)", 1),
+    lineTrace("Jump routes", plain, "rgba(180,190,200,0.45)", 2),
+    lineTrace("Route halo", glow, haloRgba(factionHex, 0.72, 0.38), 46),
+    lineTrace("Route bloom", glow, haloRgba(factionHex, 0.4, 0.5), 20),
+    ...factionTraces,
+    lineTrace("Highlighted path", pathLine, "#e24a3b", 7),
     {
       type: "scatter3d",
       mode: "markers",
@@ -926,7 +1097,7 @@ function drawMap(path = []) {
       marker: {
         size: haloNodes.map((n) => {
           const base = 5 + Math.min(n.sy_pnum || 0, 8) * 1.6;
-          return Math.max(16, base * 2.8);
+          return Math.max(22, base * 3.6);
         }),
         color: glowColor,
         symbol: "circle",
@@ -940,8 +1111,8 @@ function drawMap(path = []) {
       x: others.map((n) => n.x),
       y: others.map((n) => n.y),
       z: others.map((n) => n.z),
-      text: others.map(hover),
-      hoverinfo: "text",
+      customdata: others.map((n) => n.hostname),
+      hoverinfo: "none",
       marker: {
         size: sizes(others),
         color: colors,
@@ -963,8 +1134,8 @@ function drawMap(path = []) {
       x: originNodes.map((n) => n.x),
       y: originNodes.map((n) => n.y),
       z: originNodes.map((n) => n.z),
-      text: originNodes.map(hover),
-      hoverinfo: "text",
+      customdata: originNodes.map((n) => n.hostname),
+      hoverinfo: "none",
       marker: {
         size: 14,
         color: originNodes.map((n) => nodeColor(n, true, focus)),
@@ -973,12 +1144,12 @@ function drawMap(path = []) {
       },
       name: originName,
     },
-  ];
+  ].filter(Boolean);
 
   renderLegend(nodes);
   const packKey = (lastSnapshot && (lastSnapshot.id || lastSnapshot.title)) || "map";
   const prevCam = plot.layout && plot.layout.scene && plot.layout.scene.camera;
-  Plotly.react(plot, traces, {
+  const drawn = Plotly.react(plot, traces, {
     paper_bgcolor: "#05070c",
     plot_bgcolor: "#05070c",
     font: { color: "#d9d2c3" },
@@ -993,6 +1164,8 @@ function drawMap(path = []) {
       zaxis: { title: "Z (ly)", backgroundcolor: "#05070c", gridcolor: "#2a3140", zerolinecolor: "#3a4254", color: "#c9c2b2" },
     },
   }, { responsive: true, displaylogo: false });
+  if (drawn && typeof drawn.then === "function") drawn.then(() => bindStarClicks(plot));
+  else bindStarClicks(plot);
 }
 
 async function highlightPath() {
@@ -1158,6 +1331,7 @@ function applyNetworkResult(data) {
   fillFocusOptions(networkData.nodes);
   highlightPath();
   window.setTimeout(resizeStarMap, 50);
+  if (pinnedStar && !networkData.nodes.some((n) => n.hostname === pinnedStar)) hideStarCard();
 }
 
 $("btn-network").addEventListener("click", async () => {
@@ -1354,8 +1528,13 @@ $("btn-wasm-rebuild").addEventListener("click", async () => {
   }
 });
 
-$("path-start").addEventListener("change", highlightPath);
-$("path-end").addEventListener("change", highlightPath);
+["path-start", "path-end"].forEach((id) => {
+  $(id).addEventListener("change", () => {
+    if ($(id).value) pathValue[id] = $(id).value;
+    highlightPath();
+  });
+  bindPathSearch(id);
+});
 $("color-faction").addEventListener("change", () => highlightPath());
 $("focus-faction").addEventListener("change", () => highlightPath());
 if ($("reduce-map-motion")) {

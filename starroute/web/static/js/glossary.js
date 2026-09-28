@@ -200,7 +200,7 @@ const GLOSSARY = [
     title: "Route between two stars",
     group: "Map",
     meaning: "The fewest jumps from one wired star to another, highlighted on the map. Isolated dots have no route.",
-    impact: "Pick From and To among stars that actually have gates. This does not change the network; it only highlights a path.",
+    impact: "Search From or To, then pick a star that has gates. This does not change the network; it only highlights a path.",
   },
   {
     id: "focusFaction",
