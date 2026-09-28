@@ -190,6 +190,15 @@ async function api(url, options) {
 function showScreen(name) {
   const tab = document.querySelector(`.tab[data-screen="${name}"]`);
   if (tab && (tab.disabled || tab.getAttribute("aria-disabled") === "true")) return;
+  if (name !== "map" && document.body.classList.contains("map-fullscreen")) {
+    document.body.classList.remove("map-fullscreen");
+    const fs = $("btn-fullscreen");
+    if (fs) {
+      fs.setAttribute("aria-pressed", "false");
+      fs.setAttribute("aria-label", "Full screen");
+      fs.title = "Full screen";
+    }
+  }
   document.body.classList.toggle("map-tab", name === "map");
   document.querySelectorAll(".screen").forEach((el) => {
     el.classList.toggle("is-active", el.id === `screen-${name}`);
@@ -233,6 +242,23 @@ function resizeStarMap() {
   } catch {
     /* map not plotted yet */
   }
+}
+
+function mapLayoutNarrow() {
+  return window.matchMedia("(max-width: 900px)").matches && !document.body.classList.contains("map-fullscreen");
+}
+
+let foldingPanels = false;
+
+function syncMapFolds() {
+  const narrow = mapLayoutNarrow();
+  foldingPanels = true;
+  document.querySelectorAll(".map-fold").forEach((el) => {
+    if (!narrow) el.open = true;
+    else if (!el.dataset.userSet) el.open = false;
+  });
+  foldingPanels = false;
+  window.setTimeout(resizeStarMap, 60);
 }
 
 function shortestPathLocal(start, end) {
@@ -1181,6 +1207,7 @@ async function highlightPath() {
     ? `${Math.max(path.length - 1, 0)} jump(s): ${path.join(" → ")}`
     : `No jump path between ${start} and ${end}.`;
   drawMap(path);
+  window.setTimeout(resizeStarMap, 0);
 }
 
 function currentNetworkParams() {
@@ -1613,6 +1640,7 @@ if ($("btn-fullscreen")) {
     $("btn-fullscreen").setAttribute("aria-label", on ? "Exit full screen" : "Full screen");
     $("btn-fullscreen").title = on ? "Exit full screen" : "Full screen";
     window.setTimeout(resizeStarMap, 80);
+    window.setTimeout(syncMapFolds, 90);
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && document.body.classList.contains("map-fullscreen")) {
@@ -1650,7 +1678,19 @@ function showOpenedMap(map) {
 
 async function boot() {
   showScreen("map");
-  window.addEventListener("resize", resizeStarMap);
+  window.addEventListener("resize", () => {
+    resizeStarMap();
+    syncMapFolds();
+  });
+  window.matchMedia("(max-width: 900px)").addEventListener("change", syncMapFolds);
+  document.querySelectorAll(".map-fold").forEach((el) => {
+    el.addEventListener("toggle", () => {
+      if (foldingPanels) return;
+      if (mapLayoutNarrow()) el.dataset.userSet = "1";
+      window.setTimeout(resizeStarMap, 60);
+    });
+  });
+  syncMapFolds();
   $("btn-drawer").addEventListener("click", () => toggleDrawer());
   $("btn-glossary").addEventListener("click", openGlossary);
   $("glossary-close").addEventListener("click", closeGlossary);

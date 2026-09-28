@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <title>Jumpgate Starroute</title>
-  <link rel="stylesheet" href="/static/css/app.css?v=20260926k" />
+  <link rel="stylesheet" href="/static/css/app.css?v=20260928c" />
   <link rel="stylesheet" href="/static/css/help.css" />
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
   <script>
@@ -237,7 +237,10 @@
       <div class="map-layout" id="map-layout">
         <article class="card map-card">
           <div class="map-work">
-            <aside id="map-legend" class="map-legend" data-help="mapLegend" aria-label="Map color legend"></aside>
+            <details class="map-fold map-legend-fold" id="fold-legend" open>
+              <summary>Legend</summary>
+              <aside id="map-legend" class="map-legend" data-help="mapLegend" aria-label="Map color legend"></aside>
+            </details>
             <div class="map-main">
               <div class="map-stage">
                 <div id="star-map" data-help="starMap"></div>
@@ -254,6 +257,8 @@
               <div id="path-readout" class="path-readout" data-help="gatePath"></div>
             </div>
             <aside class="map-side">
+              <details class="map-fold" id="fold-route" open>
+                <summary>Route</summary>
               <div class="map-routes">
                 <label class="check" data-help="colorByCulture">
                   <input id="color-faction" type="checkbox" checked />
@@ -289,6 +294,9 @@
                   <select id="path-end"></select>
                 </label>
               </div>
+              </details>
+              <details class="map-fold" id="fold-save" open>
+                <summary>Save</summary>
               <div class="map-saves">
                 <button id="btn-snapshot" class="btn" type="button">Save this map</button>
                 <button id="btn-open-map" class="btn" type="button">Open a saved map</button>
@@ -296,6 +304,7 @@
                 <button id="btn-save-routes" class="btn server-only" type="button">Save all routes</button>
                 <button id="btn-save-faction-routes" class="btn server-only" type="button">Save faction routes</button>
               </div>
+              </details>
             </aside>
           </div>
         </article>
@@ -332,6 +341,6 @@
   <script src="/static/js/glossary.js"></script>
   <script src="/static/js/help.js"></script>
   <script src="/static/js/wasm-engine.js"></script>
-  <script src="/static/js/app.js?v=20260926l"></script>
+  <script src="/static/js/app.js?v=20260928c"></script>
 </body>
 </html>

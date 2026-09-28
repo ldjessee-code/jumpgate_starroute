@@ -2,6 +2,8 @@
 
 Agreed 2026-09-24. This is the work that stays in this repo.
 
+Open layout bug, 2026-09-28: in-app Full screen on a large monitor leaves the map as a short strip. See [BUG-map-fullscreen.md](BUG-map-fullscreen.md). Review that height chain before changing the map layout again.
+
 Build the features and the screen first. The Crowded 90-star snapshot is not the map to keep. The next generation should take as many catalog systems as the jump rules will connect, and it must include every human-held system from `F:\Dropbox\Projects\Turquenish\lore\SETTING_OVERVIEW.md`: Turquenish still well over 30 (pre-war claim 39), Mardat still above 30 (pre-war 38), Industrial Hegemony about 11, League of the Faithful 3, plus the scattered neutrals. Further non-human factions may sit off this map for now. Methan and Crystomorphs are the ones that overview already places on older, more distant stretches (7–13 shared systems, hosts not chosen). The pages in `setting/` were fitted to the old snapshot and are not that check. The Sol-outward writing sheet waits until the new map exists. Setting prose is edited only in the Dropbox folder.
 
 Orbit Match (`../orbit_match/BRIEF.md`) is the sibling for planets, orbits, and in-system transfers. Game-system notes, with publisher links and free starters, are in [GAME_SYSTEMS.md](GAME_SYSTEMS.md). The same notes sit in the sibling folder so that program can stand alone.
