@@ -1,0 +1,789 @@
+Route,hostname,Species,Nation,Previous Node,Next Node,is_hub
+AB1,HD 93083,Aboreals,,HD 93083,HD 96700,True
+AB1,TWA 7,Aboreals,,HD 93083,HD 93083,False
+AB1,HD 96700,Aboreals,,HD 93083,HD 93083,False
+AB1,HD 96700,Aboreals,,HD 93083,GJ 3634,False
+AB1,TWA 7,Aboreals,,HD 93083,TWA 7,False
+AB1,GJ 3634,Aboreals,,HD 96700,HD 90156,False
+AB1,TOI-776,Aboreals,,HD 96700,TOI-776,False
+AB1,HD 103949,Aboreals,,HD 96700,HD 103949,False
+AB1,HD 90156,Aboreals,,GJ 3634,HD 90156,False
+AB1,HIP 54373,Aboreals,,GJ 3634,HD 104067,False
+AB1,HIP 56998,Aboreals,,GJ 3634,GJ 357,False
+AB1,HD 104067,Aboreals,,HIP 54373,HD 104067,False
+AB1,LTT 3780,Aboreals,,HIP 54373,TOI-620,False
+AB1,GJ 357,Aboreals,,HIP 56998,GJ 229,False
+AB1,TOI-620,Aboreals,,LTT 3780,HD 73583,False
+AB1,GJ 229,Aboreals,,GJ 357,GJ 229,False
+AB1,HD 73583,Aboreals,,TOI-620,HD 64114,False
+AB1,HD 64114,Aboreals,,HD 73583,HD 60779,False
+AB1,HD 60779,Aboreals,,HD 64114,HIP 35173,False
+AB1,HIP 35173,Aboreals,,HD 60779,HD 52265,False
+AB1,HD 52265,Aboreals,,HIP 35173,HD 45184,False
+AB1,HD 45184,Aboreals,,HD 52265,CD-35 2722,False
+AB1,CD-35 2722,Aboreals,,HD 45184,CD-35 2722,False
+BA1,Wolf 1061,Bazzar,,Wolf 1061,GJ 682,True
+BA1,GJ 682,Bazzar,,Wolf 1061,Wolf 1061,False
+BA1,HIP 84709,Bazzar,,Wolf 1061,Wolf 1061,False
+BA1,GJ 682,Bazzar,,Wolf 1061,HIP 84709,False
+BA1,HN Lib,Bazzar,,Wolf 1061,GJ 536,False
+BA1,HIP 84709,Bazzar,,GJ 682,GJ 667 C,False
+BA1,GJ 536,Bazzar,,HN Lib,GJ 536,False
+BA1,GJ 667 C,Bazzar,,HIP 84709,HD 154088,False
+BA1,HD 154088,Bazzar,,GJ 667 C,TIC 166184426,False
+BA1,TIC 166184426,Bazzar,,HD 154088,TOI-4336 A,False
+BA1,TOI-4336 A,Bazzar,,TIC 166184426,HD 125595,False
+BA1,HD 125595,Bazzar,,TOI-4336 A,HD 125595,False
+CR1,GJ 341,Crystomorphs,,GJ 341,L 98-59,True
+CR1,L 98-59,Crystomorphs,,GJ 341,GJ 341,False
+CR1,GJ 367,Crystomorphs,,GJ 341,GJ 341,False
+CR1,L 98-59,Crystomorphs,,GJ 341,HD 40307,False
+CR1,GJ 367,Crystomorphs,,GJ 341,GJ 367,False
+CR1,GJ 422,Crystomorphs,,GJ 341,GJ 422,False
+CR1,HD 40307,Crystomorphs,,L 98-59,GJ 238,False
+CR1,LHS 475,Crystomorphs,,L 98-59,HD 189567,False
+CR1,GJ 238,Crystomorphs,,HD 40307,GJ 238,False
+CR1,HD 22496,Crystomorphs,,HD 40307,GJ 143,False
+CR1,HD 189567,Crystomorphs,,LHS 475,GJ 1252,False
+CR1,HD 211970,Crystomorphs,,LHS 475,HD 211970,False
+CR1,GJ 143,Crystomorphs,,HD 22496,GJ 3082,True
+CR1,HD 22496,Crystomorphs,,GJ 143,GJ 143,False
+CR1,HD 40307,Crystomorphs,,GJ 143,GJ 143,False
+CR1,GJ 1252,Crystomorphs,,HD 189567,HD 185283,False
+CR1,HD 160691,Crystomorphs,,HD 189567,WDS J17302-5138 B,False
+CR1,HD 207496,Crystomorphs,,HD 189567,TOI-912,False
+CR1,GJ 3082,Crystomorphs,,GJ 143,GJ 3090,False
+CR1,HD 39091,Crystomorphs,,GJ 143,HD 39091,False
+CR1,TOI-270,Crystomorphs,,GJ 143,TOI-270,False
+CR1,HD 185283,Crystomorphs,,GJ 1252,HD 185283,False
+CR1,WDS J17302-5138 B,Crystomorphs,,HD 160691,HD 136352,False
+CR1,GJ 680,Crystomorphs,,HD 160691,GJ 674,False
+CR1,TOI-912,Crystomorphs,,HD 207496,HD 134606,False
+CR1,HD 221420,Crystomorphs,,HD 207496,2MASS J21252752-8138278,False
+CR1,L 168-9,Crystomorphs,,HD 207496,L 168-9,False
+CR1,GJ 3090,Crystomorphs,,GJ 3082,HD 13808,False
+CR1,HD 136352,Crystomorphs,,WDS J17302-5138 B,HD 136352,False
+CR1,GJ 674,Crystomorphs,,GJ 680,alf Cen A,False
+CR1,HD 134606,Crystomorphs,,TOI-912,HD 134060,False
+CR1,2MASS J21252752-8138278,Crystomorphs,,HD 221420,WDS J16102-8414 B,False
+CR1,HD 13808,Crystomorphs,,GJ 3090,HD 21693,False
+CR1,alf Cen A,Crystomorphs,,GJ 674,alf Cen B,False
+CR1,HD 134060,Crystomorphs,,HD 134606,HIP 70849,False
+CR1,HD 111232,Crystomorphs,,HD 134606,HD 100508,False
+CR1,WDS J16102-8414 B,Crystomorphs,,2MASS J21252752-8138278,HD 142022 A,False
+CR1,TOI-1224,Crystomorphs,,2MASS J21252752-8138278,TOI-1224,False
+CR1,HD 21693,Crystomorphs,,HD 13808,HD 23079,False
+CR1,alf Cen B,Crystomorphs,,alf Cen A,Kapteyn,False
+CR1,Gl 725 A,Crystomorphs,,alf Cen A,Gl 725 B,False
+CR1,HIP 70849,Crystomorphs,,HD 134060,HIP 70849,False
+CR1,HD 100508,Crystomorphs,,HD 111232,HD 101930,False
+CR1,HD 142022 A,Crystomorphs,,WDS J16102-8414 B,HD 142022 A,False
+CR1,HD 23079,Crystomorphs,,HD 21693,HD 23079,False
+CR1,Kapteyn,Crystomorphs,,alf Cen B,Kapteyn,False
+CR1,Gl 725 B,Crystomorphs,,Gl 725 A,GJ 625,False
+CR1,HD 101930,Crystomorphs,,HD 100508,HD 101930 B,False
+CR1,GJ 625,Crystomorphs,,Gl 725 B,HIP 79762,False
+CR1,Gliese 48,Crystomorphs,,Gl 725 B,Gl 49,False
+CR1,HD 101930 B,Crystomorphs,,HD 101930,TOI-1231,False
+CR1,HIP 79762,Crystomorphs,,GJ 625,GJ 685,False
+CR1,Gl 49,Crystomorphs,,Gliese 48,Gl 49,False
+CR1,GJ 3378,Crystomorphs,,Gliese 48,GJ 338 A,False
+CR1,TOI-1231,Crystomorphs,,HD 101930 B,TOI-1231,False
+CR1,GJ 685,Crystomorphs,,HIP 79762,GJ 3942,False
+CR1,HD 238090,Crystomorphs,,HIP 79762,Gl 378,False
+CR1,GJ 338 A,Crystomorphs,,GJ 3378,GJ 338 B,False
+CR1,GJ 3942,Crystomorphs,,GJ 685,GJ 3942,False
+CR1,GJ 720 B,Crystomorphs,,GJ 685,GJ 720 A,False
+CR1,G 264-012,Crystomorphs,,GJ 685,TOI-6324,False
+CR1,Gl 378,Crystomorphs,,HD 238090,G 196-3,False
+CR1,GJ 338 B,Crystomorphs,,GJ 338 A,GJ 338 B,False
+CR1,GJ 720 A,Crystomorphs,,GJ 720 B,HIP 96895,False
+CR1,TOI-6324,Crystomorphs,,G 264-012,TOI-6324,False
+CR1,HD 7924,Crystomorphs,,G 264-012,HD 216520,False
+CR1,G 196-3,Crystomorphs,,Gl 378,G 196-3,False
+CR1,HIP 96895,Crystomorphs,,GJ 720 A,TOI-1450 A,False
+CR1,HD 216520,Crystomorphs,,HD 7924,HD 33564,False
+CR1,TOI-1450 A,Crystomorphs,,HIP 96895,WD 1856+534,False
+CR1,HD 33564,Crystomorphs,,HD 216520,HD 33564,True
+CR1,HD 7924,Crystomorphs,,HD 33564,HD 33564,False
+CR1,HD 216520,Crystomorphs,,HD 33564,HD 33564,False
+CR1,HD 207897,Crystomorphs,,HD 216520,HD 207897,False
+CR1,WD 1856+534,Crystomorphs,,TOI-1450 A,G 229-20 B,False
+CR1,G 229-20 B,Crystomorphs,,WD 1856+534,G 229-20 A,False
+CR1,HD 168009,Crystomorphs,,WD 1856+534,HD 158259,False
+CR1,G 229-20 A,Crystomorphs,,G 229-20 B,DMPP-4,False
+CR1,HD 158259,Crystomorphs,,HD 168009,iot Dra,False
+CR1,DMPP-4,Crystomorphs,,G 229-20 A,DMPP-4,False
+CR1,iot Dra,Crystomorphs,,HD 158259,TOI-1411,False
+CR1,TOI-1411,Crystomorphs,,iot Dra,TOI-1411,False
+CR2,GJ 341,Crystomorphs,,GJ 341,HD 40307,True
+CR2,L 98-59,Crystomorphs,,GJ 341,GJ 341,False
+CR2,GJ 367,Crystomorphs,,GJ 341,GJ 341,False
+CR2,HD 40307,Crystomorphs,,GJ 341,GJ 143,False
+CR2,GJ 143,Crystomorphs,,HD 40307,GJ 238,True
+CR2,HD 22496,Crystomorphs,,GJ 143,GJ 143,False
+CR2,HD 40307,Crystomorphs,,GJ 143,GJ 143,False
+CR2,GJ 238,Crystomorphs,,GJ 143,L 98-59,False
+CR2,L 98-59,Crystomorphs,,GJ 238,GJ 367,False
+CR2,HD 22496,Crystomorphs,,GJ 238,GJ 3082,False
+CR2,HD 39091,Crystomorphs,,GJ 238,LHS 475,False
+CR2,TOI-270,Crystomorphs,,GJ 238,HD 13808,False
+CR2,GJ 367,Crystomorphs,,L 98-59,GJ 422,False
+CR2,GJ 3082,Crystomorphs,,HD 22496,HD 211970,False
+CR2,LHS 475,Crystomorphs,,HD 39091,GJ 680,False
+CR2,HD 207496,Crystomorphs,,HD 39091,HD 185283,False
+CR2,HD 13808,Crystomorphs,,TOI-270,HD 23079,False
+CR2,HD 21693,Crystomorphs,,TOI-270,HD 21693,False
+CR2,GJ 422,Crystomorphs,,GJ 367,GJ 422,False
+CR2,Kapteyn,Crystomorphs,,GJ 367,alf Cen A,False
+CR2,HD 211970,Crystomorphs,,GJ 3082,HD 189567,False
+CR2,GJ 680,Crystomorphs,,LHS 475,WDS J17302-5138 B,False
+CR2,HD 185283,Crystomorphs,,HD 207496,HD 185283,False
+CR2,HD 23079,Crystomorphs,,HD 13808,HD 23079,False
+CR2,alf Cen A,Crystomorphs,,Kapteyn,alf Cen A,False
+CR2,GJ 674,Crystomorphs,,Kapteyn,alf Cen B,False
+CR2,HD 189567,Crystomorphs,,HD 211970,HD 189567,False
+CR2,GJ 1252,Crystomorphs,,HD 211970,L 168-9,False
+CR2,WDS J17302-5138 B,Crystomorphs,,GJ 680,WDS J17302-5138 B,False
+CR2,HD 136352,Crystomorphs,,GJ 680,HD 160691,False
+CR2,alf Cen B,Crystomorphs,,GJ 674,Gl 725 A,False
+CR2,L 168-9,Crystomorphs,,GJ 1252,GJ 3090,False
+CR2,HD 160691,Crystomorphs,,HD 136352,HD 160691,False
+CR2,HIP 70849,Crystomorphs,,HD 136352,HIP 70849,False
+CR2,HD 134060,Crystomorphs,,HD 136352,TOI-912,False
+CR2,Gl 725 A,Crystomorphs,,alf Cen B,GJ 625,False
+CR2,GJ 3090,Crystomorphs,,L 168-9,GJ 3090,False
+CR2,TOI-912,Crystomorphs,,HD 134060,HD 111232,False
+CR2,GJ 625,Crystomorphs,,Gl 725 A,GJ 625,False
+CR2,GJ 338 B,Crystomorphs,,Gl 725 A,GJ 3378,False
+CR2,GJ 338 A,Crystomorphs,,Gl 725 A,Gl 378,False
+CR2,Gliese 48,Crystomorphs,,Gl 725 A,HIP 79762,False
+CR2,HD 111232,Crystomorphs,,TOI-912,HD 101930,False
+CR2,WDS J16102-8414 B,Crystomorphs,,TOI-912,HD 221420,False
+CR2,HD 142022 A,Crystomorphs,,TOI-912,2MASS J21252752-8138278,False
+CR2,GJ 3378,Crystomorphs,,GJ 338 B,Gl 49,False
+CR2,Gl 378,Crystomorphs,,GJ 338 A,Gl 378,False
+CR2,HIP 79762,Crystomorphs,,Gliese 48,Gl 725 B,False
+CR2,HD 101930,Crystomorphs,,HD 111232,TOI-1231,False
+CR2,HD 101930 B,Crystomorphs,,HD 111232,HD 100508,False
+CR2,HD 221420,Crystomorphs,,WDS J16102-8414 B,TOI-1224,False
+CR2,HD 134606,Crystomorphs,,WDS J16102-8414 B,HD 134606,False
+CR2,2MASS J21252752-8138278,Crystomorphs,,HD 142022 A,2MASS J21252752-8138278,False
+CR2,Gl 49,Crystomorphs,,GJ 3378,G 264-012,False
+CR2,Gl 725 B,Crystomorphs,,HIP 79762,Gl 725 B,False
+CR2,GJ 3942,Crystomorphs,,HIP 79762,GJ 720 A,False
+CR2,TOI-1231,Crystomorphs,,HD 101930,TOI-1231,False
+CR2,HD 100508,Crystomorphs,,HD 101930 B,HD 100508,False
+CR2,TOI-1224,Crystomorphs,,HD 221420,TOI-1224,False
+CR2,G 264-012,Crystomorphs,,Gl 49,HD 216520,False
+CR2,GJ 720 A,Crystomorphs,,GJ 3942,GJ 685,False
+CR2,GJ 720 B,Crystomorphs,,GJ 3942,HIP 96895,False
+CR2,HD 238090,Crystomorphs,,GJ 3942,G 196-3,False
+CR2,iot Dra,Crystomorphs,,GJ 3942,iot Dra,False
+CR2,HD 216520,Crystomorphs,,G 264-012,TOI-6324,False
+CR2,GJ 685,Crystomorphs,,GJ 720 A,GJ 685,False
+CR2,HIP 96895,Crystomorphs,,GJ 720 B,DMPP-4,False
+CR2,G 196-3,Crystomorphs,,HD 238090,G 196-3,False
+CR2,TOI-6324,Crystomorphs,,HD 216520,HD 7924,False
+CR2,DMPP-4,Crystomorphs,,HIP 96895,G 229-20 B,False
+CR2,HD 7924,Crystomorphs,,TOI-6324,HD 33564,False
+CR2,G 229-20 B,Crystomorphs,,DMPP-4,TOI-1450 A,False
+CR2,WD 1856+534,Crystomorphs,,DMPP-4,G 229-20 A,False
+CR2,HD 33564,Crystomorphs,,HD 7924,HD 207897,True
+CR2,HD 7924,Crystomorphs,,HD 33564,HD 33564,False
+CR2,HD 216520,Crystomorphs,,HD 33564,HD 33564,False
+CR2,TOI-1450 A,Crystomorphs,,G 229-20 B,TOI-1450 A,False
+CR2,HD 168009,Crystomorphs,,G 229-20 B,HD 168009,False
+CR2,G 229-20 A,Crystomorphs,,WD 1856+534,HD 158259,False
+CR2,HD 207897,Crystomorphs,,HD 33564,HD 207897,False
+CR2,HD 158259,Crystomorphs,,G 229-20 A,TOI-1411,False
+CR2,TOI-1411,Crystomorphs,,HD 158259,TOI-1411,False
+CR3,GJ 341,Crystomorphs,,GJ 341,GJ 238,True
+CR3,L 98-59,Crystomorphs,,GJ 341,GJ 341,False
+CR3,GJ 367,Crystomorphs,,GJ 341,GJ 341,False
+CR3,GJ 238,Crystomorphs,,GJ 341,GJ 238,False
+CR3,LHS 475,Crystomorphs,,GJ 341,HD 40307,False
+CR3,Kapteyn,Crystomorphs,,GJ 341,Gl 725 A,False
+CR3,HD 40307,Crystomorphs,,LHS 475,HD 39091,False
+CR3,HD 160691,Crystomorphs,,LHS 475,GJ 1252,False
+CR3,WDS J17302-5138 B,Crystomorphs,,LHS 475,HD 189567,False
+CR3,GJ 143,Crystomorphs,,LHS 475,GJ 3090,True
+CR3,HD 22496,Crystomorphs,,GJ 143,GJ 143,False
+CR3,HD 40307,Crystomorphs,,GJ 143,GJ 143,False
+CR3,GJ 3082,Crystomorphs,,LHS 475,L 168-9,False
+CR3,Gl 725 A,Crystomorphs,,Kapteyn,GJ 674,False
+CR3,L 98-59,Crystomorphs,,Kapteyn,GJ 422,False
+CR3,HD 39091,Crystomorphs,,HD 40307,TOI-912,False
+CR3,GJ 367,Crystomorphs,,HD 40307,GJ 367,False
+CR3,GJ 1252,Crystomorphs,,HD 160691,HD 207496,False
+CR3,HD 189567,Crystomorphs,,WDS J17302-5138 B,HD 185283,False
+CR3,HD 134060,Crystomorphs,,WDS J17302-5138 B,HD 111232,False
+CR3,GJ 3090,Crystomorphs,,GJ 143,GJ 3090,False
+CR3,L 168-9,Crystomorphs,,GJ 3082,HD 221420,False
+CR3,GJ 674,Crystomorphs,,Gl 725 A,GJ 674,False
+CR3,GJ 3378,Crystomorphs,,Gl 725 A,Gl 725 B,False
+CR3,HIP 79762,Crystomorphs,,Gl 725 A,GJ 720 B,False
+CR3,GJ 422,Crystomorphs,,L 98-59,HD 136352,False
+CR3,HD 22496,Crystomorphs,,L 98-59,TOI-270,False
+CR3,TOI-912,Crystomorphs,,HD 39091,2MASS J21252752-8138278,False
+CR3,HD 207496,Crystomorphs,,GJ 1252,HD 207496,False
+CR3,HD 185283,Crystomorphs,,HD 189567,HD 185283,False
+CR3,HD 111232,Crystomorphs,,HD 134060,TOI-1231,False
+CR3,HD 221420,Crystomorphs,,L 168-9,HD 142022 A,False
+CR3,HD 13808,Crystomorphs,,L 168-9,HD 13808,False
+CR3,Gl 725 B,Crystomorphs,,GJ 3378,Gl 49,False
+CR3,GJ 720 B,Crystomorphs,,HIP 79762,HD 168009,False
+CR3,HD 136352,Crystomorphs,,GJ 422,HD 136352,False
+CR3,TOI-270,Crystomorphs,,HD 22496,HD 23079,False
+CR3,2MASS J21252752-8138278,Crystomorphs,,TOI-912,2MASS J21252752-8138278,False
+CR3,TOI-1231,Crystomorphs,,HD 111232,HD 100508,False
+CR3,HD 142022 A,Crystomorphs,,HD 221420,TOI-1224,False
+CR3,Gl 49,Crystomorphs,,Gl 725 B,HD 7924,False
+CR3,GJ 338 B,Crystomorphs,,Gl 725 B,GJ 625,False
+CR3,GJ 685,Crystomorphs,,Gl 725 B,HD 216520,False
+CR3,HD 168009,Crystomorphs,,GJ 720 B,G 229-20 A,False
+CR3,HD 23079,Crystomorphs,,TOI-270,HD 23079,False
+CR3,HD 100508,Crystomorphs,,TOI-1231,HD 100508,False
+CR3,TOI-1224,Crystomorphs,,HD 142022 A,WDS J16102-8414 B,False
+CR3,HD 134606,Crystomorphs,,HD 142022 A,HIP 70849,False
+CR3,HD 7924,Crystomorphs,,Gl 49,HD 7924,False
+CR3,GJ 625,Crystomorphs,,GJ 338 B,GJ 338 A,False
+CR3,Gl 378,Crystomorphs,,GJ 338 B,Gl 378,False
+CR3,HD 238090,Crystomorphs,,GJ 338 B,HD 238090,False
+CR3,HD 216520,Crystomorphs,,GJ 685,HD 216520,False
+CR3,G 229-20 A,Crystomorphs,,HD 168009,TOI-1450 A,False
+CR3,GJ 720 A,Crystomorphs,,HD 168009,GJ 720 A,False
+CR3,GJ 3942,Crystomorphs,,HD 168009,TOI-1411,False
+CR3,WDS J16102-8414 B,Crystomorphs,,TOI-1224,WDS J16102-8414 B,False
+CR3,HD 21693,Crystomorphs,,TOI-1224,HD 21693,False
+CR3,HIP 70849,Crystomorphs,,HD 134606,HIP 70849,False
+CR3,HD 101930,Crystomorphs,,HD 134606,HD 101930,False
+CR3,HD 101930 B,Crystomorphs,,HD 134606,HD 101930 B,False
+CR3,GJ 338 A,Crystomorphs,,GJ 625,GJ 338 A,False
+CR3,Gliese 48,Crystomorphs,,GJ 625,G 264-012,False
+CR3,alf Cen A,Crystomorphs,,GJ 625,GJ 680,False
+CR3,alf Cen B,Crystomorphs,,GJ 625,alf Cen B,False
+CR3,TOI-1450 A,Crystomorphs,,G 229-20 A,DMPP-4,False
+CR3,HIP 96895,Crystomorphs,,G 229-20 A,WD 1856+534,False
+CR3,iot Dra,Crystomorphs,,G 229-20 A,iot Dra,False
+CR3,TOI-1411,Crystomorphs,,GJ 3942,TOI-1411,False
+CR3,G 264-012,Crystomorphs,,Gliese 48,G 264-012,False
+CR3,GJ 680,Crystomorphs,,alf Cen A,HD 211970,False
+CR3,DMPP-4,Crystomorphs,,TOI-1450 A,DMPP-4,False
+CR3,TOI-6324,Crystomorphs,,TOI-1450 A,HD 33564,False
+CR3,WD 1856+534,Crystomorphs,,HIP 96895,WD 1856+534,False
+CR3,G 229-20 B,Crystomorphs,,HIP 96895,HD 158259,False
+CR3,HD 211970,Crystomorphs,,GJ 680,HD 211970,False
+CR3,HD 33564,Crystomorphs,,TOI-6324,G 196-3,True
+CR3,HD 7924,Crystomorphs,,HD 33564,HD 33564,False
+CR3,HD 216520,Crystomorphs,,HD 33564,HD 33564,False
+CR3,HD 207897,Crystomorphs,,TOI-6324,HD 207897,False
+CR3,HD 158259,Crystomorphs,,G 229-20 B,HD 158259,False
+CR3,G 196-3,Crystomorphs,,HD 33564,G 196-3,False
+EC1,HD 10697,Echryon & Echtol,,HD 10697,HIP 5763,True
+EC1,HIP 5763,Echryon & Echtol,,HD 10697,HD 10697,False
+EC1,HIP 5763,Echryon & Echtol,,HD 10697,TOI-4529,False
+EC1,TOI-4529,Echryon & Echtol,,HIP 5763,TOI-1468,False
+EC1,TOI-1468,Echryon & Echtol,,TOI-4529,KOBE-1,False
+EC1,KOBE-1,Echryon & Echtol,,TOI-1468,alf Ari,False
+EC1,alf Ari,Echryon & Echtol,,KOBE-1,HD 18143,False
+EC1,HD 18143,Echryon & Echtol,,alf Ari,alf Tau,False
+EC1,TOI-4527,Echryon & Echtol,,alf Ari,TOI-2443,False
+EC1,alf Tau,Echryon & Echtol,,HD 18143,alf Tau B,False
+EC1,TOI-2443,Echryon & Echtol,,TOI-4527,TOI-2443,False
+EC1,alf Tau B,Echryon & Echtol,,alf Tau,alf Tau B,False
+EC1,HD 285968,Echryon & Echtol,,alf Tau,HD 285968,False
+IN1,HD 164595,Human,Industrial Hegemony,HD 164595,HD 164595 B,True
+IN1,TOI-4438,Human,Industrial Hegemony,HD 164595,HD 164595,False
+IN1,HD 164595 B,Human,Industrial Hegemony,HD 164595,HD 164595,False
+IN1,HD 164595 B,Human,Industrial Hegemony,HD 164595,TOI-4438,False
+IN1,GJ 3998,Human,Industrial Hegemony,HD 164595,GJ 740,False
+IN1,TOI-4438,Human,Industrial Hegemony,HD 164595 B,TOI-4438,False
+IN1,TOI-6086,Human,Industrial Hegemony,HD 164595 B,TOI-6086,False
+IN1,GJ 740,Human,Industrial Hegemony,GJ 3998,Gl 686,False
+IN1,Gl 686,Human,Industrial Hegemony,GJ 740,HD 180617,False
+IN1,GJ 724,Human,Industrial Hegemony,GJ 740,HD 177565,False
+IN1,HD 180617,Human,Industrial Hegemony,Gl 686,HD 180617,False
+IN1,HD 177565,Human,Industrial Hegemony,GJ 724,TOI-2194,False
+IN1,TOI-2194,Human,Industrial Hegemony,HD 177565,TOI-2194,False
+LE1,HD 196885 A,Human,League of The Faithful,HD 196885 A,LSPM J2116+0234,True
+LE1,LSPM J2116+0234,Human,League of The Faithful,HD 196885 A,GJ 887,False
+LE1,GJ 887,Human,League of The Faithful,LSPM J2116+0234,GJ 887,False
+MA1,kap CrB,Human,Mardat Coalition,kap CrB,TOI-2018,True
+MA1,TOI-2018,Human,Mardat Coalition,kap CrB,kap CrB,False
+MA1,TOI-2018,Human,Mardat Coalition,kap CrB,HD 127506,False
+MA1,HD 127506,Human,Mardat Coalition,TOI-2018,GJ 508.2,False
+MA1,GJ 508.2,Human,Mardat Coalition,HD 127506,GJ 3779,False
+MA1,GJ 3779,Human,Mardat Coalition,GJ 508.2,GJ 480,False
+MA1,GJ 480,Human,Mardat Coalition,GJ 3779,Gl 410,False
+MA1,Gl 410,Human,Mardat Coalition,GJ 480,GJ 414 B,False
+MA1,HIP 55846,Human,Mardat Coalition,GJ 480,HIP 55846,False
+MA1,GJ 414 B,Human,Mardat Coalition,Gl 410,HD 86728,False
+MA1,GJ 393,Human,Mardat Coalition,Gl 410,GJ 411,False
+MA1,HD 86728,Human,Mardat Coalition,GJ 414 B,TOI-5388,False
+MA1,GJ 411,Human,Mardat Coalition,GJ 393,GJ 411,False
+MA1,GJ 486,Human,Mardat Coalition,GJ 393,GJ 514,False
+MA1,TOI-5388,Human,Mardat Coalition,HD 86728,HD 97658,False
+MA1,55 Cnc B,Human,Mardat Coalition,HD 86728,55 Cnc B,False
+MA1,GJ 514,Human,Mardat Coalition,GJ 486,HD 141004,False
+MA1,HD 97658,Human,Mardat Coalition,TOI-5388,GJ 9404,False
+MA1,HD 141004,Human,Mardat Coalition,GJ 514,GJ 3929,False
+MA1,GJ 9404,Human,Mardat Coalition,HD 97658,TOI-1801,False
+MA1,GJ 3929,Human,Mardat Coalition,HD 141004,GJ 3929,False
+MA1,TOI-1801,Human,Mardat Coalition,GJ 9404,HD 98736 B,False
+MA1,HD 98736 B,Human,Mardat Coalition,TOI-1801,HD 98736,False
+MA1,HD 110067,Human,Mardat Coalition,TOI-1801,HD 110067,False
+MA1,HD 98736,Human,Mardat Coalition,HD 98736 B,TOI-5720,False
+MA1,TOI-5720,Human,Mardat Coalition,HD 98736,TOI-5720,False
+ME1,55 Cnc,Methan,,55 Cnc,GJ 414 A,True
+ME1,GJ 414 A,Methan,,55 Cnc,GJ 436,False
+ME1,HD 69830,Methan,,55 Cnc,GJ 317,False
+ME1,GJ 436,Methan,,GJ 414 A,HD 115404 A,False
+ME1,GJ 1148,Methan,,GJ 414 A,HIP 48714,False
+ME1,47 UMa,Methan,,GJ 414 A,HD 87883,False
+ME1,GJ 317,Methan,,HD 69830,HIP 38594,False
+ME1,HD 115404 A,Methan,,GJ 436,Ross 458,False
+ME1,HIP 48714,Methan,,GJ 1148,HD 147379,False
+ME1,HD 87883,Methan,,47 UMa,HIP 55507,False
+ME1,GJ 463,Methan,,47 UMa,GJ 463,False
+ME1,HIP 38594,Methan,,GJ 317,7 CMa,False
+ME1,HD 82943,Methan,,GJ 317,HD 82943,True
+ME1,Ross 458,Methan,,HD 115404 A,61 Vir,False
+ME1,tau Boo,Methan,,HD 115404 A,70 Vir,False
+ME1,HD 147379,Methan,,HIP 48714,GJ 687,False
+ME1,HIP 55507,Methan,,HD 87883,HIP 57274,False
+ME1,7 CMa,Methan,,HIP 38594,AF Lep,False
+ME1,61 Vir,Methan,,Ross 458,GJ 433,False
+ME1,70 Vir,Methan,,tau Boo,GJ 504,False
+ME1,HD 128311,Methan,,tau Boo,HD 128311,False
+ME1,GJ 687,Methan,,HD 147379,GJ 15 A,False
+ME1,gam Cep,Methan,,HD 147379,gam Cep,False
+ME1,HIP 57274,Methan,,HIP 55507,HIP 57274,False
+ME1,AF Lep,Methan,,7 CMa,AF Lep,False
+ME1,GJ 433,Methan,,61 Vir,GJ 433,False
+ME1,GJ 581,Methan,,61 Vir,GJ 649,False
+ME1,GJ 504,Methan,,70 Vir,HD 114783,False
+ME1,GJ 15 A,Methan,,GJ 687,HD 219134,False
+ME1,GJ 649,Methan,,GJ 581,rho CrB,False
+ME1,HD 147513,Methan,,GJ 581,HD 140901,False
+ME1,HD 114783,Methan,,GJ 504,HD 114783,False
+ME1,HD 99492,Methan,,GJ 504,HD 99492,False
+ME1,HD 219134,Methan,,GJ 15 A,HD 219134,False
+ME1,GJ 896 A,Methan,,GJ 15 A,GJ 876,False
+ME1,eps Eri,Methan,,GJ 15 A,GJ 179,False
+ME1,rho CrB,Methan,,GJ 649,14 Her,False
+ME1,HD 140901,Methan,,HD 147513,HD 113538,False
+ME1,HIP 79431,Methan,,HD 147513,HIP 79431,False
+ME1,GJ 676 A,Methan,,HD 147513,GJ 676 A,False
+ME1,GJ 876,Methan,,GJ 896 A,GJ 832,True
+ME1,HD 192310,Methan,,GJ 876,GJ 876,False
+ME1,eps Ind A,Methan,,GJ 876,GJ 876,False
+ME1,HD 3651,Methan,,GJ 896 A,ups And,False
+ME1,GJ 179,Methan,,eps Eri,GJ 179,False
+ME1,14 Her,Methan,,rho CrB,HD 153557,False
+ME1,HD 113538,Methan,,HD 140901,HD 114386,False
+ME1,GJ 832,Methan,,GJ 876,eps Ind A,False
+ME1,GJ 849,Methan,,GJ 876,GJ 849,False
+ME1,ups And,Methan,,HD 3651,GJ 96,False
+ME1,51 Peg,Methan,,HD 3651,GJ 9773,False
+ME1,HD 153557,Methan,,14 Her,HD 154345,False
+ME1,HD 114386,Methan,,HD 113538,HD 114386,False
+ME1,eps Ind A,Methan,,GJ 832,eps Ind A,False
+ME1,HD 192310,Methan,,GJ 832,AU Mic,False
+ME1,HD 222237,Methan,,GJ 832,COCONUTS-2 A,False
+ME1,GJ 96,Methan,,ups And,GJ 96,False
+ME1,HD 3765,Methan,,ups And,HD 3765,False
+ME1,GJ 9773,Methan,,51 Peg,TYC 2187-512-1,False
+ME1,HD 154345,Methan,,HD 153557,TOI-2134,False
+ME1,AU Mic,Methan,,HD 192310,AU Mic,False
+ME1,HD 190007,Methan,,HD 192310,HD 192263,False
+ME1,COCONUTS-2 A,Methan,,HD 222237,COCONUTS-2 A,False
+ME1,GJ 86,Methan,,HD 222237,GJ 163,False
+ME1,GJ 3021,Methan,,HD 222237,nu Oct A,False
+ME1,TYC 2187-512-1,Methan,,GJ 9773,HD 190360,False
+ME1,HD 217107,Methan,,GJ 9773,HD 210277,False
+ME1,TOI-2134,Methan,,HD 154345,HD 164922,False
+ME1,HD 192263,Methan,,HD 190007,HD 192263,False
+ME1,GJ 163,Methan,,GJ 86,HD 27442,False
+ME1,nu Oct A,Methan,,GJ 3021,HD 199509,False
+ME1,HD 4308,Methan,,GJ 3021,HD 4308,False
+ME1,HD 190360,Methan,,TYC 2187-512-1,HD 189733,False
+ME1,HD 210277,Methan,,HD 217107,HD 210277,False
+ME1,HD 164922,Methan,,TOI-2134,HD 156668,False
+ME1,16 Cyg B,Methan,,TOI-2134,GJ 4276,False
+ME1,HD 27442,Methan,,GJ 163,bet Pic,False
+ME1,HR 810,Methan,,GJ 163,HD 10647,False
+ME1,GJ 3293,Methan,,GJ 163,HIP 12961,False
+ME1,HD 199509,Methan,,nu Oct A,HD 216437,False
+ME1,HD 189733,Methan,,HD 190360,HD 189733,False
+ME1,HD 156668,Methan,,HD 164922,HIP 86221,False
+ME1,GJ 4276,Methan,,16 Cyg B,GJ 4276,False
+ME1,psi1 Dra B,Methan,,16 Cyg B,HD 150706,False
+ME1,HAT-P-11,Methan,,16 Cyg B,HAT-P-11,False
+ME1,bet Pic,Methan,,HD 27442,WD 0806-661,False
+ME1,HD 10647,Methan,,HR 810,HD 10647,False
+ME1,HIP 12961,Methan,,GJ 3293,BD-210397,False
+ME1,HD 216437,Methan,,HD 199509,HD 219077,False
+ME1,HD 155918,Methan,,HD 199509,HD 181433,False
+ME1,HIP 86221,Methan,,HD 156668,HD 141399,False
+ME1,HD 150706,Methan,,psi1 Dra B,HD 150706,False
+ME1,WD 0806-661,Methan,,bet Pic,WD 0806-661,False
+ME1,BD-210397,Methan,,HIP 12961,HD 11964,False
+ME1,HD 21411,Methan,,HIP 12961,HD 21411,False
+ME1,HD 19994,Methan,,HIP 12961,HD 19994,False
+ME1,HD 219077,Methan,,HD 216437,HD 142,False
+ME1,HD 181433,Methan,,HD 155918,HD 181433,False
+ME1,HD 141399,Methan,,HIP 86221,HD 141399,True
+ME1,HD 11964,Methan,,BD-210397,HD 11964,False
+ME1,HD 142,Methan,,HD 219077,HD 142,False
+ME2,55 Cnc,Methan,,55 Cnc,47 UMa,True
+ME2,47 UMa,Methan,,55 Cnc,GJ 1148,False
+ME2,HD 87883,Methan,,55 Cnc,HIP 57274,False
+ME2,GJ 1148,Methan,,47 UMa,GJ 436,False
+ME2,HIP 48714,Methan,,47 UMa,GJ 463,False
+ME2,HIP 57274,Methan,,HD 87883,HIP 57274,False
+ME2,GJ 436,Methan,,GJ 1148,Ross 458,False
+ME2,HD 115404 A,Methan,,GJ 1148,61 Vir,False
+ME2,GJ 463,Methan,,HIP 48714,HIP 55507,False
+ME2,Ross 458,Methan,,GJ 436,tau Boo,False
+ME2,61 Vir,Methan,,HD 115404 A,HD 147513,False
+ME2,GJ 581,Methan,,HD 115404 A,GJ 687,False
+ME2,HIP 55507,Methan,,GJ 463,HIP 55507,False
+ME2,HD 150706,Methan,,GJ 463,HD 150706,False
+ME2,tau Boo,Methan,,Ross 458,GJ 504,False
+ME2,GJ 414 A,Methan,,Ross 458,GJ 414 A,False
+ME2,HD 99492,Methan,,Ross 458,HD 99492,False
+ME2,HD 147513,Methan,,61 Vir,HD 147513,False
+ME2,GJ 687,Methan,,GJ 581,HD 219134,False
+ME2,GJ 433,Methan,,GJ 581,HD 113538,False
+ME2,HIP 79431,Methan,,GJ 581,HD 140901,False
+ME2,GJ 504,Methan,,tau Boo,HD 128311,False
+ME2,HD 219134,Methan,,GJ 687,GJ 896 A,False
+ME2,HD 113538,Methan,,GJ 433,HD 113538,False
+ME2,HD 69830,Methan,,GJ 433,HIP 38594,False
+ME2,GJ 317,Methan,,GJ 433,7 CMa,False
+ME2,HD 140901,Methan,,HIP 79431,GJ 676 A,False
+ME2,HD 128311,Methan,,GJ 504,70 Vir,False
+ME2,GJ 896 A,Methan,,HD 219134,GJ 849,False
+ME2,GJ 96,Methan,,HD 219134,HD 3651,False
+ME2,HD 147379,Methan,,HD 219134,GJ 649,False
+ME2,ups And,Methan,,HD 219134,ups And,False
+ME2,HIP 38594,Methan,,HD 69830,HD 82943,False
+ME2,7 CMa,Methan,,GJ 317,7 CMa,False
+ME2,GJ 676 A,Methan,,HD 140901,GJ 676 A,False
+ME2,70 Vir,Methan,,HD 128311,HD 114783,False
+ME2,GJ 849,Methan,,GJ 896 A,HD 192310,False
+ME2,HD 3651,Methan,,GJ 96,HD 3651,False
+ME2,gam Cep,Methan,,GJ 96,GJ 4276,False
+ME2,HD 3765,Methan,,GJ 96,HD 3765,False
+ME2,GJ 179,Methan,,GJ 96,GJ 179,False
+ME2,GJ 649,Methan,,HD 147379,GJ 649,False
+ME2,HD 153557,Methan,,HD 147379,rho CrB,False
+ME2,HD 82943,Methan,,HIP 38594,HD 82943,True
+ME2,HD 114783,Methan,,70 Vir,HD 114386,False
+ME2,HD 192310,Methan,,GJ 849,HD 192310,False
+ME2,AU Mic,Methan,,GJ 849,GJ 832,False
+ME2,HD 190007,Methan,,GJ 849,TYC 2187-512-1,False
+ME2,GJ 9773,Methan,,GJ 849,HD 210277,False
+ME2,GJ 4276,Methan,,gam Cep,GJ 4276,False
+ME2,rho CrB,Methan,,HD 153557,HD 154345,False
+ME2,TOI-2134,Methan,,HD 153557,HD 156668,False
+ME2,HD 114386,Methan,,HD 114783,HD 114386,False
+ME2,GJ 832,Methan,,AU Mic,eps Eri,False
+ME2,TYC 2187-512-1,Methan,,HD 190007,51 Peg,False
+ME2,HD 190360,Methan,,HD 190007,16 Cyg B,False
+ME2,HD 210277,Methan,,GJ 9773,HD 210277,False
+ME2,HD 154345,Methan,,rho CrB,14 Her,False
+ME2,HD 156668,Methan,,TOI-2134,HD 141399,False
+ME2,HIP 86221,Methan,,TOI-2134,HD 164922,False
+ME2,HAT-P-11,Methan,,TOI-2134,HAT-P-11,False
+ME2,eps Eri,Methan,,GJ 832,eps Ind A,False
+ME2,GJ 86,Methan,,GJ 832,HR 810,False
+ME2,51 Peg,Methan,,TYC 2187-512-1,HD 217107,False
+ME2,HD 189733,Methan,,TYC 2187-512-1,HD 192263,False
+ME2,16 Cyg B,Methan,,HD 190360,16 Cyg B,False
+ME2,14 Her,Methan,,HD 154345,14 Her,False
+ME2,psi1 Dra B,Methan,,HD 154345,psi1 Dra B,False
+ME2,HD 141399,Methan,,HD 156668,HD 141399,True
+ME2,HD 164922,Methan,,HIP 86221,HD 164922,False
+ME2,eps Ind A,Methan,,eps Eri,GJ 876,False
+ME2,HR 810,Methan,,GJ 86,HD 27442,False
+ME2,HD 10647,Methan,,GJ 86,GJ 163,False
+ME2,COCONUTS-2 A,Methan,,GJ 86,COCONUTS-2 A,False
+ME2,HD 217107,Methan,,51 Peg,HD 217107,False
+ME2,HD 192263,Methan,,HD 189733,HD 192263,False
+ME2,GJ 876,Methan,,eps Ind A,GJ 15 A,True
+ME2,HD 192310,Methan,,GJ 876,GJ 876,False
+ME2,eps Ind A,Methan,,GJ 876,GJ 876,False
+ME2,HD 222237,Methan,,eps Ind A,HD 222237,False
+ME2,HD 27442,Methan,,HR 810,WD 0806-661,False
+ME2,HIP 12961,Methan,,HR 810,HD 11964,False
+ME2,GJ 163,Methan,,HD 10647,bet Pic,False
+ME2,HD 4308,Methan,,HD 10647,HD 216437,False
+ME2,GJ 3021,Methan,,HD 10647,HD 199509,False
+ME2,GJ 15 A,Methan,,GJ 876,GJ 15 A,False
+ME2,WD 0806-661,Methan,,HD 27442,WD 0806-661,False
+ME2,HD 11964,Methan,,HIP 12961,HD 11964,False
+ME2,bet Pic,Methan,,GJ 163,GJ 3293,False
+ME2,HD 216437,Methan,,HD 4308,nu Oct A,False
+ME2,HD 142,Methan,,HD 4308,HD 142,False
+ME2,HD 219077,Methan,,HD 4308,HD 219077,False
+ME2,HD 199509,Methan,,GJ 3021,HD 181433,False
+ME2,GJ 3293,Methan,,bet Pic,AF Lep,False
+ME2,nu Oct A,Methan,,HD 216437,HD 155918,False
+ME2,HD 181433,Methan,,HD 199509,HD 181433,False
+ME2,AF Lep,Methan,,GJ 3293,AF Lep,False
+ME2,HD 21411,Methan,,GJ 3293,BD-210397,False
+ME2,HD 155918,Methan,,nu Oct A,HD 155918,False
+ME2,BD-210397,Methan,,HD 21411,HD 19994,False
+ME2,HD 19994,Methan,,BD-210397,HD 19994,False
+ME3,55 Cnc,Methan,,55 Cnc,HIP 48714,True
+ME3,HIP 48714,Methan,,55 Cnc,GJ 414 A,False
+ME3,GJ 317,Methan,,55 Cnc,GJ 317,False
+ME3,GJ 414 A,Methan,,HIP 48714,HD 115404 A,False
+ME3,GJ 436,Methan,,HIP 48714,47 UMa,False
+ME3,GJ 687,Methan,,HIP 48714,GJ 896 A,False
+ME3,HD 115404 A,Methan,,GJ 414 A,GJ 504,False
+ME3,HD 87883,Methan,,GJ 414 A,HD 87883,False
+ME3,HD 99492,Methan,,GJ 414 A,HD 82943,False
+ME3,47 UMa,Methan,,GJ 436,HIP 55507,False
+ME3,61 Vir,Methan,,GJ 436,HIP 79431,False
+ME3,tau Boo,Methan,,GJ 436,HD 114783,False
+ME3,GJ 896 A,Methan,,GJ 687,eps Eri,False
+ME3,GJ 649,Methan,,GJ 687,14 Her,False
+ME3,GJ 504,Methan,,HD 115404 A,Ross 458,False
+ME3,HD 128311,Methan,,HD 115404 A,rho CrB,False
+ME3,HD 82943,Methan,,HD 99492,HD 82943,True
+ME3,HIP 55507,Methan,,47 UMa,HIP 55507,False
+ME3,HIP 57274,Methan,,47 UMa,HIP 57274,False
+ME3,HIP 79431,Methan,,61 Vir,GJ 676 A,False
+ME3,HD 140901,Methan,,61 Vir,HD 114386,False
+ME3,HD 114783,Methan,,tau Boo,HD 114783,False
+ME3,eps Eri,Methan,,GJ 896 A,GJ 876,False
+ME3,GJ 96,Methan,,GJ 896 A,GJ 96,False
+ME3,ups And,Methan,,GJ 896 A,ups And,False
+ME3,14 Her,Methan,,GJ 649,TOI-2134,False
+ME3,HD 153557,Methan,,GJ 649,psi1 Dra B,False
+ME3,Ross 458,Methan,,GJ 504,70 Vir,False
+ME3,rho CrB,Methan,,HD 128311,rho CrB,False
+ME3,GJ 676 A,Methan,,HIP 79431,GJ 676 A,False
+ME3,HD 114386,Methan,,HD 140901,HD 114386,False
+ME3,GJ 876,Methan,,eps Eri,HD 192310,True
+ME3,HD 192310,Methan,,GJ 876,GJ 876,False
+ME3,eps Ind A,Methan,,GJ 876,GJ 876,False
+ME3,TOI-2134,Methan,,14 Her,TOI-2134,False
+ME3,HD 141399,Methan,,14 Her,HD 141399,True
+ME3,psi1 Dra B,Methan,,HD 153557,psi1 Dra B,False
+ME3,70 Vir,Methan,,Ross 458,70 Vir,False
+ME3,GJ 1148,Methan,,Ross 458,HD 147379,False
+ME3,HD 192310,Methan,,GJ 876,eps Ind A,False
+ME3,AU Mic,Methan,,GJ 876,HD 190007,False
+ME3,HD 219134,Methan,,GJ 876,HD 3651,False
+ME3,HD 147379,Methan,,GJ 1148,HD 154345,False
+ME3,GJ 463,Methan,,GJ 1148,GJ 463,False
+ME3,eps Ind A,Methan,,HD 192310,GJ 15 A,False
+ME3,HD 147513,Methan,,HD 192310,HD 113538,False
+ME3,HD 190007,Methan,,AU Mic,GJ 9773,False
+ME3,HD 222237,Methan,,AU Mic,HD 10647,False
+ME3,HD 3651,Methan,,HD 219134,HD 3765,False
+ME3,gam Cep,Methan,,HD 219134,gam Cep,False
+ME3,HD 154345,Methan,,HD 147379,HD 156668,False
+ME3,GJ 15 A,Methan,,eps Ind A,GJ 832,False
+ME3,GJ 581,Methan,,eps Ind A,GJ 581,False
+ME3,GJ 86,Methan,,eps Ind A,GJ 86,False
+ME3,HD 113538,Methan,,HD 147513,HD 113538,False
+ME3,GJ 9773,Methan,,HD 190007,GJ 9773,False
+ME3,HD 189733,Methan,,HD 190007,HD 189733,False
+ME3,HD 10647,Methan,,HD 222237,HD 27442,False
+ME3,HR 810,Methan,,HD 222237,HD 4308,False
+ME3,HD 3765,Methan,,HD 3651,GJ 4276,False
+ME3,HD 156668,Methan,,HD 154345,HD 156668,False
+ME3,HD 164922,Methan,,HD 154345,HD 164922,False
+ME3,16 Cyg B,Methan,,HD 154345,16 Cyg B,False
+ME3,HIP 86221,Methan,,HD 154345,HIP 86221,False
+ME3,GJ 832,Methan,,GJ 15 A,GJ 849,False
+ME3,HD 27442,Methan,,HD 10647,GJ 3021,False
+ME3,HIP 12961,Methan,,HD 10647,HIP 12961,False
+ME3,HD 4308,Methan,,HR 810,nu Oct A,False
+ME3,bet Pic,Methan,,HR 810,HIP 38594,False
+ME3,GJ 3293,Methan,,HR 810,7 CMa,False
+ME3,HD 21411,Methan,,HR 810,HD 21411,False
+ME3,GJ 4276,Methan,,HD 3765,HD 150706,False
+ME3,GJ 849,Methan,,GJ 832,51 Peg,False
+ME3,GJ 3021,Methan,,HD 27442,COCONUTS-2 A,False
+ME3,nu Oct A,Methan,,HD 4308,HD 181433,False
+ME3,HD 199509,Methan,,HD 4308,HD 199509,False
+ME3,HIP 38594,Methan,,bet Pic,HIP 38594,False
+ME3,7 CMa,Methan,,GJ 3293,HD 69830,False
+ME3,HD 19994,Methan,,GJ 3293,HD 11964,False
+ME3,BD-210397,Methan,,GJ 3293,BD-210397,False
+ME3,HD 150706,Methan,,GJ 4276,HD 150706,False
+ME3,HAT-P-11,Methan,,GJ 4276,HAT-P-11,False
+ME3,51 Peg,Methan,,GJ 849,51 Peg,False
+ME3,TYC 2187-512-1,Methan,,GJ 849,HD 192263,False
+ME3,COCONUTS-2 A,Methan,,GJ 3021,GJ 163,False
+ME3,HD 181433,Methan,,nu Oct A,HD 216437,False
+ME3,HD 219077,Methan,,nu Oct A,HD 219077,False
+ME3,HD 69830,Methan,,7 CMa,GJ 179,False
+ME3,HD 11964,Methan,,HD 19994,HD 11964,False
+ME3,AF Lep,Methan,,HD 19994,AF Lep,False
+ME3,HD 192263,Methan,,TYC 2187-512-1,HD 190360,False
+ME3,HD 217107,Methan,,TYC 2187-512-1,HD 217107,False
+ME3,GJ 163,Methan,,COCONUTS-2 A,GJ 163,False
+ME3,GJ 433,Methan,,COCONUTS-2 A,GJ 433,False
+ME3,WD 0806-661,Methan,,COCONUTS-2 A,WD 0806-661,False
+ME3,HD 216437,Methan,,HD 181433,HD 142,False
+ME3,GJ 179,Methan,,HD 69830,GJ 179,False
+ME3,HD 190360,Methan,,HD 192263,HD 190360,False
+ME3,HD 210277,Methan,,HD 192263,HD 210277,False
+ME3,HD 142,Methan,,HD 216437,HD 142,False
+ME3,HD 155918,Methan,,HD 216437,HD 155918,False
+ME4,55 Cnc,Methan,,55 Cnc,GJ 1148,True
+ME4,GJ 1148,Methan,,55 Cnc,HD 87883,False
+ME4,GJ 436,Methan,,55 Cnc,GJ 687,False
+ME4,HD 87883,Methan,,GJ 1148,HD 87883,False
+ME4,tau Boo,Methan,,GJ 1148,GJ 414 A,False
+ME4,GJ 687,Methan,,GJ 436,eps Eri,False
+ME4,GJ 504,Methan,,GJ 436,GJ 504,False
+ME4,GJ 414 A,Methan,,tau Boo,HIP 55507,False
+ME4,eps Eri,Methan,,GJ 687,HD 219134,False
+ME4,GJ 876,Methan,,GJ 687,GJ 876,True
+ME4,HD 192310,Methan,,GJ 876,GJ 876,False
+ME4,eps Ind A,Methan,,GJ 876,GJ 876,False
+ME4,eps Ind A,Methan,,GJ 687,GJ 896 A,False
+ME4,HIP 55507,Methan,,GJ 414 A,HIP 55507,False
+ME4,HD 219134,Methan,,eps Eri,HIP 48714,False
+ME4,GJ 86,Methan,,eps Eri,HD 27442,False
+ME4,HD 69830,Methan,,eps Eri,HD 82943,False
+ME4,GJ 896 A,Methan,,eps Ind A,GJ 832,False
+ME4,AU Mic,Methan,,eps Ind A,HD 147513,False
+ME4,GJ 849,Methan,,eps Ind A,GJ 15 A,False
+ME4,COCONUTS-2 A,Methan,,eps Ind A,HD 113538,False
+ME4,61 Vir,Methan,,eps Ind A,61 Vir,False
+ME4,HIP 48714,Methan,,HD 219134,gam Cep,False
+ME4,HD 27442,Methan,,GJ 86,HD 4308,False
+ME4,HD 82943,Methan,,HD 69830,HD 82943,True
+ME4,GJ 832,Methan,,GJ 896 A,GJ 581,False
+ME4,HD 192310,Methan,,GJ 896 A,HD 222237,False
+ME4,51 Peg,Methan,,GJ 896 A,HD 3765,False
+ME4,TYC 2187-512-1,Methan,,GJ 896 A,TYC 2187-512-1,False
+ME4,HD 147513,Methan,,AU Mic,HD 114386,False
+ME4,GJ 676 A,Methan,,AU Mic,GJ 676 A,False
+ME4,GJ 15 A,Methan,,GJ 849,GJ 96,False
+ME4,HD 3651,Methan,,GJ 849,GJ 9773,False
+ME4,HD 217107,Methan,,GJ 849,HD 217107,False
+ME4,HD 113538,Methan,,COCONUTS-2 A,HD 113538,False
+ME4,HD 10647,Methan,,COCONUTS-2 A,HD 142,False
+ME4,bet Pic,Methan,,COCONUTS-2 A,7 CMa,False
+ME4,GJ 317,Methan,,COCONUTS-2 A,GJ 317,False
+ME4,gam Cep,Methan,,HIP 48714,ups And,False
+ME4,HD 4308,Methan,,HD 27442,HD 4308,False
+ME4,GJ 3293,Methan,,HD 27442,GJ 3293,False
+ME4,GJ 581,Methan,,GJ 832,Ross 458,False
+ME4,HD 222237,Methan,,HD 192310,GJ 163,False
+ME4,HD 3765,Methan,,51 Peg,HD 3765,False
+ME4,HD 210277,Methan,,51 Peg,HD 210277,False
+ME4,HD 114386,Methan,,HD 147513,HD 114386,False
+ME4,GJ 96,Methan,,GJ 15 A,GJ 96,False
+ME4,HD 147379,Methan,,GJ 15 A,14 Her,False
+ME4,GJ 179,Methan,,GJ 15 A,HD 19994,False
+ME4,GJ 9773,Methan,,HD 3651,HD 190360,False
+ME4,HD 142,Methan,,HD 10647,HD 142,False
+ME4,7 CMa,Methan,,bet Pic,7 CMa,False
+ME4,ups And,Methan,,gam Cep,ups And,False
+ME4,psi1 Dra B,Methan,,gam Cep,GJ 4276,False
+ME4,HD 150706,Methan,,gam Cep,HD 150706,False
+ME4,Ross 458,Methan,,GJ 581,HD 128311,False
+ME4,HD 140901,Methan,,GJ 581,HD 140901,False
+ME4,GJ 163,Methan,,HD 222237,GJ 3021,False
+ME4,nu Oct A,Methan,,HD 222237,nu Oct A,False
+ME4,14 Her,Methan,,HD 147379,HD 156668,False
+ME4,GJ 463,Methan,,HD 147379,GJ 463,False
+ME4,HD 19994,Methan,,GJ 179,HD 21411,False
+ME4,AF Lep,Methan,,GJ 179,AF Lep,False
+ME4,HD 190360,Methan,,GJ 9773,HD 190360,False
+ME4,HD 192263,Methan,,GJ 9773,HD 192263,False
+ME4,GJ 4276,Methan,,psi1 Dra B,GJ 4276,False
+ME4,HD 128311,Methan,,Ross 458,HD 114783,False
+ME4,47 UMa,Methan,,Ross 458,HD 115404 A,False
+ME4,GJ 433,Methan,,Ross 458,GJ 433,False
+ME4,GJ 3021,Methan,,GJ 163,HR 810,False
+ME4,HIP 12961,Methan,,GJ 163,HIP 12961,False
+ME4,HD 156668,Methan,,14 Her,rho CrB,False
+ME4,HD 21411,Methan,,HD 19994,HD 11964,False
+ME4,HD 114783,Methan,,HD 128311,HD 99492,False
+ME4,HIP 79431,Methan,,HD 128311,HIP 79431,False
+ME4,HD 115404 A,Methan,,47 UMa,70 Vir,False
+ME4,HR 810,Methan,,GJ 3021,BD-210397,False
+ME4,WD 0806-661,Methan,,GJ 3021,HIP 38594,False
+ME4,HD 216437,Methan,,GJ 3021,HD 216437,False
+ME4,HD 155918,Methan,,GJ 3021,HD 155918,False
+ME4,HD 181433,Methan,,GJ 3021,HD 219077,False
+ME4,rho CrB,Methan,,HD 156668,TOI-2134,False
+ME4,HD 153557,Methan,,HD 156668,HD 164922,False
+ME4,HD 11964,Methan,,HD 21411,HD 11964,False
+ME4,HD 99492,Methan,,HD 114783,HIP 57274,False
+ME4,70 Vir,Methan,,HD 115404 A,70 Vir,False
+ME4,GJ 649,Methan,,HD 115404 A,HD 154345,False
+ME4,BD-210397,Methan,,HR 810,BD-210397,False
+ME4,HIP 38594,Methan,,WD 0806-661,HIP 38594,False
+ME4,HD 219077,Methan,,HD 181433,HD 199509,False
+ME4,TOI-2134,Methan,,rho CrB,TOI-2134,False
+ME4,HD 164922,Methan,,HD 153557,HD 164922,False
+ME4,16 Cyg B,Methan,,HD 153557,HD 189733,False
+ME4,HIP 86221,Methan,,HD 153557,HAT-P-11,False
+ME4,HIP 57274,Methan,,HD 99492,HIP 57274,False
+ME4,HD 154345,Methan,,GJ 649,HD 141399,False
+ME4,HD 190007,Methan,,GJ 649,HD 190007,False
+ME4,HD 199509,Methan,,HD 219077,HD 199509,False
+ME4,HD 189733,Methan,,16 Cyg B,HD 189733,False
+ME4,HAT-P-11,Methan,,HIP 86221,HAT-P-11,False
+ME4,HD 141399,Methan,,HD 154345,HD 141399,True
+OH1,GJ 806,Human,Other Human,GJ 806,TOI-6255,True
+OH1,TOI-6255,Human,Other Human,GJ 806,HN Peg,False
+OH1,HN Peg,Human,Other Human,TOI-6255,TOI-5789,False
+OH1,TOI-5789,Human,Other Human,HN Peg,TOI-5799,False
+OH1,HD 215152,Human,Other Human,HN Peg,GJ 900 A,False
+OH1,TOI-5799,Human,Other Human,TOI-5789,GJ 9689,False
+OH1,GJ 900 A,Human,Other Human,HD 215152,GJ 900 A,False
+OH1,GJ 9689,Human,Other Human,TOI-5799,GJ 9689,False
+OH1,TOI-2136,Human,Other Human,TOI-5799,TOI-2136,False
+TU1,Sol,Human,Turquenish Empire,Sol,tau Cet,True
+TU1,tau Cet,Human,Turquenish Empire,Sol,Sol,False
+TU1,HD 20794,Human,Turquenish Empire,Sol,Sol,False
+TU1,tau Cet,Human,Turquenish Empire,Sol,HD 20794,False
+TU1,GJ 251,Human,Turquenish Empire,Sol,GJ 273,False
+TU1,HD 20794,Human,Turquenish Empire,tau Cet,LTT 1445 A,False
+TU1,GJ 273,Human,Turquenish Empire,GJ 251,HD 260655,False
+TU1,LTT 1445 A,Human,Turquenish Empire,HD 20794,GJ 180,False
+TU1,HD 260655,Human,Turquenish Empire,GJ 273,HD 260655,False
+TU1,GJ 180,Human,Turquenish Empire,LTT 1445 A,LTT 1445 B,False
+TU1,LTT 1445 B,Human,Turquenish Empire,GJ 180,HD 21175 B,False
+TU1,HD 21175 B,Human,Turquenish Empire,LTT 1445 B,GJ 3222,False
+TU1,GJ 3222,Human,Turquenish Empire,HD 21175 B,LHS 1678,False
+TU1,LHS 1678,Human,Turquenish Empire,GJ 3222,GJ 3341,False
+TU1,HD 16417,Human,Turquenish Empire,GJ 3222,TOI-2427,False
+TU1,GJ 3341,Human,Turquenish Empire,LHS 1678,HD 39855,False
+TU1,TOI-2427,Human,Turquenish Empire,HD 16417,HR 858,False
+TU1,GJ 3138,Human,Turquenish Empire,HD 16417,HD 11964 B,False
+TU1,TOI-244,Human,Turquenish Empire,HD 16417,GJ 27.1,False
+TU1,HD 39855,Human,Turquenish Empire,GJ 3341,BD-06 1339,False
+TU1,HR 858,Human,Turquenish Empire,TOI-2427,HD 20781,False
+TU1,TOI-406,Human,Turquenish Empire,TOI-2427,TOI-406,False
+TU1,GJ 160.2,Human,Turquenish Empire,TOI-2427,GJ 160.2,False
+TU1,HD 11964 B,Human,Turquenish Empire,GJ 3138,HD 11964 B,False
+TU1,GJ 27.1,Human,Turquenish Empire,TOI-244,GJ 27.1,False
+TU1,TOI-198,Human,Turquenish Empire,TOI-244,TOI-260,False
+TU1,BD-06 1339,Human,Turquenish Empire,HD 39855,HD 42618,False
+TU1,HD 20781,Human,Turquenish Empire,HR 858,HD 20782,False
+TU1,TOI-260,Human,Turquenish Empire,TOI-198,HD 1461,False
+TU1,HD 42618,Human,Turquenish Empire,BD-06 1339,HD 46375,False
+TU1,GJ 3305,Human,Turquenish Empire,BD-06 1339,HD 30562,False
+TU1,HD 20782,Human,Turquenish Empire,HD 20781,HD 20782,False
+TU1,HD 1461,Human,Turquenish Empire,TOI-260,HD 1461,False
+TU1,HIP 4845,Human,Turquenish Empire,TOI-260,HIP 4845,False
+TU1,HD 46375,Human,Turquenish Empire,HD 42618,HD 46375 B,False
+TU1,HD 30562,Human,Turquenish Empire,GJ 3305,51 Eri,False
+TU1,HD 46375 B,Human,Turquenish Empire,HD 46375,HD 45652,False
+TU1,51 Eri,Human,Turquenish Empire,HD 30562,51 Eri,False
+TU1,HD 45652,Human,Turquenish Empire,HD 46375 B,HD 45652,False
