@@ -58,7 +58,7 @@ Taken from README.md, `starroute/__main__.py`, and the workflow. Not executed wh
 ## Definition of done
 
 - The proof rows that apply have been run and match.
-- No `git push` unless Doug asks. A push to `main` that touches `starroute/web/static/` publishes the public site.
+- Commit and push only on branch `review` (see Git). A push to `main` that touches `starroute/web/static/` publishes the public site.
 - No new NASA blobs committed under `data/raw/`; no secrets.
 - Report what was run and what was not.
 
@@ -76,7 +76,11 @@ Taken from README.md, `starroute/__main__.py`, and the workflow. Not executed wh
 - `setting/` prose: author copyright, and `TODO-between-stars.md` says setting prose is edited only in the Dropbox Turquenish folder. Do not rewrite it here unless Doug asks.
 - `user_setting/` belongs to users; do not mix the example Turquenish text into it
 - The `star_network` repo and the old Dropbox copy of this repo
-- Do not stage, commit, or push without Doug.
+- See Git: agents commit and push only on `review`.
+
+## Git
+
+Bots and Grok Build commit and push only to `review`. Before committing, check `git branch --show-current` is `review`. Make small commits, one per section or change, with a conventional message. Never commit or push to `main` or `master`. Never merge, rebase, force-push, or delete branches. Doug merges and may cherry-pick. Read-only git (`status`, `diff`, `log`, `show`) is fine. Do not write under `.git\`.
 
 ## Todos
 
