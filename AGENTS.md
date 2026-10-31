@@ -11,7 +11,7 @@ This is the live checkout (`C:\Users\DougJ\Documents\GitHub\jumpgate_starroute`)
 - Python 3.9+ (README.md; 3.11+ preferred). The local `.venv` is Python 3.13 (`.venv\pyvenv.cfg`).
 - Dependencies (`requirements.txt`): pandas, numpy, scipy, networkx, fastapi, uvicorn[standard], python-multipart, jinja2. There is no pyproject.toml, so no installed console script; run the package with `python -m starroute`.
 - Browser side: HTML/CSS/JS and Plotly.js in `starroute/web/static/`; optional in-browser map generation through Pyodide (WASM.md).
-- No tests folder, no pytest config, no linter config, no package.json, no Makefile.
+- Tests: stdlib unittest in `tests/` and node:test in `tests/js/` (`tests/js/package.json`). No pytest config, no linter config, no root package.json, no Makefile.
 - CI: `.github/workflows/pages.yml` only. It deploys `starroute/web/static/` to GitHub Pages on push to `main` when that folder or the workflow changes.
 
 ## Layout
@@ -42,7 +42,7 @@ Taken from README.md, `starroute/__main__.py`, and the workflow. Not executed wh
 - Network: `.\.venv\Scripts\python.exe -m starroute network --max-jump 50` (add `--no-factions` to skip factions)
 - Rebuild the preset packs: `.\.venv\Scripts\python.exe -m starroute build-presets` (writes `data/presets/` and `starroute/web/static/presets/`; uses `sample-systems.csv` when `data/raw/` has no NASA CSVs)
 - Rebuild the lore index: `.\.venv\Scripts\python.exe -m starroute build-lore`
-- Tests / lint: none exist; ask Doug before adding a framework
+- Tests: `pwsh -NoProfile -File .\tests\run-tests.ps1` (stdlib unittest and node:test). Lint: none; ask Doug before adding a linter.
 
 ## Proof of change
 
@@ -54,6 +54,7 @@ Taken from README.md, `starroute/__main__.py`, and the workflow. Not executed wh
 | Mapgen or preset change | `.\.venv\Scripts\python.exe -m starroute build-presets`, then `git diff --stat` | Only the intended packs change |
 | Lore change | `.\.venv\Scripts\python.exe -m starroute build-lore`, then `git diff --stat` | Only the intended lore index files change |
 | Docs-only change | none | No docs checker exists |
+| Tests | `pwsh -NoProfile -File .\tests\run-tests.ps1` | Node 24: node --test <dir> does not scan a folder; tests/package.json main must import every test file, and run-tests.ps1 fails on 0 tests. |
 
 ## Definition of done
 
