@@ -81,6 +81,58 @@ NODE_FAIL = """\
 # todo 0
 """
 
+# Real spec lines from Node 24.20.0 on this repo: a comment-only entry is
+# reported as one passing test whose name is the relative directory.
+NODE_EMPTY_SPEC = """\
+\u2714 tests\\js (31.9217ms)
+\u2139 tests 1
+\u2139 suites 0
+\u2139 pass 1
+\u2139 fail 0
+\u2139 cancelled 0
+\u2139 skipped 0
+\u2139 todo 0
+\u2139 duration_ms 37.1849
+"""
+
+# Real 11-test spec summary from `node --test tests/js/` (plain titles, no entry path).
+NODE_ELEVEN = """\
+\u2714 browser tiers match the shared fixture (1.3118ms)
+\u2714 background stars fail the gate check (0.1307ms)
+\u2714 missing mass on a planet host can be a gate (0.127ms)
+\u2714 no planets and no mass is not a gate (0.0912ms)
+\u2714 companion host at the default mass floor is a gate (0.1294ms)
+\u2714 map legend and traces name the three tiers (0.1749ms)
+\u2714 tests/js entry imports every test file (1.0562ms)
+\u2714 fixture with an unimported test file is a failure (0.5959ms)
+\u2714 entry that requires a missing file is a failure (0.5278ms)
+\u2714 missing package.json is a failure (0.2028ms)
+\u2714 package.json without main is a failure (0.2421ms)
+\u2139 tests 11
+\u2139 suites 0
+\u2139 pass 11
+\u2139 fail 0
+\u2139 cancelled 0
+\u2139 skipped 0
+\u2139 todo 0
+\u2139 duration_ms 54.7878
+"""
+
+EMPTY = ROOT / "tests" / "fixtures" / "empty_entry"
+_EMPTY_JS_TAP = str(EMPTY / "tests" / "js").replace("\\", "\\\\")
+NODE_EMPTY_TAP = f"""\
+TAP version 13
+1..1
+ok 1 - {_EMPTY_JS_TAP}
+# tests 1
+# suites 0
+# pass 1
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+"""
+
 
 def _pack(text: str) -> str:
     return text.replace("\\", "\\\\").replace("\r", "\\r").replace("\n", "\\n")
@@ -140,6 +192,27 @@ class RunnerZeroGateTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn("node: ran 0, failed 0", result.stdout)
 
+    def test_parse_node_empty_entry_spec(self) -> None:
+        result = _parse("node", NODE_EMPTY_SPEC)
+        combined = result.stdout + result.stderr
+        self.assertNotEqual(result.returncode, 0, combined)
+        self.assertIn("node: ran 0, failed 0", combined)
+        self.assertIn("Node entry registered no tests", combined)
+
+    def test_parse_node_empty_entry_tap(self) -> None:
+        result = _parse("node", NODE_EMPTY_TAP)
+        combined = result.stdout + result.stderr
+        self.assertNotEqual(result.returncode, 0, combined)
+        self.assertIn("node: ran 0, failed 0", combined)
+        self.assertIn("Node entry registered no tests", combined)
+
+    def test_parse_node_eleven_real_tests(self) -> None:
+        result = _parse("node", NODE_ELEVEN)
+        combined = result.stdout + result.stderr
+        self.assertEqual(result.returncode, 0, combined)
+        self.assertIn("node: ran 11, failed 0", combined)
+        self.assertNotIn("Node entry registered no tests", combined)
+
     def test_parse_empty(self) -> None:
         result = _parse("python", "")
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
@@ -156,6 +229,14 @@ class RunnerZeroGateTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0, combined)
         self.assertIn("python: ran 0, failed 0", combined)
         self.assertIn("node: ran 0, failed 0", combined)
+
+    def test_empty_entry_fixture_exits_nonzero(self) -> None:
+        result = _run(["-Root", str(EMPTY), "-Only", "all"], timeout=40)
+        combined = result.stdout + "\n" + result.stderr
+        self.assertNotEqual(result.returncode, 0, combined)
+        self.assertIn("python: ran 1, failed 0", combined)
+        self.assertIn("node: ran 0, failed 0", combined)
+        self.assertIn("Node entry registered no tests", combined)
 
 
 if __name__ == "__main__":

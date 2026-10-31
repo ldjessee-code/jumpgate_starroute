@@ -3,6 +3,8 @@
 #   .\.venv\Scripts\python.exe -m unittest discover -s tests -t . -v
 #   node --test "tests/js/"
 # A suite that exits 0 after running 0 tests is still a failure.
+# Node 24 also counts a directory that never calls test() as one passing
+# test named after that directory. That entry is not a real test.
 [CmdletBinding()]
 param(
   [ValidateSet('all', 'node', 'python')]
@@ -61,7 +63,74 @@ function Get-PythonCounts([string]$Value) {
   return @{ Ran = $ran; Pass = $pass; Failed = $failed }
 }
 
-function Get-NodeCounts([string]$Value) {
+function Get-SlashNorm([string]$Path) {
+  if ([string]::IsNullOrWhiteSpace($Path)) { return '' }
+  return (($Path.Trim() -replace '\\', '/').TrimEnd('/')).ToLowerInvariant()
+}
+
+function ConvertTo-ReportedPath([string]$Name) {
+  $n = $Name.Trim()
+  $n = [regex]::Replace($n, '\s+#.*$', '')
+  if ($n.Contains('\\')) {
+    $n = $n.Replace('\\', '\')
+  }
+  $n = $n.Replace('\#', '#')
+  return $n.Trim()
+}
+
+function Test-NodePseudoName([string]$Name, [string]$NodeTarget, [string]$WorkRoot) {
+  $n = ConvertTo-ReportedPath $Name
+  if ([string]::IsNullOrWhiteSpace($n)) { return $false }
+  $nameNorm = Get-SlashNorm $n
+  if (-not [string]::IsNullOrWhiteSpace($NodeTarget)) {
+    if ($nameNorm -eq (Get-SlashNorm $NodeTarget)) { return $true }
+    $base = $WorkRoot
+    if ([string]::IsNullOrWhiteSpace($base)) { $base = (Get-Location).Path }
+    try {
+      $targetFull = $NodeTarget
+      if (-not [System.IO.Path]::IsPathRooted($targetFull)) {
+        $targetFull = Join-Path $base $NodeTarget
+      }
+      $targetFull = [System.IO.Path]::GetFullPath($targetFull)
+      if ($nameNorm -eq (Get-SlashNorm $targetFull)) { return $true }
+      if ($n -match '^[A-Za-z]:[\\/]' -or $n.StartsWith('\\') -or $n.StartsWith('/')) {
+        $nameFull = [System.IO.Path]::GetFullPath($n)
+        if ((Get-SlashNorm $nameFull) -eq (Get-SlashNorm $targetFull)) { return $true }
+      }
+    } catch {
+    }
+  }
+  $looksLikePath = ($n.Contains('\') -or $n.Contains('/') -or $n -match '^[A-Za-z]:')
+  if (-not $looksLikePath) { return $false }
+  $candidates = @($n)
+  if (-not [System.IO.Path]::IsPathRooted($n)) {
+    $base = $WorkRoot
+    if ([string]::IsNullOrWhiteSpace($base)) { $base = (Get-Location).Path }
+    try { $candidates += (Join-Path $base $n) } catch { }
+  }
+  foreach ($candidate in $candidates) {
+    try {
+      if (Test-Path -LiteralPath $candidate) { return $true }
+    } catch {
+    }
+  }
+  return $false
+}
+
+function Get-NodeReportedNames([string]$Clean) {
+  $names = @()
+  $specRe = '(?m)^[ \t]*\S+[ \t]+(.+?)[ \t]+\(\d+(?:\.\d+)?ms\)[ \t]*$'
+  foreach ($match in [regex]::Matches($Clean, $specRe)) {
+    $names += $match.Groups[1].Value.Trim()
+  }
+  $tapRe = '(?m)^(?:not )?ok[ \t]+\d+[ \t]+-[ \t]+(.+?)[ \t]*$'
+  foreach ($match in [regex]::Matches($Clean, $tapRe)) {
+    $names += $match.Groups[1].Value.Trim()
+  }
+  return $names
+}
+
+function Get-NodeCounts([string]$Value, [string]$NodeTarget = '', [string]$WorkRoot = '') {
   $clean = Normalize-Report $Value
   $info = [regex]::Escape([string][char]0x2139)
   $prefix = '(?:#|' + $info + '|i)'
@@ -74,14 +143,21 @@ function Get-NodeCounts([string]$Value) {
   if ($testsMatches.Count -lt 1 -or $passMatches.Count -lt 1 -or $failMatches.Count -lt 1) {
     return $null
   }
-  $ran = [int]$testsMatches[$testsMatches.Count - 1].Groups[1].Value
+  $reported = [int]$testsMatches[$testsMatches.Count - 1].Groups[1].Value
   $pass = [int]$passMatches[$passMatches.Count - 1].Groups[1].Value
   $failed = [int]$failMatches[$failMatches.Count - 1].Groups[1].Value
-  return @{ Ran = $ran; Pass = $pass; Failed = $failed }
+  $pseudo = 0
+  foreach ($name in (Get-NodeReportedNames $clean)) {
+    if (Test-NodePseudoName $name $NodeTarget $WorkRoot) { $pseudo++ }
+  }
+  $ran = $reported - $pseudo
+  if ($ran -lt 0) { $ran = 0 }
+  return @{ Ran = $ran; Pass = $pass; Failed = $failed; Pseudo = $pseudo }
 }
 
 function Test-CountGate($Parsed, [int]$ExitCode, [bool]$CheckExit) {
   if ($null -eq $Parsed) { return $false }
+  if ($Parsed.Pseudo -gt 0) { return $false }
   if ($Parsed.Ran -eq 0) { return $false }
   if ($Parsed.Failed -gt 0) { return $false }
   if ($Parsed.Pass -lt 0) { return $false }
@@ -99,13 +175,16 @@ if ($ParseOnly) {
   if ($Kind -eq 'python') {
     $parsed = Get-PythonCounts $decoded
   } else {
-    $parsed = Get-NodeCounts $decoded
+    $parsed = Get-NodeCounts $decoded $NodeTarget $RepoRoot
   }
   if ($null -eq $parsed) {
     Write-Output "${Kind}: PARSE_ERROR"
     exit 1
   }
   Write-Output "${Kind}: ran $($parsed.Ran), failed $($parsed.Failed)"
+  if ($Kind -eq 'node' -and $parsed.Pseudo -gt 0) {
+    Write-Output 'Node entry registered no tests'
+  }
   if (Test-CountGate -Parsed $parsed -ExitCode 0 -CheckExit $false) { exit 0 }
   exit 1
 }
@@ -192,12 +271,15 @@ if ($Only -eq 'all' -or $Only -eq 'node') {
   ) -WorkingDirectory $WorkRoot
   Write-Output "----- node raw exit $($nd.ExitCode) -----"
   Write-Output $nd.Output
-  $parsedNd = Get-NodeCounts $nd.Output
+  $parsedNd = Get-NodeCounts $nd.Output $NodeTarget $WorkRoot
   if ($null -eq $parsedNd) {
     $summaries += 'node: PARSE_ERROR'
     $gateOk = $false
   } else {
     $summaries += "node: ran $($parsedNd.Ran), failed $($parsedNd.Failed)"
+    if ($parsedNd.Pseudo -gt 0) {
+      $summaries += 'Node entry registered no tests'
+    }
     if (-not (Test-CountGate -Parsed $parsedNd -ExitCode $nd.ExitCode -CheckExit $true)) {
       $gateOk = $false
     }
