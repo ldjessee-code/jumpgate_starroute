@@ -46,7 +46,7 @@ function listTestFiles(dir) {
       const full = path.join(current, entry.name);
       if (entry.isDirectory()) {
         walk(full);
-      } else if (entry.isFile() && /\.test\.(js|mjs)$/.test(entry.name)) {
+      } else if (entry.isFile() && /\.(?:test|spec)\.(?:js|mjs)$/.test(entry.name)) {
         found.push(full);
       }
     }
@@ -54,6 +54,23 @@ function listTestFiles(dir) {
   walk(dir);
   found.sort();
   return found;
+}
+
+function listImportedSpecs(source) {
+  const patterns = [
+    /require\s*\(\s*['"](\.[^'"]+)['"]\s*\)/g,
+    /(?:^|[^.\w])import\s+(?:[^'";]*?\sfrom\s+)?['"](\.[^'"]+)['"]/gm,
+    /(?:^|[^.\w])import\s*\(\s*['"](\.[^'"]+)['"]\s*\)/gm,
+    /(?:^|[^.\w])export\s+[^'";]*?\sfrom\s+['"](\.[^'"]+)['"]/gm,
+  ];
+  const specs = [];
+  for (const pattern of patterns) {
+    let match;
+    while ((match = pattern.exec(source)) !== null) {
+      specs.push(match[1]);
+    }
+  }
+  return specs;
 }
 
 function checkImportCoverage(dir) {
@@ -95,16 +112,15 @@ function checkImportCoverage(dir) {
     };
   }
   const source = fs.readFileSync(entry, "utf8");
-  const requireRe = /require\s*\(\s*['"](\.[^'"]+)['"]\s*\)/g;
   const imported = new Set();
   const dangling = [];
   const entryDir = path.dirname(entry);
-  let match;
-  while ((match = requireRe.exec(source)) !== null) {
-    const spec = match[1];
+  for (const spec of listImportedSpecs(source)) {
     const resolved = resolveRelative(entryDir, spec);
     if (!resolved) {
-      dangling.push(spec);
+      if (!dangling.includes(spec)) {
+        dangling.push(spec);
+      }
     } else {
       imported.add(norm(resolved));
     }
@@ -155,4 +171,25 @@ test("package.json without main is a failure", () => {
   const result = checkImportCoverage(path.join(FIXTURES, "import_no_main"));
   assert.equal(result.ok, false, result.message);
   assert.match(result.message, /main/);
+});
+
+test("esm import covers the imported file and still reports the orphan", () => {
+  const result = checkImportCoverage(path.join(FIXTURES, "import_esm"));
+  assert.equal(result.ok, false, result.message);
+  assert.ok(result.missing.includes("orphan.test.js"), result.message);
+  assert.ok(!result.missing.includes("kept.test.js"), result.message);
+});
+
+test("spec files count and an unimported spec is a failure", () => {
+  const result = checkImportCoverage(path.join(FIXTURES, "import_spec"));
+  assert.equal(result.ok, false, result.message);
+  assert.match(result.message, /orphan\.spec\.js/);
+  assert.match(result.message, /orphan\.spec\.mjs/);
+  assert.ok(!result.missing.includes("kept.spec.js"), result.message);
+  assert.ok(!result.missing.includes("kept.test.js"), result.message);
+});
+
+test("esm entry that imports every test and spec file passes", () => {
+  const result = checkImportCoverage(path.join(FIXTURES, "import_esm_ok"));
+  assert.equal(result.ok, true, result.message);
 });

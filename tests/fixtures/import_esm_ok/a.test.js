@@ -1,0 +1,1 @@
+/* fixture: side-effect import */
