@@ -238,8 +238,16 @@ def preview_faction_matches(df: pd.DataFrame, config: dict[str, Any]) -> list[di
     return results
 
 
+def _eligible(df: pd.DataFrame) -> pd.Series:
+    """Background stars and exoplanet hosts outside the gate rules take no faction."""
+    if "tier" not in df.columns:
+        return pd.Series(True, index=df.index)
+    tier = df["tier"].fillna("").astype(str)
+    return ~tier.isin(["exo_no_gate", "no_known_planets"])
+
+
 def _claim(df: pd.DataFrame, spec: dict, species: str, nation: str) -> pd.DataFrame:
-    available = df.loc[~df["assigned"]]
+    available = df.loc[~df["assigned"] & _eligible(df)]
     full_mask = _mask_from_filters(df, spec.get("filters"))
     mask = full_mask.reindex(available.index).fillna(False)
     candidates = _sort_candidates(available.loc[mask], spec)

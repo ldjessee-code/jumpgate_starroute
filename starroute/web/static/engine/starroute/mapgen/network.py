@@ -9,8 +9,20 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree
 
-from starroute.mapgen.ranking import composite_ranking
+from starroute.mapgen.ranking import composite_ranking, rating_stability
+from starroute.mapgen.tiers import (
+    PENDING_DOUG,
+    TIER_EXO,
+    TIER_GATE,
+    as_float,
+    classify_frame,
+    criteria_from_params,
+    extra_gate_block,
+    gate_status_for,
+    is_exoplanet_host,
+)
 from starroute.paths import NETWORK_CSV, SYSTEMS_CSV, ensure_data_dirs
+from starroute.turquenish import apply_turquenish
 
 DEFAULT_NETWORK = {
     "max_jump_ly": 50.0,
@@ -36,23 +48,64 @@ def _band_limits(max_jump: float, medium_pct: float, long_pct: float) -> tuple[f
     return short_end, long_start
 
 
+def _trim_distance(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+    """Keep rows at or inside ``max_distance_ly`` when that parameter is set.
+
+    Unset means no trim, which is the historical generator behavior. The root
+    hostname is always kept. A missing distance drops the row when a trim is set.
+    """
+    raw = cfg.get("max_distance_ly", None)
+    if raw is None or raw == "":
+        return df
+    limit = float(raw)
+    origin = str(cfg.get("root_hostname") or "Sol")
+    if "distance_from_sol_ly" in df.columns:
+        dist = pd.to_numeric(df["distance_from_sol_ly"], errors="coerce")
+    elif "distance_from_origin_ly" in df.columns:
+        dist = pd.to_numeric(df["distance_from_origin_ly"], errors="coerce")
+    else:
+        x = pd.to_numeric(df["calculated_x"], errors="coerce")
+        y = pd.to_numeric(df["calculated_y"], errors="coerce")
+        z = pd.to_numeric(df["calculated_z"], errors="coerce")
+        dist = np.sqrt(x * x + y * y + z * z)
+    names = df["hostname"].astype(str) if "hostname" in df.columns else pd.Series("", index=df.index)
+    keep = names.eq(origin) | (dist.notna() & (dist <= limit + 1e-9))
+    return df.loc[keep].reset_index(drop=True)
+
+
 def _valid_row(
     row: pd.Series,
     min_mass: float,
     origin: str,
     max_mass: float | None = None,
+    criteria: dict | None = None,
 ) -> bool:
-    coords = (row["calculated_x"], row["calculated_y"], row["calculated_z"])
-    if not all(np.isfinite(c) for c in coords):
-        return False
+    coords = []
+    for key in ("calculated_x", "calculated_y", "calculated_z"):
+        try:
+            number = float(row[key])
+        except (TypeError, ValueError):
+            return False
+        if not np.isfinite(number):
+            return False
+        coords.append(number)
+    coords = tuple(coords)
     if coords == (0, 0, 0) and row["hostname"] != origin:
+        return False
+    if gate_status_for(row) == PENDING_DOUG:
+        return False
+    mass = as_float(row.get("st_mass"))
+    if not is_exoplanet_host(row) and mass is None:
         return False
     if row["hostname"] == origin:
         return True
-    mass = row.get("st_mass")
-    if pd.isna(mass) or float(mass) < min_mass:
+    if mass is None:
+        return True
+    if mass < float(min_mass):
         return False
-    if max_mass is not None and float(mass) > float(max_mass):
+    if max_mass is not None and mass > float(max_mass):
+        return False
+    if extra_gate_block(row, criteria):
         return False
     return True
 
@@ -62,7 +115,7 @@ def _score_row(row: pd.Series, distance: float, preferred_ly: float, weights: di
         row.get("carbon_ranking"),
         row.get("sulfur_ranking"),
         row.get("silicon_ranking"),
-        row.get("stability_score"),
+        rating_stability(row),
         row.get("sy_snum"),
         row.get("sy_pnum"),
         row.get("sy_mnum"),
@@ -103,41 +156,129 @@ def _select_neighbors(
     return chosen
 
 
+def _read_systems(path: str) -> pd.DataFrame:
+    """Read a systems table. Catalog ids stay text so Gaia integers are not rounded."""
+    header = pd.read_csv(path, nrows=0)
+    text_cols = [
+        "star_key",
+        "gaia_source_id",
+        "hyg_id",
+        "hip",
+        "hd",
+        "hostname",
+        "sy_name",
+        "proper",
+        "turquenish_system",
+        "system_file",
+        "tier",
+        "has_known_exoplanets",
+        "spect",
+        "st_spectype",
+        "handoff_name",
+        "origin_hostname",
+        "stability_symbol",
+    ]
+    dtype = {col: "string" for col in text_cols if col in header.columns}
+    return pd.read_csv(path, dtype=dtype)
+
+
+def _cell(row: pd.Series, key: str) -> str:
+    if key not in row.index:
+        return ""
+    value = row.get(key)
+    if value is None or pd.isna(value):
+        return ""
+    text = str(value).strip()
+    if text.lower() in {"nan", "<na>", "none"}:
+        return ""
+    if text.endswith(".0") and text[:-2].isdigit():
+        text = text[:-2]
+    return text
+
+
+def _attach_unlinked(network: pd.DataFrame, held_back: pd.DataFrame) -> pd.DataFrame:
+    """Keep non-gate stars on the map with no neighbor links."""
+    if held_back.empty:
+        return network
+    extra = held_back.copy()
+    extra["source_hostname"] = extra["hostname"]
+    extra["parent_hostname"] = ""
+    extra["gate_distance"] = pd.NA
+    if "process_order" in network.columns and len(network):
+        start = int(pd.to_numeric(network["process_order"], errors="coerce").fillna(0).max())
+    else:
+        start = 0
+    extra["process_order"] = list(range(start + 1, start + 1 + len(extra)))
+    for col in list(extra.columns):
+        if col.startswith("neighbor_"):
+            extra[col] = pd.NA
+    return pd.concat([network, extra], ignore_index=True)
+
+
 def generate_network(
     systems_path: str | None = None,
     output_path: str | None = None,
     params: dict | None = None,
     weights: dict | None = None,
+    systems_df: pd.DataFrame | None = None,
 ) -> dict[str, Any]:
-    """Walk outward from Sol, attaching highly ranked neighbors within jump range."""
+    """Walk outward from Sol, attaching highly ranked neighbors within jump range.
+
+    ``systems_df`` skips the CSV read when the caller already loaded a table.
+    ``params['max_distance_ly']`` trims that table when it is set. Optional
+    exclusion flags in ``params`` default off (see ``criteria_from_params``).
+    """
     ensure_data_dirs()
     cfg = {**DEFAULT_NETWORK, **(params or {})}
-    systems_path = systems_path or str(SYSTEMS_CSV)
     output_path = output_path or str(NETWORK_CSV)
-
-    df = pd.read_csv(systems_path)
+    if systems_df is not None:
+        df = systems_df.copy()
+    else:
+        systems_path = systems_path or str(SYSTEMS_CSV)
+        df = _read_systems(systems_path)
+    df = _trim_distance(df, cfg)
+    criteria = criteria_from_params(cfg)
     required = {"hostname", "calculated_x", "calculated_y", "calculated_z"}
     missing = required - set(df.columns)
     if missing:
         raise ValueError(f"systems table missing columns: {sorted(missing)}")
 
-    df = df[
-        df.apply(
+    df = apply_turquenish(df)
+    df = classify_frame(
+        df,
+        min_stellar_mass=float(cfg["min_stellar_mass"]),
+        max_stellar_mass=cfg.get("max_stellar_mass"),
+        origin=str(cfg["root_hostname"]),
+        criteria=criteria,
+    )
+    held_back = df[df["tier"] != TIER_GATE].copy()
+    df = df[df["tier"] == TIER_GATE].reset_index(drop=True)
+    if len(df):
+        gate_mask = df.apply(
             lambda r: _valid_row(
                 r,
                 cfg["min_stellar_mass"],
                 cfg["root_hostname"],
                 cfg.get("max_stellar_mass"),
+                criteria,
             ),
             axis=1,
         )
-    ].reset_index(drop=True)
-    if df["hostname"].duplicated().any():
+        rejected = df.loc[~gate_mask].copy()
+        if len(rejected):
+            rejected["tier"] = TIER_EXO
+            held_back = pd.concat([held_back, rejected], ignore_index=True)
+        df = df.loc[gate_mask].reset_index(drop=True)
+    if len(df) and df["hostname"].duplicated().any():
         df = df.drop_duplicates(subset="hostname", keep="first").reset_index(drop=True)
 
     root = cfg["root_hostname"]
     if root not in set(df["hostname"]):
-        raise ValueError(f"Root system '{root}' is not in the ingested dataset.")
+        tier = ""
+        if len(held_back) and (held_back["hostname"] == root).any():
+            tier = str(held_back.loc[held_back["hostname"] == root, "tier"].iloc[0])
+        detail = f" (tier {tier})" if tier else ""
+        raise ValueError(f"Root system '{root}' is not a gate candidate{detail}.")
 
     coords = df[["calculated_x", "calculated_y", "calculated_z"]].to_numpy(dtype=float)
     hostnames = df["hostname"].to_numpy()
@@ -260,17 +401,26 @@ def generate_network(
         record["gate_distance"] = None
         rows.append(record)
 
+    reached = {record.get("source_hostname") or record.get("hostname") for record in rows}
+    missed = df[~df["hostname"].isin(reached)].copy()
+    if len(missed):
+        held_back = pd.concat([held_back, missed], ignore_index=True)
     network = pd.DataFrame(rows)
     network["gate_distance"] = _gate_distances(network, root, max_neighbors)
+    network = _attach_unlinked(network, held_back)
     network.to_csv(output_path, index=False)
 
     linked = int(network["gate_distance"].notna().sum())
+    counts = {}
+    if "tier" in network.columns:
+        counts = {str(key): int(value) for key, value in network["tier"].value_counts(dropna=False).items()}
     return {
         "output_path": output_path,
         "nodes": int(len(network)),
         "linked_nodes": linked,
         "root": root,
         "params": cfg,
+        "tier_counts": counts,
     }
 
 
@@ -350,6 +500,14 @@ def network_payload(df: pd.DataFrame) -> dict[str, Any]:
                 ),
                 "origin": row.get("origin_hostname") if pd.notna(row.get("origin_hostname")) else "",
                 "gate_distance": None if pd.isna(row.get("gate_distance")) else int(row["gate_distance"]),
+                "tier": _cell(row, "tier") or "gate_candidate",
+                "star_key": _cell(row, "star_key"),
+                "gaia_source_id": _cell(row, "gaia_source_id"),
+                "hyg_id": _cell(row, "hyg_id"),
+                "turquenish_system": _cell(row, "turquenish_system"),
+                "setting_name": _cell(row, "setting_name") or _cell(row, "turquenish_system"),
+                "system_file": _cell(row, "system_file"),
+                "has_known_exoplanets": is_exoplanet_host(row),
                 "species": row.get("Species") if pd.notna(row.get("Species")) else "",
                 "nation": row.get("Nation") if pd.notna(row.get("Nation")) else "",
                 "group": row.get("Group") if pd.notna(row.get("Group")) else "",

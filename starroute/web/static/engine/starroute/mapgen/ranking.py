@@ -5,12 +5,49 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
+from starroute.mapgen.tiers import as_float, is_exoplanet_host
+
 DEFAULT_WEIGHTS = {
     "habitable": 0.30,
     "stability": 0.15,
     "system": 0.45,
     "distance": 0.10,
 }
+
+# One stability step for a planet host with no measured st_mass.
+# On a calm star (score 0 to 1) the stability term is multiplied by 2/3
+# and the composite changes by -0.05 at the default stability weight 0.15.
+MASS_UNKNOWN_STABILITY_STEP = 1
+
+
+def mass_unknown_penalty(row) -> int | None:
+    """Return 1 when a planet host has no measured ``st_mass``, else None."""
+    if not is_exoplanet_host(row):
+        return None
+    if as_float(row.get("st_mass")) is None:
+        return MASS_UNKNOWN_STABILITY_STEP
+    return None
+
+
+def rating_stability(row):
+    """Stability score passed into ``composite_ranking``.
+
+    A planet host with missing ``st_mass`` takes one extra step
+    (``MASS_UNKNOWN_STABILITY_STEP``, which is 1), capped at 3. A blank
+    stored score is passed as 1. On a calm star that step moves the score
+    from 0 to 1, which multiplies the stability term ``(3 - score) / 3``
+    by 2/3 and changes the composite by -0.05 at the default stability
+    weight 0.15. Known mass does not take the step. The stored
+    ``stability_score`` column is not modified, and ``estimate_stability``
+    is not modified.
+    """
+    raw = row.get("stability_score")
+    if mass_unknown_penalty(row) is None:
+        return raw
+    score = as_float(raw)
+    if score is None:
+        return float(MASS_UNKNOWN_STABILITY_STEP)
+    return min(float(score) + MASS_UNKNOWN_STABILITY_STEP, 3.0)
 
 
 def weight_distance(distance: float, preferred_ly: float) -> float:

@@ -779,6 +779,9 @@ body.map-fullscreen .map-stage #star-map {
 .legend-swatch.heat {
   background: linear-gradient(90deg, #2b0000, #ff4500, #fff3b0);
 }
+.legend-swatch.tier-gate { background: #f4f1ea; border-radius: 50%; }
+.legend-swatch.tier-exo { background: #e6a23c; border-radius: 2px; }
+.legend-swatch.tier-bg { background: #8b97a8; border-radius: 50%; width: 0.55rem; height: 0.55rem; }
 .legend-line {
   width: 1.1rem;
   height: 0;

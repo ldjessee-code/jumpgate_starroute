@@ -867,9 +867,16 @@ function renderLegend(nodes) {
   const byFaction = $("color-faction") && $("color-faction").checked;
   const groups = groupsOnMap(nodes);
   const routes = (networkData && networkData.edges && networkData.edges.length) || 0;
+  const tierCounts = { gate_candidate: 0, exo_no_gate: 0, no_known_planets: 0 };
+  nodes.forEach((node) => {
+    tierCounts[nodeTier(node)] += 1;
+  });
   const rows = [];
   rows.push(`<div class="legend-row"><span>${nodes.length} stars · ${routes} routes</span></div>`);
   rows.push(`<div class="legend-row"><span class="legend-swatch" style="background:#fff"></span><span>Sol / map center</span></div>`);
+  rows.push(`<div class="legend-row"><span class="legend-swatch tier-gate"></span><span>Gate candidate · ${tierCounts.gate_candidate}</span></div>`);
+  rows.push(`<div class="legend-row"><span class="legend-swatch tier-exo"></span><span>Exoplanet host, no gate · ${tierCounts.exo_no_gate}</span></div>`);
+  rows.push(`<div class="legend-row"><span class="legend-swatch tier-bg"></span><span>No known planets · ${tierCounts.no_known_planets}</span></div>`);
   if (byFaction) {
     groups.forEach((g) => {
       const color = getGroupColor(g);
@@ -996,8 +1003,18 @@ function showStarCard(hostname) {
   card.classList.remove("hidden");
   const isStart = $("path-start") && $("path-start").value === hostname;
   const isEnd = $("path-end") && $("path-end").value === hostname;
+  const tierLabels = {
+    gate_candidate: "Gate candidate",
+    exo_no_gate: "Exoplanet host, no gate",
+    no_known_planets: "No known planets",
+  };
+  const turqName = [node.turquenish_system, node.setting_name]
+    .map((value) => (value == null ? "" : String(value).trim()))
+    .find((value) => value) || "";
   const lines = [
     node.group || node.species || "No faction",
+    tierLabels[nodeTier(node)],
+    turqName ? `Turquenish system: ${turqName}` : "",
     node.spectype ? `Spectral type ${node.spectype}` : "",
     node.sy_pnum != null ? `Planets ${node.sy_pnum}` : "",
     node.dist_ly != null ? `${Number(node.dist_ly).toFixed(2)} ly from Sol` : "",
@@ -1033,6 +1050,12 @@ function bindStarClicks(plot) {
     const host = pt && pt.customdata;
     if (typeof host === "string" && host) showStarCard(host);
   });
+}
+
+function nodeTier(node) {
+  const tier = node && node.tier;
+  if (tier === "gate_candidate" || tier === "exo_no_gate" || tier === "no_known_planets") return tier;
+  return "gate_candidate";
 }
 
 function drawMap(path = []) {
@@ -1090,7 +1113,10 @@ function drawMap(path = []) {
   const originName = catalogOrigin || "Sol";
   const originNodes = nodes.filter((n) => n.hostname === originName);
   const others = nodes.filter((n) => n.hostname !== originName);
-  const colors = others.map((n) => (byFaction ? nodeColor(n, true, focus) : n.ranking));
+  const gateOthers = others.filter((n) => nodeTier(n) === "gate_candidate");
+  const exoOthers = others.filter((n) => nodeTier(n) === "exo_no_gate");
+  const bgOthers = others.filter((n) => nodeTier(n) === "no_known_planets");
+  const colors = gateOthers.map((n) => (byFaction ? nodeColor(n, true, focus) : n.ranking));
   const sizes = (list) => list.map((n) => {
     const base = 5 + Math.min(n.sy_pnum || 0, 8) * 1.6;
     if (focus === "all" || n.group === focus) return base;
@@ -1134,13 +1160,45 @@ function drawMap(path = []) {
     {
       type: "scatter3d",
       mode: "markers",
-      x: others.map((n) => n.x),
-      y: others.map((n) => n.y),
-      z: others.map((n) => n.z),
-      customdata: others.map((n) => n.hostname),
+      x: bgOthers.map((n) => n.x),
+      y: bgOthers.map((n) => n.y),
+      z: bgOthers.map((n) => n.z),
+      customdata: bgOthers.map((n) => n.hostname),
       hoverinfo: "none",
       marker: {
-        size: sizes(others),
+        size: 3,
+        color: "#8b97a8",
+        symbol: "circle",
+        opacity: 0.55,
+      },
+      name: "No known planets",
+    },
+    {
+      type: "scatter3d",
+      mode: "markers",
+      x: exoOthers.map((n) => n.x),
+      y: exoOthers.map((n) => n.y),
+      z: exoOthers.map((n) => n.z),
+      customdata: exoOthers.map((n) => n.hostname),
+      hoverinfo: "none",
+      marker: {
+        size: 7,
+        color: "#e6a23c",
+        symbol: "diamond",
+        opacity: 0.95,
+      },
+      name: "Exoplanet host, no gate",
+    },
+    {
+      type: "scatter3d",
+      mode: "markers",
+      x: gateOthers.map((n) => n.x),
+      y: gateOthers.map((n) => n.y),
+      z: gateOthers.map((n) => n.z),
+      customdata: gateOthers.map((n) => n.hostname),
+      hoverinfo: "none",
+      marker: {
+        size: sizes(gateOthers),
         color: colors,
         colorscale: "Hot",
         showscale: !byFaction,
@@ -1149,7 +1207,7 @@ function drawMap(path = []) {
           thickness: 14,
           len: 0.5,
         },
-        symbol: others.map((n) => n.symbol || "circle"),
+        symbol: gateOthers.map((n) => n.symbol || "circle"),
         opacity: 0.92,
       },
       name: "Systems",
