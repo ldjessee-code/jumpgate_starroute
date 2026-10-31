@@ -1,0 +1,6 @@
+{
+  "merged_catalog": "F:\\Dropbox\\TheCourt\\research\\_jobs\\star-catalog\\multisource_20261019\\stars_merged_v1.csv",
+  "env": "STARROUTE_CATALOG",
+  "fallback": "NASA ingest in data/raw, then starroute/web/static/sample-systems.csv",
+  "trim": "A map build streams the catalog and keeps stars whose distance from that map's origin is within origin.max_distance_ly. The catalog file is never copied into the repo or the static site and is never rewritten. The static site receives only the trimmed snapshot for that map."
+}

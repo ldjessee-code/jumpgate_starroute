@@ -30,9 +30,19 @@ def main(argv: list[str] | None = None) -> None:
     net = sub.add_parser("network", help="Build the Sol-centered jump network")
     net.add_argument("--max-jump", type=float, default=50.0)
     net.add_argument("--no-factions", action="store_true")
+    net.add_argument("--systems", help="Systems CSV (default: data/processed/systems.csv)")
+    net.add_argument("--output", help="Network CSV to write (default: data/processed/sol_network.csv)")
+    net.add_argument("--catalog", help="Stream this merged catalog instead of --systems")
+    net.add_argument("--max-distance", type=float, default=None, help="Trim radius in ly when --catalog is set")
+    net.add_argument("--origin", default="Sol", help="Origin hostname when --catalog is set")
 
     presets = sub.add_parser("build-presets", help="Write the three static map preset packs")
     presets.add_argument("--id", action="append", dest="ids", help="Build only this preset id (repeatable)")
+    presets.add_argument("--catalog", help="Merged catalog CSV. Overrides STARROUTE_CATALOG and config/catalog.json")
+    presets.add_argument("--dest", help="Write packs under this folder instead of the repo presets")
+
+    handoff = sub.add_parser("handoff", help="Validate a system-handoff JSON file")
+    handoff.add_argument("record", help="Path to a handoff JSON record")
 
     lore = sub.add_parser("build-lore", help="Write the static lore wiki index from setting/*.md")
     lore.add_argument("--vault", help="Markdown vault (default: setting/)")
@@ -59,13 +69,32 @@ def main(argv: list[str] | None = None) -> None:
         return
 
     if args.cmd == "network":
-        if not SYSTEMS_CSV.exists():
-            raise SystemExit("Run ingest first (no data/processed/systems.csv).")
-        result = generate_network(params={"max_jump_ly": args.max_jump})
+        systems_path = args.systems
+        if args.catalog:
+            from starroute.catalog import load_trimmed_frame
+            from starroute.paths import DATA_PROCESSED, NETWORK_JSON
+
+            distance = args.max_distance
+            if distance is None and NETWORK_JSON.is_file():
+                distance = float(json.loads(NETWORK_JSON.read_text(encoding="utf-8")).get("ingest_max_distance_ly") or 60)
+            distance = 60.0 if distance is None else float(distance)
+            frame = load_trimmed_frame(args.catalog, origin=args.origin, max_distance_ly=distance)
+            window = DATA_PROCESSED / "catalog_window.csv"
+            window.parent.mkdir(parents=True, exist_ok=True)
+            frame.to_csv(window, index=False)
+            systems_path = str(window)
+        elif not systems_path and not SYSTEMS_CSV.exists():
+            raise SystemExit("Run ingest first (no data/processed/systems.csv), or pass --catalog.")
+        result = generate_network(
+            systems_path=systems_path,
+            output_path=args.output,
+            params={"max_jump_ly": args.max_jump, "root_hostname": args.origin},
+        )
         if not args.no_factions:
-            df = __import__("pandas").read_csv(NETWORK_CSV)
+            written = result["output_path"]
+            df = __import__("pandas").read_csv(written)
             assigned, routes = assign_factions(df, config=load_faction_config())
-            assigned.to_csv(NETWORK_CSV, index=False)
+            assigned.to_csv(written, index=False)
             result["assigned"] = int(assigned["assigned"].sum())
             result["routes"] = int(len(routes))
         print(json.dumps(result, indent=2, default=str))
@@ -77,7 +106,22 @@ def main(argv: list[str] | None = None) -> None:
         extra: list[str] = []
         for preset_id in args.ids or []:
             extra.extend(["--id", preset_id])
+        if args.catalog:
+            extra.extend(["--catalog", args.catalog])
+        if args.dest:
+            extra.extend(["--dest", args.dest])
         raise SystemExit(build_presets_main(extra))
+
+    if args.cmd == "handoff":
+        from starroute.handoff import load_schema, validate_handoff
+
+        record = json.loads(Path(args.record).read_text(encoding="utf-8"))
+        errors = validate_handoff(record, load_schema())
+        if errors:
+            print("\n".join(errors))
+            raise SystemExit(1)
+        print(json.dumps({"ok": True, "star_key": record.get("star_key"), "tier": record.get("tier")}, indent=2))
+        return
 
     if args.cmd == "build-lore":
         from starroute.lore import main as build_lore_main
