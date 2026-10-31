@@ -54,7 +54,7 @@ Taken from README.md, `starroute/__main__.py`, and the workflow. Not executed wh
 | Mapgen or preset change | `.\.venv\Scripts\python.exe -m starroute build-presets`, then `git diff --stat` | Only the intended packs change |
 | Lore change | `.\.venv\Scripts\python.exe -m starroute build-lore`, then `git diff --stat` | Only the intended lore index files change |
 | Docs-only change | none | No docs checker exists |
-| Tests | `pwsh -NoProfile -File .\tests\run-tests.ps1` | Node 24: node --test <dir> does not scan a folder; tests/package.json main must import every test file, and run-tests.ps1 fails on 0 tests. |
+| Tests | `pwsh -NoProfile -File .\tests\run-tests.ps1` | Node 24: node --test <dir> does not scan a folder; tests/js/package.json main must import every test file, and run-tests.ps1 fails on 0 tests. |
 
 ## Definition of done
 
