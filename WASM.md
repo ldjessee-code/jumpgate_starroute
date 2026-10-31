@@ -9,7 +9,27 @@ not on that path.
 Same map viewer. Same snapshot JSON. New maps from the **already-processed**
 star list (`starroute/web/static/sample-systems.csv`, 148 systems, 60 ly around
 Sol). Change jump length, short/medium/long percents, neighbors, and generate
-again. NASA CSV download and ingest are **not** in this pass.
+again. NASA CSV download and ingest are **not** in this pass. The merged
+catalog is not loaded in the browser. A native build trims it to one map's
+radius and can ship that snapshot. Pyodide still generates from the sample.
+
+## Engine copy (keep in sync)
+
+`starroute/web/static/engine/` is the browser copy of the Python map engine.
+After a mapgen change, copy the touched modules into that tree. The worker
+(`starroute/web/static/js/wasm-worker.js`) loads, in order:
+
+- `starroute/turquenish.py`
+- `starroute/mapgen/tiers.py` (before `network.py`)
+- `starroute/mapgen/network.py`
+- `starroute/mapgen/factions.py`
+- `config/turquenish_systems.json` (written to the Pyodide `/config` path)
+
+`js/tiers.js` matches `starroute/mapgen/tiers.py` for the three labels
+`gate_candidate`, `exo_no_gate`, and `no_known_planets`. Older snapshots with
+no `tier` field still draw as gate candidates. Route and faction colors are
+unchanged. Background stars and exoplanet hosts outside the gate are extra
+traces plus legend rows.
 
 You can host a processed CSV later (Cloudflare is a reasonable place; GitHub
 LFS is not required for an 81 KB file). That is the next ingest step, not this
@@ -86,6 +106,8 @@ this button open with **Open a saved map** the same way the preview file does.
 ## Later
 
 - Ingest NASA CSVs (browser or a hosted processed table on Cloudflare).
+- A static full-sky map would publish only the trimmed snapshot for that
+  radius, not the merged catalog.
 - If this feels good: merge `wasm-pyodide` into `main` and keep Python as an
   optional native CLI.
 - If SciPy download is too large, next step is a smaller worker — not a full
