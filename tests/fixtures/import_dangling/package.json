@@ -1,0 +1,5 @@
+{
+  "name": "import-dangling-fixture",
+  "private": true,
+  "main": "index.js"
+}
