@@ -6,9 +6,11 @@ A tool for **tabletop RPG GMs and players**, and for **authors**, to **create,
 track, and manage jump-gate (or other FTL) routes** through a neighborhood of
 real nearby stars, painted with factions and cultures.
 
-Stars come from NASA catalog data (plus Sol). You decide jump length, who
-lives where, and which roads stay lit. The result is a 3D map you can rotate,
-trace a path on, and brief a table from — not a video-game 3D model pack.
+Stars come from a merged catalog when that file is present (NASA exoplanet
+hosts plus background stars), and from the NASA ingest or the committed
+sample when it is not. You decide jump length, who lives where, and which
+roads stay lit. The result is a 3D map you can rotate, trace a path on, and
+brief a table from — not a video-game 3D model pack.
 
 A [True Eyed Jack](https://trueeyedjack.com/) app: Local First. Always Intelligent.
 
@@ -91,6 +93,7 @@ python -m starroute network --max-jump 50
 python -m starroute network --max-jump 50 --no-factions
 python -m starroute build-presets
 python -m starroute build-lore
+python -m starroute handoff docs/examples/tau-ceti.handoff.json
 ```
 
 `build-presets` (or `python scripts/build_presets.py`) writes JSON packs to
@@ -99,13 +102,42 @@ If `data/raw` NASA CSVs are missing, it uses the committed sample catalog
 (`starroute/web/static/sample-systems.csv`, 60 ly around Sol). See
 [PRESETS.md](PRESETS.md).
 
+## Merged catalog, trim, and tiers
+
+The full merged catalog stays outside this repo. `config/catalog.json` points
+at it. Override that path with `--catalog` or the env var `STARROUTE_CATALOG`.
+The loader streams the CSV. It does not copy the file into the repo or the
+static site.
+
+Each map build keeps only the stars within that preset's max distance of its
+origin (inclusive). The source file is not rewritten. A build with `--dest`
+writes the trimmed table and the snapshot under that folder. The browser
+**Generate new map** path still uses `sample-systems.csv`. A full-sky static
+build would ship only that map's trimmed snapshot, not the merged file.
+Details: [docs/system-handoff.md](docs/system-handoff.md).
+
+Route build labels each kept star:
+
+| Tier | Meaning |
+| --- | --- |
+| `gate_candidate` | Known exoplanet host that passes the existing mass and coordinate gate |
+| `exo_no_gate` | Known exoplanet host outside that gate |
+| `no_known_planets` | Background star. Drawn on the map. Never a gate or a faction claim |
+
+Missing stellar mass fails the existing mass gate, so an unenriched exoplanet
+host is `exo_no_gate`. Sample and processed NASA rows fill `st_mass` when the
+hostname, HIP, or HD matches. Sol is stamped as a planet host so it can stay
+the origin. Rank floors still apply only to medium and long edges.
+
 ## Layout
 
 ```text
 starroute/ingest/     NASA CSV → classified systems + Sol
-starroute/mapgen/     ranking, Sol-rooted network, faction assignment
+starroute/catalog.py  stream and trim the merged catalog
+starroute/mapgen/     ranking, tiers, Sol-rooted network, faction assignment
 starroute/web/        FastAPI app + Plotly.js map
-config/               default network, faction, and map-preset JSON
+config/               network, factions, map presets, catalog path, Turquenish ids
+docs/                 system-handoff schema and examples
 data/raw/             NASA snapshots (local, not committed)
 data/processed/       systems.csv, sol_network.csv, route_table.csv
 data/presets/         crowded / sparse / lonely_humans JSON packs
@@ -129,8 +161,9 @@ configured human root nation (Turquenish Empire by default).
 
 ## Known limitations
 
-- Only hosts that already appear in the NASA tables can be mapped. Nearby
-  stars with no confirmed planets are absent unless you add them by hand.
+- Without the merged catalog, only hosts that already appear in the NASA
+  tables (or the sample) can be mapped. Background stars appear when a map
+  build streams the merged catalog and trims it to that map's radius.
 - Default faction counts come from a large setting (hundreds of systems) and
   will saturate a small local network. Turn counts down for a 50 ly map.
 - The machine this was built on had system Python 3.9.6; libraries are

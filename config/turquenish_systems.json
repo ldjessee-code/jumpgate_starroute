@@ -1,0 +1,34 @@
+{
+  "order": ["star_key", "gaia_source_id", "hip", "hd", "hyg_id"],
+  "note": "Applied at map build. The merged catalog column stays blank. Turquenish is the setting name of the Tau Ceti system in orbit_match site/data/tau-ceti.system.json (star.setting_name). Belts are a summary of that file's belt bodies. The system file remains the detailed lore. Do not edit setting/.",
+  "systems": [
+    {
+      "turquenish_system": "Turquenish",
+      "name": "Tau Ceti",
+      "hostname": "tau Cet",
+      "system_file": "tau-ceti.system.json",
+      "star_key": "gaia:2452378776434477184",
+      "gaia_source_id": "2452378776434477184",
+      "hyg_id": "8087",
+      "hip": "8102",
+      "hd": "10700",
+      "belts": [
+        {
+          "id": "b1",
+          "name": "The Sombrero",
+          "kind": "belt",
+          "a_inner_au": 1.1,
+          "a_outer_au": 1.6
+        },
+        {
+          "id": "b2",
+          "name": "Outer Wall",
+          "kind": "belt",
+          "a_inner_au": 10,
+          "a_outer_au": 52
+        }
+      ],
+      "rings": []
+    }
+  ]
+}

@@ -4,8 +4,10 @@
 const PY_FILES = [
   "starroute/__init__.py",
   "starroute/paths.py",
+  "starroute/turquenish.py",
   "starroute/mapgen/__init__.py",
   "starroute/mapgen/ranking.py",
+  "starroute/mapgen/tiers.py",
   "starroute/mapgen/network.py",
   "starroute/mapgen/factions.py",
 ];
@@ -15,6 +17,7 @@ const CONFIG_FILES = [
   "config/factions.default.json",
   "config/faction_presets.json",
   "config/network.json",
+  "config/turquenish_systems.json",
 ];
 
 let pyodide = null;

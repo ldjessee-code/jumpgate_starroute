@@ -1,0 +1,34 @@
+{
+  "hosts": {
+    "55 Cnc": {
+      "name": "Rho Cancri",
+      "aliases": [
+        "55 Cnc",
+        "55 Cnc A",
+        "rho Cnc",
+        "Copernicus",
+        "HD 75732",
+        "HIP 43587",
+        "Gliese 324 A",
+        "Gl 324 A",
+        "GJ 324 A",
+        "Gliese 324A",
+        "Gl 324A",
+        "GJ 324A"
+      ]
+    },
+    "55 Cnc B": {
+      "name": "Rho Cancri B",
+      "aliases": [
+        "55 Cnc B",
+        "rho Cnc B",
+        "Gliese 324 B",
+        "Gl 324 B",
+        "GJ 324 B",
+        "Gliese 324B",
+        "Gl 324B",
+        "GJ 324B"
+      ]
+    }
+  }
+}

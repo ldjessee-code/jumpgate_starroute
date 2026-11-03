@@ -9,6 +9,7 @@ from typing import Any
 
 import pandas as pd
 
+from starroute.catalog import load_trimmed_frame, resolve_catalog_path
 from starroute.ingest.pipeline import build_systems_dataset, detect_default_sources
 from starroute.mapgen.factions import assign_factions
 from starroute.mapgen.network import generate_network, network_payload
@@ -102,13 +103,52 @@ def snapshot_stats(snapshot: dict[str, Any], assigned: pd.DataFrame | None = Non
     return stats
 
 
-def resolve_catalog(preset: dict[str, Any]) -> dict[str, Any]:
-    """Prefer NASA CSVs in data/raw; otherwise the committed sample catalog."""
+def resolve_catalog(
+    preset: dict[str, Any],
+    catalog_path: str | Path | None = None,
+    raw_dir: str | Path | None = None,
+    systems_out: str | Path | None = None,
+    config_file: str | Path | None = None,
+    enrichment: dict | None = None,
+    enrichment_paths: list | None = None,
+) -> dict[str, Any]:
+    """Merged catalog, then NASA CSVs, then the committed sample catalog.
+
+    The merged file is streamed. Only stars inside this preset's origin radius
+    are written. The catalog file itself is not copied or modified.
+    """
     origin = preset.get("origin") or {}
     max_ly = float(origin.get("max_distance_ly") or 60)
     min_mass = float((preset.get("network") or {}).get("min_stellar_mass") or 0.25)
     origin_host = origin.get("origin_hostname") or "Sol"
-    detected = detect_default_sources()
+    if catalog_path or config_file is not None:
+        chosen = resolve_catalog_path(catalog_path, config_file=config_file)
+    else:
+        chosen = resolve_catalog_path()
+    if chosen is not None:
+        out = Path(systems_out) if systems_out else DATA_PRESETS / preset["id"] / "systems.csv"
+        frame = load_trimmed_frame(
+            chosen,
+            origin=origin_host,
+            max_distance_ly=max_ly,
+            enrichment=enrichment,
+            enrichment_paths=enrichment_paths,
+        )
+        out.parent.mkdir(parents=True, exist_ok=True)
+        frame.to_csv(out, index=False)
+        return {
+            "source": "merged",
+            "systems_path": str(out),
+            "catalog_path": str(chosen),
+            "rows": int(len(frame)),
+            "note": (
+                f"Streamed {chosen.name} and kept stars within {max_ly:g} ly of {origin_host}. "
+                "The full catalog was not copied or modified. "
+                "Each map trims to its own origin radius at build time. "
+                f"Stellar-mass floor {min_mass} is applied later as a gate tier, not as a row drop."
+            ),
+        }
+    detected = detect_default_sources(Path(raw_dir) if raw_dir else None)
     planets = detected.get("planet_path")
     hosts = detected.get("host_path")
     if planets and hosts:
@@ -146,10 +186,11 @@ def resolve_catalog(preset: dict[str, Any]) -> dict[str, Any]:
 def build_preset_snapshot(
     preset: dict[str, Any],
     systems_path: str | Path,
+    work_dir: str | Path | None = None,
 ) -> tuple[dict[str, Any], pd.DataFrame, dict[str, Any]]:
     params = dict(preset.get("network") or {})
     factions = preset.get("factions") or {}
-    work_dir = DATA_PRESETS / preset["id"]
+    work_dir = Path(work_dir) if work_dir else DATA_PRESETS / preset["id"]
     work_dir.mkdir(parents=True, exist_ok=True)
     network_csv = work_dir / "sol_network.csv"
     assigned_csv = work_dir / "assigned_systems.csv"
@@ -204,10 +245,12 @@ def emit_pack(
     snapshot: dict[str, Any],
     stats: dict[str, Any],
     catalog: dict[str, Any],
+    data_root: str | Path | None = None,
+    static_root: str | Path | None = None,
 ) -> dict[str, Any]:
     preset_id = preset["id"]
-    data_dir = DATA_PRESETS / preset_id
-    static_dir = STATIC_PRESETS / preset_id
+    data_dir = Path(data_root) / preset_id if data_root else DATA_PRESETS / preset_id
+    static_dir = Path(static_root) / preset_id if static_root else STATIC_PRESETS / preset_id
     data_dir.mkdir(parents=True, exist_ok=True)
     static_dir.mkdir(parents=True, exist_ok=True)
 
@@ -229,8 +272,15 @@ def emit_pack(
     return pack_stats
 
 
-def write_index(config: dict[str, Any], built: list[dict[str, Any]]) -> None:
-    STATIC_PRESETS.mkdir(parents=True, exist_ok=True)
+def write_index(
+    config: dict[str, Any],
+    built: list[dict[str, Any]],
+    data_root: str | Path | None = None,
+    static_root: str | Path | None = None,
+) -> None:
+    static_dir = Path(static_root) if static_root else STATIC_PRESETS
+    data_dir = Path(data_root) if data_root else DATA_PRESETS
+    static_dir.mkdir(parents=True, exist_ok=True)
     index = {
         "default": config.get("default") or "crowded",
         "presets": [
@@ -244,9 +294,9 @@ def write_index(config: dict[str, Any], built: list[dict[str, Any]]) -> None:
         ],
         "stats": {row["id"]: row for row in built},
     }
-    _write_json(STATIC_PRESETS / "index.json", index)
-    (DATA_PRESETS / "index.json").parent.mkdir(parents=True, exist_ok=True)
-    _write_json(DATA_PRESETS / "index.json", index)
+    _write_json(static_dir / "index.json", index)
+    data_dir.mkdir(parents=True, exist_ok=True)
+    _write_json(data_dir / "index.json", index)
 
 
 def write_default_map_copies(_crowded: dict[str, Any]) -> None:
@@ -327,10 +377,17 @@ def write_presets_markdown(config: dict[str, Any], built: list[dict[str, Any]], 
     return path
 
 
-def build_all(ids: list[str] | None = None) -> dict[str, Any]:
+def build_all(
+    ids: list[str] | None = None,
+    catalog_path: str | Path | None = None,
+    dest: str | Path | None = None,
+) -> dict[str, Any]:
     ensure_data_dirs()
-    DATA_PRESETS.mkdir(parents=True, exist_ok=True)
-    STATIC_PRESETS.mkdir(parents=True, exist_ok=True)
+    dest_path = Path(dest) if dest else None
+    data_root = dest_path / "presets" if dest_path else DATA_PRESETS
+    static_root = dest_path / "static" if dest_path else STATIC_PRESETS
+    data_root.mkdir(parents=True, exist_ok=True)
+    static_root.mkdir(parents=True, exist_ok=True)
     config = load_map_presets()
     wanted = set(ids) if ids else None
     catalog_notes: list[str] = []
@@ -341,11 +398,26 @@ def build_all(ids: list[str] | None = None) -> dict[str, Any]:
         preset_id = preset["id"]
         if wanted is not None and preset_id not in wanted:
             continue
-        catalog = resolve_catalog(preset)
+        catalog = resolve_catalog(
+            preset,
+            catalog_path=catalog_path,
+            systems_out=data_root / preset_id / "systems.csv",
+        )
         if catalog.get("note"):
             catalog_notes.append(catalog["note"])
-        snapshot, _assigned, stats = build_preset_snapshot(preset, catalog["systems_path"])
-        pack_stats = emit_pack(preset, snapshot, stats, catalog)
+        snapshot, _assigned, stats = build_preset_snapshot(
+            preset,
+            catalog["systems_path"],
+            work_dir=data_root / preset_id,
+        )
+        pack_stats = emit_pack(
+            preset,
+            snapshot,
+            stats,
+            catalog,
+            data_root=data_root,
+            static_root=static_root,
+        )
         built.append(pack_stats)
         if preset_id == "crowded":
             crowded_snapshot = snapshot
@@ -353,16 +425,18 @@ def build_all(ids: list[str] | None = None) -> dict[str, Any]:
     if not built:
         raise SystemExit("No presets built. Check --id against config/map_presets.json.")
 
-    write_index(config, built)
-    if crowded_snapshot is not None:
+    write_index(config, built, data_root=data_root, static_root=static_root)
+    if crowded_snapshot is not None and dest_path is None:
         write_default_map_copies(crowded_snapshot)
     note = catalog_notes[0] if catalog_notes else (
         "NASA CSVs in data/raw were used for this build."
         if any(row.get("catalog_source") == "nasa" for row in built)
         else "Built from the committed sample catalog."
     )
-    md = write_presets_markdown(config, built, note)
-    return {"built": built, "presets_md": str(md), "catalog_note": note}
+    md_path = ""
+    if dest_path is None:
+        md_path = str(write_presets_markdown(config, built, note))
+    return {"built": built, "presets_md": md_path, "catalog_note": note}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -370,7 +444,9 @@ def main(argv: list[str] | None = None) -> int:
 
     parser = argparse.ArgumentParser(description="Build static Jumpgate map preset packs")
     parser.add_argument("--id", action="append", dest="ids", help="Build only this preset id (repeatable)")
+    parser.add_argument("--catalog", help="Merged catalog CSV. Overrides STARROUTE_CATALOG and config/catalog.json")
+    parser.add_argument("--dest", help="Write packs under this folder instead of data/presets and the static site")
     args = parser.parse_args(argv)
-    result = build_all(args.ids)
+    result = build_all(args.ids, catalog_path=args.catalog, dest=args.dest)
     print(json.dumps({"catalog_note": result["catalog_note"], "built": result["built"]}, indent=2, default=str))
     return 0

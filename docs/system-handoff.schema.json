@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ldjessee-code.github.io/jumpgate_starroute/system-handoff.schema.json",
+  "title": "Starroute system handoff",
+  "description": "Basic star record for orbit_match. A system may have any number of belts. When system_file is set, orbit_match loads that detailed lore file; otherwise it uses this record.",
+  "type": "object",
+  "additionalProperties": true,
+  "required": [
+    "starroute_handoff",
+    "kind",
+    "star_key",
+    "hostname",
+    "name",
+    "ra_deg",
+    "dec_deg",
+    "dist_pc",
+    "x",
+    "y",
+    "z",
+    "mag",
+    "bp_rp",
+    "ci",
+    "spect",
+    "has_known_exoplanets",
+    "exoplanet_count",
+    "tier",
+    "turquenish_system",
+    "system_file",
+    "belts"
+  ],
+  "properties": {
+    "starroute_handoff": { "const": "1" },
+    "kind": { "const": "system_handoff" },
+    "star_key": { "type": "string", "minLength": 1 },
+    "gaia_source_id": { "type": ["string", "null"] },
+    "hyg_id": { "type": ["string", "null"] },
+    "hip": { "type": ["string", "null"] },
+    "hd": { "type": ["string", "null"] },
+    "hostname": { "type": "string", "minLength": 1 },
+    "name": { "type": "string", "minLength": 1 },
+    "ra_deg": { "type": "number" },
+    "dec_deg": { "type": "number" },
+    "dist_pc": { "type": "number" },
+    "x": { "type": "number", "description": "Parsecs, equatorial, Sol at the origin. +x toward RA 0h Dec 0." },
+    "y": { "type": "number", "description": "Parsecs. +y toward RA 6h Dec 0." },
+    "z": { "type": "number", "description": "Parsecs. +z toward the north celestial pole." },
+    "mag": { "type": "number", "description": "render_mag: Gaia G if present, else V." },
+    "bp_rp": { "type": ["number", "null"] },
+    "ci": { "type": ["number", "null"] },
+    "spect": { "type": ["string", "null"] },
+    "has_known_exoplanets": { "type": "boolean" },
+    "exoplanet_count": { "type": "integer" },
+    "tier": { "enum": ["gate_candidate", "exo_no_gate", "no_known_planets"] },
+    "turquenish_system": { "type": ["string", "null"] },
+    "system_file": {
+      "type": ["string", "null"],
+      "description": "File name of a detailed orbit_match system JSON, or null when only this basic record exists."
+    },
+    "belts": {
+      "type": "array",
+      "minItems": 0,
+      "description": "Zero or more belts. There is no maximum.",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "id": { "type": "string" },
+          "name": { "type": "string", "minLength": 1 },
+          "kind": { "type": "string" },
+          "a_inner_au": { "type": ["number", "null"] },
+          "a_outer_au": { "type": ["number", "null"] },
+          "parent": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "rings": {
+      "type": "array",
+      "minItems": 0,
+      "description": "Optional planet-ring summaries. Full ring bands stay in the detailed system file.",
+      "items": {
+        "type": "object",
+        "required": ["name"],
+        "properties": {
+          "name": { "type": "string", "minLength": 1 },
+          "parent": { "type": ["string", "null"] },
+          "note": { "type": "string" }
+        }
+      }
+    },
+    "sky": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "equirect": { "type": ["string", "null"] },
+        "cube_dir": { "type": ["string", "null"] },
+        "frame": { "type": ["string", "null"] },
+        "pole_rotation_applied": { "type": "boolean" },
+        "background_rotation": { "type": ["number", "null"] }
+      }
+    },
+    "sy_pnum": { "type": ["integer", "null"] },
+    "st_mass": { "type": ["number", "null"] },
+    "mass_known": { "type": "boolean" },
+    "lore_version": { "type": ["string", "null"] },
+    "rings_belts_version": { "type": ["string", "null"] },
+    "system_file_sha256": { "type": ["string", "null"] },
+    "calculated_luminosity": { "type": ["number", "null"], "description": "V-band solar luminosities from Johnson V with no bolometric correction. Not a catalog luminosity column." },
+    "calculated_luminosity_method": { "type": ["string", "null"] },
+    "gate_status": { "type": ["string", "null"] },
+    "mass_unknown_penalty": { "type": ["integer", "null"] },
+    "aliases": {
+      "type": "array",
+      "minItems": 0,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Other catalog names for this star. Display name stays in name."
+    }
+  },
+  "allOf": [
+    {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": ["gaia_source_id"],
+          "properties": { "gaia_source_id": { "type": "string", "minLength": 1 } }
+        },
+        {
+          "type": "object",
+          "required": ["hyg_id"],
+          "properties": { "hyg_id": { "type": "string", "minLength": 1 } }
+        }
+      ]
+    }
+  ]
+}

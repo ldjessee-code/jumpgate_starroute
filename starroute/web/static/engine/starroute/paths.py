@@ -22,6 +22,7 @@ FACTIONS_JSON = CONFIG_DIR / "factions.json"
 FACTIONS_DEFAULT_JSON = CONFIG_DIR / "factions.default.json"
 FACTION_PRESETS_JSON = CONFIG_DIR / "faction_presets.json"
 NETWORK_JSON = CONFIG_DIR / "network.json"
+TURQUENISH_SYSTEMS_JSON = CONFIG_DIR / "turquenish_systems.json"
 SNAPSHOT_JSON = DATA_PROCESSED / "map_snapshot.json"
 ORIGIN_JSON = DATA_PROCESSED / "origin.json"
 

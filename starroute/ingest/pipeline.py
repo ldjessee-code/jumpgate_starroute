@@ -60,6 +60,10 @@ PLANET_KEEP = [
     "pl_rade",
     "pl_eqt",
     "pl_orbsmax",
+    "disc_year",
+    "pl_controv_flag",
+    "sy_snum",
+    "st_mass",
 ]
 
 COMPLETENESS_COLS = [

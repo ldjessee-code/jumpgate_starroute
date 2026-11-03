@@ -1,0 +1,1 @@
+/* fixture: imported spec file */

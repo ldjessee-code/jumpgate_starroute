@@ -1,0 +1,305 @@
+{
+  "baseline": {
+    "min_stellar_mass": 0.4,
+    "max_neighbors": 8,
+    "max_jump_ly": 16.0,
+    "max_distance_ly": 100.0,
+    "criteria": "standard"
+  },
+  "levels": {
+    "min_stellar_mass": {
+      "extreme": 0.25,
+      "midpoint": 0.5,
+      "minimal": 0.8
+    },
+    "max_neighbors": {
+      "extreme": 16,
+      "midpoint": 8,
+      "minimal": 4
+    },
+    "max_jump_ly": {
+      "extreme": 32.0,
+      "midpoint": 20.0,
+      "minimal": 8.0
+    },
+    "max_distance_ly": {
+      "extreme": 500.0,
+      "midpoint": 250.0,
+      "minimal": 60.0
+    },
+    "criteria": {
+      "extreme": "permissive",
+      "midpoint": "standard",
+      "minimal": "strict"
+    }
+  },
+  "criteria_levels": {
+    "permissive": {
+      "exclude_variable": false,
+      "exclude_flare": false,
+      "exclude_pulsar_neutron": false,
+      "exclude_unstable_multiple": false,
+      "unstable_rule": "standard"
+    },
+    "standard": {
+      "exclude_variable": true,
+      "exclude_flare": true,
+      "exclude_pulsar_neutron": true,
+      "exclude_unstable_multiple": true,
+      "unstable_rule": "standard"
+    },
+    "strict": {
+      "exclude_variable": true,
+      "exclude_flare": true,
+      "exclude_pulsar_neutron": true,
+      "exclude_unstable_multiple": true,
+      "unstable_rule": "strict"
+    }
+  },
+  "fixed": {
+    "max_linked_nodes": 100000,
+    "medium_start_pct": 50.0,
+    "long_start_pct": 75.0,
+    "hard_rank": 0.2,
+    "soft_rank": 0.3,
+    "root_hostname": "Sol",
+    "max_stellar_mass": null
+  },
+  "caps": {
+    "min_stellar_mass": 0.25,
+    "max_neighbors": 16,
+    "max_distance_ly": 500.0
+  },
+  "notes": [
+    "One parameter changes from the baseline at a time, except combined_m025 and combined_m030.",
+    "Extreme is the heavy end. Minimal is the small end. Midpoint is the middle level.",
+    "routes_midpoint and criteria_midpoint match the baseline because 8 routes and standard criteria are both the midpoint and the baseline.",
+    "max_neighbors is the generator's max routes per gate. The sweep never sets it above 16.",
+    "min_stellar_mass is never below 0.25. max_distance_ly is never above 500.",
+    "max_linked_nodes is fixed at 100000 so the historical default of 101 does not hide radius or spacing.",
+    "Generator defaults are unchanged when a caller does not pass these parameters."
+  ],
+  "variants": [
+    {
+      "name": "mass_extreme",
+      "phase": "extreme",
+      "parameter": "min_stellar_mass",
+      "level": "extreme",
+      "params": {
+        "min_stellar_mass": 0.25,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "routes_extreme",
+      "phase": "extreme",
+      "parameter": "max_neighbors",
+      "level": "extreme",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 16,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "spacing_extreme",
+      "phase": "extreme",
+      "parameter": "max_jump_ly",
+      "level": "extreme",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 32.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "radius_extreme",
+      "phase": "extreme",
+      "parameter": "max_distance_ly",
+      "level": "extreme",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 500.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "criteria_extreme",
+      "phase": "extreme",
+      "parameter": "criteria",
+      "level": "extreme",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "permissive"
+      }
+    },
+    {
+      "name": "combined_m025",
+      "phase": "extreme",
+      "parameter": "combined",
+      "level": "extreme",
+      "params": {
+        "min_stellar_mass": 0.25,
+        "max_neighbors": 16,
+        "max_jump_ly": 32.0,
+        "max_distance_ly": 500.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "combined_m030",
+      "phase": "extreme",
+      "parameter": "combined",
+      "level": "extreme",
+      "params": {
+        "min_stellar_mass": 0.3,
+        "max_neighbors": 16,
+        "max_jump_ly": 32.0,
+        "max_distance_ly": 500.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "mass_midpoint",
+      "phase": "midpoint",
+      "parameter": "min_stellar_mass",
+      "level": "midpoint",
+      "params": {
+        "min_stellar_mass": 0.5,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "routes_midpoint",
+      "phase": "midpoint",
+      "parameter": "max_neighbors",
+      "level": "midpoint",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "spacing_midpoint",
+      "phase": "midpoint",
+      "parameter": "max_jump_ly",
+      "level": "midpoint",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 20.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "radius_midpoint",
+      "phase": "midpoint",
+      "parameter": "max_distance_ly",
+      "level": "midpoint",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 250.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "criteria_midpoint",
+      "phase": "midpoint",
+      "parameter": "criteria",
+      "level": "midpoint",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "mass_minimal",
+      "phase": "minimal",
+      "parameter": "min_stellar_mass",
+      "level": "minimal",
+      "params": {
+        "min_stellar_mass": 0.8,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "routes_minimal",
+      "phase": "minimal",
+      "parameter": "max_neighbors",
+      "level": "minimal",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 4,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "spacing_minimal",
+      "phase": "minimal",
+      "parameter": "max_jump_ly",
+      "level": "minimal",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 8.0,
+        "max_distance_ly": 100.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "radius_minimal",
+      "phase": "minimal",
+      "parameter": "max_distance_ly",
+      "level": "minimal",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 60.0,
+        "criteria": "standard"
+      }
+    },
+    {
+      "name": "criteria_minimal",
+      "phase": "minimal",
+      "parameter": "criteria",
+      "level": "minimal",
+      "params": {
+        "min_stellar_mass": 0.4,
+        "max_neighbors": 8,
+        "max_jump_ly": 16.0,
+        "max_distance_ly": 100.0,
+        "criteria": "strict"
+      }
+    }
+  ]
+}
