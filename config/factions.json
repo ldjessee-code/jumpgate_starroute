@@ -7,7 +7,10 @@
     "Methan",
     "Crystomorphs",
     "Turquenish Empire",
-    "Mardat Coalition"
+    "Mardat Coalition",
+    "Echryon & Echtol",
+    "Aboreals",
+    "Bazzar"
   ],
   "species": [
     {
@@ -24,7 +27,10 @@
       "sort": {
         "column": "gas_giant_count",
         "ascending": false
-      }
+      },
+      "kind": "species",
+      "preset": "methan",
+      "description": "Methane-breathers. They live in stations and structures inside or around Jupiter-like gas giants, not on rocky ground."
     },
     {
       "name": "Crystomorphs",
@@ -41,7 +47,10 @@
         "column": "dec",
         "ascending": false,
         "key": "abs"
-      }
+      },
+      "kind": "species",
+      "preset": "crystomorphs",
+      "description": "Beings that look like living crystal. They prefer stars far from the celestial equator (high north or south on the sky), away from the thickest human traffic."
     },
     {
       "name": "Echryon & Echtol",
@@ -67,7 +76,10 @@
       "sort": {
         "column": "carbon_ranking",
         "ascending": false
-      }
+      },
+      "kind": "species",
+      "preset": "echryon",
+      "description": "Defined by starting location: the first quarter of the sky (east of Sol\u2019s zero line and north). A regional people, not a habitat type."
     },
     {
       "name": "Aboreals",
@@ -93,7 +105,10 @@
       "sort": {
         "column": "carbon_ranking",
         "ascending": false
-      }
+      },
+      "kind": "species",
+      "preset": "aboreals",
+      "description": "Defined by starting location: the next sky quarter, south of the celestial equator."
     },
     {
       "name": "Bazzar",
@@ -119,7 +134,10 @@
       "sort": {
         "column": "carbon_ranking",
         "ascending": false
-      }
+      },
+      "kind": "species",
+      "preset": "bazzar",
+      "description": "Defined by starting location: the third sky quarter, south of the equator."
     },
     {
       "name": "Schettel",
@@ -144,7 +162,10 @@
       "sort": {
         "column": "combined_score",
         "ascending": true
-      }
+      },
+      "kind": "species",
+      "preset": "schettel",
+      "description": "Edge-of-the-sphere people. They take leftover, low-score systems or stars far from Sol \u2014 the rim of human-explored space."
     }
   ],
   "nations": [
@@ -169,7 +190,10 @@
         "ascending": false,
         "key": "prefer_hostname",
         "hostname": "Sol"
-      }
+      },
+      "kind": "nation",
+      "preset": "turquenish",
+      "description": "The human polity that starts at Sol and claims the first third of the sky around it."
     },
     {
       "name": "Mardat Coalition",
@@ -190,7 +214,10 @@
       "sort": {
         "column": "combined_score",
         "ascending": false
-      }
+      },
+      "kind": "nation",
+      "preset": "mardat",
+      "description": "Human nation on the next slice of sky after the Empire."
     },
     {
       "name": "Industrial Hegemony",
@@ -211,7 +238,10 @@
       "sort": {
         "column": "combined_score",
         "ascending": false
-      }
+      },
+      "kind": "nation",
+      "preset": "hegemony",
+      "description": "A smaller human bloc on a later sky wedge."
     },
     {
       "name": "League of The Faithful",
@@ -232,7 +262,10 @@
       "sort": {
         "column": "combined_score",
         "ascending": false
-      }
+      },
+      "kind": "nation",
+      "preset": "faithful",
+      "description": "A tiny human league on the last sky wedge."
     },
     {
       "name": "Other Human",
@@ -242,7 +275,10 @@
       "sort": {
         "column": "combined_score",
         "ascending": false
-      }
+      },
+      "kind": "nation",
+      "preset": "other_human",
+      "description": "Independent or mixed human holdings. Takes whatever good systems remain after the other cultures pick."
     }
   ]
 }

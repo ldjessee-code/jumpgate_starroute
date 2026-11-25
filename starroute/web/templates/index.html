@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Jumpgate Starroute · Ptah</title>
-  <link rel="stylesheet" href="/static/css/app.css" />
+  <link rel="stylesheet" href="/static/css/app.css?v=desk-bg-1" />
   <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
 </head>
 <body class="desk-layout">
@@ -13,7 +13,7 @@
       <div class="masthead-copy">
         <p class="eyebrow">Ptah · v3 desk · GM / author tool</p>
         <h1>Jumpgate Starroute</h1>
-        <p class="lede">Saved map on the left. Generate and options in the center. Lists and peers on the right.</p>
+        <p class="lede">Campaign and reality first. Then stars, factions, generate, and routes. Map preview on the left.</p>
       </div>
       <div class="header-actions">
         <button id="btn-glossary" class="btn header-help" type="button">Terms &amp; help</button>
@@ -25,27 +25,36 @@
     <aside class="col col-left" aria-label="Saved map">
       <section class="card map-card" id="screen-map">
         <div class="card-head">
-          <h2>Saved map</h2>
+          <h2>Map preview</h2>
+          <button id="btn-full-map" class="btn" type="button">Full view</button>
         </div>
-        <div class="card-body">
-          <p class="hint">Drag to turn. Scroll to zoom. Click a star for details below.</p>
+        <div class="card-body map-card-body">
+          <p class="hint desk-only">Drag to turn. Scroll to zoom. Click a star for details. Open full view for a briefing plot with legend and directions underneath.</p>
           <div class="map-stage mini">
             <div id="star-map"></div>
-            <aside id="map-legend" class="map-legend" aria-label="Map color legend"></aside>
           </div>
-          <label class="check">
-            <input id="color-faction" type="checkbox" checked />
-            Color by culture
-          </label>
-          <label>
-            <span class="label-row">Highlight one culture</span>
-            <select id="focus-faction">
-              <option value="all">Everyone (full color)</option>
-            </select>
-          </label>
+          <div class="map-dock">
+            <aside id="map-legend" class="map-legend" aria-label="Map color legend"></aside>
+            <div class="map-directions-wrap">
+              <h3 class="legend-title">Directions</h3>
+              <p id="map-directions" class="path-readout">Pick From and To in Route tools, or use full view after a path is chosen.</p>
+            </div>
+          </div>
+          <div class="map-filters desk-only">
+            <label class="check">
+              <input id="color-faction" type="checkbox" checked />
+              Color by culture
+            </label>
+            <label>
+              <span class="label-row">Highlight one culture <button type="button" class="info" data-term="focusFaction" aria-label="About highlighting a culture">?</button></span>
+              <select id="focus-faction">
+                <option value="all">Everyone (full color)</option>
+              </select>
+            </label>
+          </div>
         </div>
       </section>
-      <section class="card" id="selected-system-card">
+      <section class="card desk-only" id="selected-system-card">
         <div class="card-head">
           <h2>Selected system</h2>
         </div>
@@ -56,14 +65,184 @@
     </aside>
 
     <div class="col col-center">
+      <section class="card" id="campaign-card" data-card>
+        <div class="card-head">
+          <h2>Campaign</h2>
+          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="campaign-body">−</button>
+        </div>
+        <div id="campaign-body" class="card-body">
+          <p class="hint">Name the box this map lives in. Chronos and Worldstack IDs are stored for later; those peers are not pulling live data from this desk yet.</p>
+          <label>
+            <span class="label-row">Open a campaign <button type="button" class="info" data-term="campaign" aria-label="About campaigns">?</button></span>
+            <select id="campaign-pick">
+              <option value="">New campaign…</option>
+            </select>
+          </label>
+          <label>
+            <span class="label-row">Campaign name</span>
+            <input id="campaign-name" type="text" value="Preview" autocomplete="off" />
+          </label>
+          <label>
+            <span class="label-row">Setting id <button type="button" class="info" data-term="settingId" aria-label="About setting id">?</button></span>
+            <span class="jargon">Stable slug other tools will use</span>
+            <input id="setting-id" type="text" value="preview" autocomplete="off" spellcheck="false" />
+          </label>
+          <div class="param-grid">
+            <label>
+              <span class="label-row">Chronos campaign id</span>
+              <input id="chronos-campaign-id" type="text" placeholder="Not wired yet" autocomplete="off" />
+            </label>
+            <label>
+              <span class="label-row">Worldstack setting id</span>
+              <input id="worldstack-id" type="text" placeholder="Not wired yet" autocomplete="off" />
+            </label>
+          </div>
+          <div class="row-actions">
+            <button id="btn-campaign-create" class="btn primary" type="button">Save campaign</button>
+            <button id="btn-campaign-load" class="btn" type="button">Load selected</button>
+            <button id="btn-campaign-rename" class="btn" type="button">Rename</button>
+          </div>
+          <p id="campaign-status" class="field-help"></p>
+        </div>
+      </section>
+
+      <section class="card" id="setting-card" data-card>
+        <div class="card-head">
+          <h2>Reality</h2>
+          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="setting-body">−</button>
+        </div>
+        <div id="setting-body" class="card-body">
+          <p class="hint">Set this first. It is provenance (how much you may invent), not jump length. It does not redraw the map until you generate.</p>
+          <label>
+            <span class="label-row">Reality <button type="button" class="info" data-term="realitySlider" aria-label="About the reality slider">?</button></span>
+            <select id="reality-stop">
+              <option value="0">0 Catalog</option>
+              <option value="1">1 Gap-fill</option>
+              <option value="2">2 Soft fiction</option>
+              <option value="3">3 Setting-scale</option>
+              <option value="4">4 Procedural</option>
+            </select>
+          </label>
+          <p id="reality-help" class="field-help"></p>
+          <ul class="help-list">
+            <li><button type="button" class="info inline" data-term="reality0" aria-label="About catalog">?</button> 0 Catalog — NASA only</li>
+            <li><button type="button" class="info inline" data-term="reality1" aria-label="About gap-fill">?</button> 1 Gap-fill — extra moons/bodies, not extra stars or roads</li>
+            <li><button type="button" class="info inline" data-term="reality2" aria-label="About soft fiction">?</button> 2 Soft fiction — overrides on existing hosts</li>
+            <li><button type="button" class="info inline" data-term="reality3" aria-label="About setting-scale">?</button> 3 Setting-scale — invented routes/factions among catalog stars</li>
+            <li><button type="button" class="info inline" data-term="reality4" aria-label="About procedural">?</button> 4 Procedural — new hosts and moved stars</li>
+          </ul>
+          <div id="gapfill-panel" class="gapfill-panel hidden">
+            <p class="field-help">Reality 1 invents stub moons when a system has a premise need. It does not close jump holes. Jump holes are on Generate map (raise the hop past the hole, then generate).</p>
+            <label>
+              <span class="label-row">Try a body gap-fill</span>
+              <span class="jargon">Creates one warehouse-moon stub on a named star</span>
+              <input id="gapfill-host" type="text" value="AU Mic" autocomplete="off" />
+            </label>
+            <div class="row-actions">
+              <button id="btn-body-gapfill" class="btn" type="button">Create stub moon</button>
+            </div>
+            <p id="body-gapfill-status" class="field-help"></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="screen-ingest" data-card>
+        <div class="card-head">
+          <h2>Choose the stars</h2>
+          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="ingest-body">−</button>
+        </div>
+        <div id="ingest-body" class="card-body">
+          <p class="hint">Neighborhood for this campaign. The shipped list is the NASA exoplanet archive — stars with <em>confirmed or suspected planets</em>, not every star. A Gaia / Hipparcos stellar catalog would let gap-fill look for dim real stars between planet-hosts. Generate still uses the 60 ly planet-host list until you ingest more.</p>
+          <div class="param-grid">
+            <label class="combo-label">
+              <span class="label-row">Map center (home star) <button type="button" class="info" data-term="origin" aria-label="About the map center">?</button></span>
+              <input id="origin-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
+              <ul id="origin-suggest" class="suggest" hidden></ul>
+            </label>
+            <label>
+              <span class="label-row">How far from home to include <button type="button" class="info" data-term="catalogRadius" aria-label="About catalog size">?</button></span>
+              <input id="ingest-max-ly" name="starroute-catalog-radius-ly" type="number" min="10" step="10" value="60" autocomplete="off" />
+            </label>
+            <label>
+              <span class="label-row">Smallest stars to keep <button type="button" class="info" data-term="solarMass" aria-label="About star mass">?</button></span>
+              <input id="ingest-min-mass" name="starroute-catalog-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
+            </label>
+          </div>
+          <details class="later-block">
+            <summary>NASA files (optional / later)</summary>
+            <p class="hint">Needed only to rebuild the star list from archive CSVs. Skip this if you are generating from the shipped preview list.</p>
+            <div class="file-grid">
+              <label>
+                <span class="label-row">Planet list <button type="button" class="info" data-term="nasaFiles" aria-label="About the planet list">?</button></span>
+                <input id="planet-path" type="text" spellcheck="false" placeholder="Choose or keep the planet file…" />
+                <input id="planet-file" type="file" accept=".csv" />
+              </label>
+              <label>
+                <span class="label-row">Star list <button type="button" class="info" data-term="hostname" aria-label="About the star list">?</button></span>
+                <input id="host-path" type="text" spellcheck="false" placeholder="Choose or keep the star file…" />
+                <input id="host-file" type="file" accept=".csv" />
+              </label>
+            </div>
+            <div class="row-actions">
+              <button id="btn-preview" class="btn" type="button">Check the files</button>
+              <span id="detect-note" class="muted"></span>
+            </div>
+            <pre id="preview-box" class="output hidden"></pre>
+            <div class="row-actions">
+              <button id="btn-ingest" class="btn primary" type="button">Build the star list</button>
+              <button id="btn-reset-ingest" class="btn" type="button">Reset ingest</button>
+              <a class="link" href="/api/download/systems.csv">Download the star list</a>
+            </div>
+            <pre id="ingest-box" class="output hidden"></pre>
+          </details>
+        </div>
+      </section>
+
+      <section class="card" id="screen-factions" data-card>
+        <div class="card-head">
+          <h2>Factions</h2>
+          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="factions-body">−</button>
+        </div>
+        <div id="factions-body" class="card-body">
+          <p class="hint">You can save cultures before any map is generated. Each card has a habitat need and a start/direction bias — not the culture’s name. Remove a culture with the button on its card.</p>
+          <div class="param-grid">
+            <label class="combo-label">
+              <span class="label-row">Human home star <button type="button" class="info" data-term="humanHome" aria-label="About human home star">?</button></span>
+              <input id="human-root" type="text" value="Sol" autocomplete="off" spellcheck="false" />
+              <ul id="human-root-suggest" class="suggest" hidden></ul>
+            </label>
+            <label>
+              <span class="label-row">Human nation that owns it <button type="button" class="info" data-term="faction" aria-label="About factions">?</button></span>
+              <input id="human-root-group" type="text" value="Human" />
+            </label>
+          </div>
+          <div class="add-culture">
+            <span class="label-row">Add from a template</span>
+            <div class="add-culture-row">
+              <select id="preset-pick"></select>
+              <button id="btn-add-culture" class="btn" type="button">Add culture</button>
+              <span id="culture-count" class="culture-count"></span>
+            </div>
+          </div>
+          <div id="faction-cards" class="faction-cards"></div>
+          <div class="row-actions">
+            <button id="btn-faction-preview" class="btn" type="button">Preview who would match</button>
+            <button id="btn-faction-save" class="btn primary" type="button">Save factions to campaign</button>
+            <button id="btn-reset-factions" class="btn" type="button">Reset to shipped defaults</button>
+            <a class="link" href="/api/download/factions.json">Download rules file</a>
+          </div>
+          <pre id="faction-box" class="output hidden"></pre>
+        </div>
+      </section>
+
       <section class="card" id="map-layout" data-card>
         <div class="card-head">
           <h2>Generate map</h2>
           <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="generate-body">−</button>
         </div>
         <div id="generate-body" class="card-body controls">
-          <p class="hint">The star list is already in this page (60 ly around Sol). Change jump settings and generate. NASA ingest is a later card.</p>
-          <h3>Route settings</h3>
+          <p class="hint">Finish campaign, reality, stars, and factions above, then set jump length here and generate. Draw and save live in Route tools.</p>
+          <h3>Jump settings</h3>
           <label>
             <span class="label-row">Longest single jump <button type="button" class="info" data-term="jumpRange" aria-label="About jump range">?</button></span>
             <span class="jargon">Light-years · default 25</span>
@@ -107,48 +286,24 @@
           </label>
           <label class="check">
             <input id="assign-factions" type="checkbox" checked />
-            Color stars by the cultures I saved
+            Paint the new map with the faction rules above
           </label>
-          <div class="row-actions needs-backend">
-            <button id="btn-network" class="btn primary" type="button">Draw the routes</button>
-            <button id="btn-reset-map" class="btn" type="button">Reset generate</button>
-          </div>
           <div class="row-actions">
             <button id="btn-wasm-rebuild" class="btn primary" type="button">Generate new map</button>
-            <span class="field-help">Shipped star list. First click loads Python-in-WASM once.</span>
+            <button id="btn-reset-map" class="btn" type="button">Reset jump settings</button>
+            <span class="field-help">First click loads Python-in-WASM once.</span>
           </div>
           <p id="wasm-status" class="field-help" aria-live="polite"></p>
-          <pre id="network-box" class="output hidden"></pre>
-          <div class="downloads">
-            <button id="btn-snapshot" class="btn" type="button">Save this map</button>
-            <label class="link file-link">Open a saved map
-              <input id="snapshot-file" type="file" accept=".json,application/json" />
-            </label>
-            <button type="button" class="info inline" data-term="snapshot" aria-label="About saved maps">?</button>
-            <a class="link" href="/api/download/sol_network.csv">Spreadsheet of routes</a>
-            <a class="link" href="/api/download/route_table.csv">Faction route table</a>
+          <div class="jump-gap-panel">
+            <h3>Jump gaps</h3>
+            <p class="hint">A “nearest system” of 16.4 ly is usually the nearest <em>qualified</em> planet-host, not the nearest star. We look for a real catalog star that can make two legal hops (prefer off-grid / low score). This NASA list has almost none in those holes. If none, place a 0.25 M☉ star on the line. A full stellar catalog (Gaia) is the next data ingest.</p>
+            <div class="row-actions">
+              <button id="btn-gap-scan" class="btn" type="button">Scan jump gaps</button>
+              <button type="button" class="info inline" data-term="jumpGapScan" aria-label="About jump gaps">?</button>
+            </div>
+            <p id="gapfill-status" class="field-help" aria-live="polite"></p>
+            <div id="gap-scan-box" class="gap-scan-box hidden"></div>
           </div>
-        </div>
-      </section>
-
-      <section class="card" data-card>
-        <div class="card-head">
-          <h2>Setting</h2>
-          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="setting-body">−</button>
-        </div>
-        <div id="setting-body" class="card-body">
-          <p class="hint">Reality slider is provenance: catalog → gap-fill → fiction. Separate from jump-band settings above.</p>
-          <label>
-            Reality
-            <select id="reality-stop">
-              <option value="0">0 Catalog</option>
-              <option value="1">1 Gap-fill</option>
-              <option value="2">2 Soft fiction</option>
-              <option value="3">3 Setting-scale</option>
-              <option value="4">4 Procedural</option>
-            </select>
-          </label>
-          <label>Setting id <input id="setting-id" type="text" value="preview" autocomplete="off" /></label>
         </div>
       </section>
 
@@ -158,102 +313,30 @@
           <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="route-body">−</button>
         </div>
         <div id="route-body" class="card-body">
+          <p class="hint">Find a path on the current map, draw a server-side grid, or save a named map into the campaign.</p>
           <div class="map-toolbar">
             <label>
               <span class="label-row">From <button type="button" class="info" data-term="gatePath" aria-label="About routes">?</button></span>
               <select id="path-start"></select>
             </label>
-            <label>To
+            <label>
+              <span class="label-row">To <button type="button" class="info" data-term="noRoute" aria-label="About missing routes">?</button></span>
               <select id="path-end"></select>
             </label>
           </div>
           <div id="path-readout" class="path-readout"></div>
-        </div>
-      </section>
-
-      <section class="card" id="screen-factions" data-card>
-        <div class="card-head">
-          <h2>Factions</h2>
-          <button type="button" class="collapse-btn" aria-expanded="true" aria-controls="factions-body">−</button>
-        </div>
-        <div id="factions-body" class="card-body">
-          <p class="hint">Optional story layer. May become its own service later. List of current names is on the right.</p>
-          <div class="param-grid">
-            <label class="combo-label">
-              <span class="label-row">Human home star <button type="button" class="info" data-term="humanHome" aria-label="About human home star">?</button></span>
-              <input id="human-root" type="text" value="Sol" autocomplete="off" spellcheck="false" />
-              <ul id="human-root-suggest" class="suggest" hidden></ul>
-            </label>
-            <label>
-              <span class="label-row">Human nation that owns it <button type="button" class="info" data-term="faction" aria-label="About factions">?</button></span>
-              <input id="human-root-group" type="text" value="Human" />
-            </label>
+          <div class="row-actions needs-backend">
+            <button id="btn-network" class="btn" type="button">Draw the routes</button>
+            <span class="field-help">Server rebuild. Writes the spreadsheets in the right column.</span>
           </div>
-          <div class="add-culture">
-            <span class="label-row">Add from a template</span>
-            <div class="add-culture-row">
-              <select id="preset-pick"></select>
-              <button id="btn-add-culture" class="btn" type="button">Add culture</button>
-              <span id="culture-count" class="culture-count"></span>
-            </div>
-          </div>
-          <div id="faction-cards" class="faction-cards"></div>
-          <div class="row-actions">
-            <button id="btn-faction-preview" class="btn" type="button">Preview who would match</button>
-            <button id="btn-faction-save" class="btn primary" type="button">Save these rules</button>
-            <button id="btn-reset-factions" class="btn" type="button">Reset factions</button>
-            <a class="link" href="/api/download/factions.json">Download rules file</a>
-          </div>
-          <pre id="faction-box" class="output hidden"></pre>
-        </div>
-      </section>
-
-      <section class="card collapsed" id="screen-ingest" data-card>
-        <div class="card-head">
-          <h2>Choose the stars</h2>
-          <span class="card-summary muted">later</span>
-          <button type="button" class="collapse-btn" aria-expanded="false" aria-controls="ingest-body">+</button>
-        </div>
-        <div id="ingest-body" class="card-body">
-          <p class="hint">Later step. NASA lists and neighborhood size. v2/v3 generate from the shipped star list instead.</p>
-          <div class="file-grid">
-            <label>
-              <span class="label-row">Planet list <button type="button" class="info" data-term="nasaFiles" aria-label="About the planet list">?</button></span>
-              <input id="planet-path" type="text" spellcheck="false" placeholder="Choose or keep the planet file…" />
-              <input id="planet-file" type="file" accept=".csv" />
+          <pre id="network-box" class="output hidden"></pre>
+          <div class="downloads">
+            <button id="btn-snapshot" class="btn primary" type="button">Save this map</button>
+            <label class="link file-link">Open a saved map
+              <input id="snapshot-file" type="file" accept=".json,application/json" />
             </label>
-            <label>
-              <span class="label-row">Star list <button type="button" class="info" data-term="hostname" aria-label="About the star list">?</button></span>
-              <input id="host-path" type="text" spellcheck="false" placeholder="Choose or keep the star file…" />
-              <input id="host-file" type="file" accept=".csv" />
-            </label>
+            <button type="button" class="info inline" data-term="snapshot" aria-label="About saved maps">?</button>
           </div>
-          <div class="row-actions">
-            <button id="btn-preview" class="btn" type="button">Check the files</button>
-            <span id="detect-note" class="muted"></span>
-          </div>
-          <pre id="preview-box" class="output hidden"></pre>
-          <div class="param-grid">
-            <label class="combo-label">
-              <span class="label-row">Map center (home star) <button type="button" class="info" data-term="origin" aria-label="About the map center">?</button></span>
-              <input id="origin-host" type="text" value="Sol" autocomplete="off" spellcheck="false" />
-              <ul id="origin-suggest" class="suggest" hidden></ul>
-            </label>
-            <label>
-              <span class="label-row">How far from home to include <button type="button" class="info" data-term="catalogRadius" aria-label="About catalog size">?</button></span>
-              <input id="ingest-max-ly" name="starroute-catalog-radius-ly" type="number" min="10" step="10" value="60" autocomplete="off" />
-            </label>
-            <label>
-              <span class="label-row">Smallest stars to keep <button type="button" class="info" data-term="solarMass" aria-label="About star mass">?</button></span>
-              <input id="ingest-min-mass" name="starroute-catalog-min-solar-mass" type="number" min="0" max="5" step="0.05" value="0.25" autocomplete="off" />
-            </label>
-          </div>
-          <div class="row-actions">
-            <button id="btn-ingest" class="btn primary" type="button">Build the star list</button>
-            <button id="btn-reset-ingest" class="btn" type="button">Reset ingest</button>
-            <a class="link" href="/api/download/systems.csv">Download the star list</a>
-          </div>
-          <pre id="ingest-box" class="output hidden"></pre>
         </div>
       </section>
     </div>
@@ -272,7 +355,17 @@
       <section class="card">
         <div class="card-head"><h2>Campaign / setting</h2></div>
         <div class="card-body">
-          <p id="setting-summary" class="muted">Setting <strong>preview</strong>. Reality stop from the center card.</p>
+          <p id="setting-summary" class="muted">No campaign saved yet. Create one in the center column.</p>
+        </div>
+      </section>
+      <section class="card">
+        <div class="card-head"><h2>Downloads</h2></div>
+        <div class="card-body">
+          <p class="hint">Spreadsheets from the last server-side Draw the routes.</p>
+          <ul class="card-list">
+            <li><a class="link" href="/api/download/sol_network.csv">Spreadsheet of routes</a></li>
+            <li><a class="link" href="/api/download/route_table.csv">Faction route table</a></li>
+          </ul>
         </div>
       </section>
       <section class="card">
@@ -293,6 +386,28 @@
     </aside>
   </main>
 
+  <div id="save-map-modal" class="modal hidden" role="dialog" aria-labelledby="save-map-title">
+    <div class="modal-panel">
+      <h2 id="save-map-title">Save this map</h2>
+      <label>
+        Map name
+        <input id="save-map-name" type="text" autocomplete="off" placeholder="Local space 25 ly" />
+      </label>
+      <label>
+        Campaign
+        <select id="save-map-campaign"></select>
+      </label>
+      <label>
+        Or type a new campaign name
+        <input id="save-map-new-campaign" type="text" autocomplete="off" placeholder="Leave blank to use the campaign above" />
+      </label>
+      <div class="row-actions">
+        <button id="btn-save-map-confirm" class="btn primary" type="button">Save</button>
+        <button id="btn-save-map-cancel" class="btn" type="button">Cancel</button>
+      </div>
+    </div>
+  </div>
+
   <div id="term-pop" class="term-pop hidden" role="dialog" aria-live="polite"></div>
   <div id="glossary" class="glossary hidden" role="dialog" aria-labelledby="glossary-title">
     <div class="glossary-panel">
@@ -307,8 +422,8 @@
   </div>
   <div id="toast" class="toast hidden" role="status"></div>
   <script src="/static/default-map.js"></script>
-  <script src="/static/js/glossary.js"></script>
+  <script src="/static/js/glossary.js?v=desk-bg-1"></script>
   <script src="/static/js/wasm-engine.js"></script>
-  <script src="/static/js/app.js"></script>
+  <script src="/static/js/app.js?v=desk-bg-1"></script>
 </body>
 </html>

@@ -1,5 +1,6 @@
-/** Plain-language glossary for people who do not live in astronomy jargon. */
-const GLOSSARY = [
+/** Plain-language glossary for people who do not live in astronomy jargon.
+ *  Extra/override terms load from help.json (see loadHelp). */
+let GLOSSARY = [
   {
     id: "howItWorks",
     title: "How this tool works",
@@ -206,9 +207,108 @@ const GLOSSARY = [
     title: "Saved map file",
     group: "Map",
     alsoCalled: "JSON snapshot",
-    meaning: "A file you can download and open later to see the same map without regenerating. It stores stars, roads, factions, and the settings you used.",
-    impact: "Share the file with another GM, or keep versions of different jump ranges. Loading a file only changes what you see; it does not overwrite your NASA catalogs.",
+    meaning: "A named map stored in the current campaign, and optionally downloaded as JSON. It stores stars, roads, factions, and the jump settings you used.",
+    impact: "Give it a name so you can keep versions (tight gates vs long jumps). Loading a file only changes what you see; it does not overwrite NASA catalogs.",
+  },
+  {
+    id: "campaign",
+    title: "Campaign",
+    group: "Setting",
+    alsoCalled: "setting folder, game",
+    meaning: "The named box that holds this map, its reality slider, factions, and (later) links to Chronos and Worldstack. Jumpgate owns the stars and jump grid. Chronos owns calendars. Worldstack owns deeper world text.",
+    impact: "Create or pick a campaign before you generate so saves have a home. Peer IDs are stored now; live pull from Chronos or Worldstack is not wired on this desk yet.",
+  },
+  {
+    id: "settingId",
+    title: "Setting id",
+    group: "Setting",
+    alsoCalled: "setting_id, slug",
+    meaning: "The stable machine name for this Jumpgate setting (preview, iron-ash). Other tools use this id, not the pretty campaign title. It is a slug: lowercase, hyphens, no spaces.",
+    impact: "Rename the campaign title freely. Changing the id after you have already saved is like making a new setting; keep the id stable once peers exist.",
+  },
+  {
+    id: "realitySlider",
+    title: "Reality slider",
+    group: "Setting",
+    alsoCalled: "reality stop, provenance mix",
+    meaning: "How much this setting is allowed to invent beyond NASA. It is not a jump-range control. 0 is catalog-only. Higher stops permit gap-fill moons, story overrides, extra roads, then brand-new stars.",
+    impact: "Set this before you generate or invent. Raising is always safe. Lowering can be blocked if the setting already contains fiction that would become illegal.",
+  },
+  {
+    id: "reality0",
+    title: "0 Catalog",
+    group: "Setting",
+    meaning: "Only confirmed NASA hosts and their published numbers. Nulls stay null. No invented moons, no extra jump roads, no moved stars.",
+    impact: "The honest sky. Isolated dots are normal: NASA only lists stars that already have confirmed planets, so real nearby stars can be missing.",
+  },
+  {
+    id: "reality1",
+    title: "1 Gap-fill",
+    group: "Setting",
+    meaning: "May invent extra bodies (warehouse moons, stubs) tagged as generated. It does not add new stars and does not add extra jump routes. Confirmed planet rows stay byte-equal to NASA.",
+    impact: "Use this when a system needs a moon or facility body for the story. It will not close a 40 ly hole between two catalog stars.",
+  },
+  {
+    id: "reality2",
+    title: "2 Soft fiction",
+    group: "Setting",
+    meaning: "You may override fields on existing hosts (rename, flavor, selected numbers) while keeping the NASA original underneath. Still no new stars and no extra invented roads.",
+    impact: "Story on top of the catalog. Switch views later to see the NASA original versus the setting’s version.",
+  },
+  {
+    id: "reality3",
+    title: "3 Setting-scale",
+    group: "Setting",
+    meaning: "May invent extra jump routes and factions among catalog stars. Still may not mint brand-new hosts or move XYZ coordinates.",
+    impact: "This is the stop that can add a road the KD-tree would not draw — not gap-fill. Use it when two known stars should be linked for the story.",
+  },
+  {
+    id: "reality4",
+    title: "4 Procedural",
+    group: "Setting",
+    meaning: "Full fiction: new hosts, moved stars, invented routes and factions. Everything should still be tagged so you can tell NASA from invented.",
+    impact: "Needed only if you must add a star NASA never listed, or slide a star’s position. Heavier lie; keep an audit trail.",
+  },
+  {
+    id: "mapFullView",
+    title: "Full map view",
+    group: "Map",
+    meaning: "Hides the settings columns so the 3D map can fill the window. Legend and the current route sit under the plot. Escape or Exit full view returns to the desk.",
+    impact: "Use this for briefing a table. Settings are unchanged; you are only changing how much screen the map gets.",
+  },
+  {
+    id: "noRoute",
+    title: "Why there is no route",
+    group: "Map",
+    meaning: "A route exists only along generated jump roads, not as the crow flies. A star can sit on the map and still be off the grid (linked-star cap, picky-ness, or jump length).",
+    impact: "If two stars are farther apart than the longest jump, raise that length and generate again. Gap-fill (reality 1) will not help; extra invented roads need reality 3, and brand-new stars need reality 4.",
   },
 ];
 
-const GLOSSARY_BY_ID = Object.fromEntries(GLOSSARY.map((item) => [item.id, item]));
+let GLOSSARY_BY_ID = Object.fromEntries(GLOSSARY.map((item) => [item.id, item]));
+
+function rebuildGlossaryIndex() {
+  GLOSSARY_BY_ID = Object.fromEntries(GLOSSARY.map((item) => [item.id, item]));
+}
+
+async function loadHelp() {
+  try {
+    const script = document.querySelector('script[src*="glossary.js"]');
+    const url = script
+      ? script.src.replace(/js\/glossary\.js.*$/, "help.json")
+      : "/static/help.json";
+    const res = await fetch(url);
+    if (!res.ok) return;
+    const data = await res.json();
+    const terms = (data && data.terms) || [];
+    if (!terms.length) return;
+    const byId = { ...GLOSSARY_BY_ID };
+    terms.forEach((term) => {
+      if (term && term.id) byId[term.id] = term;
+    });
+    GLOSSARY = Object.values(byId);
+    rebuildGlossaryIndex();
+  } catch {
+    /* keep the built-in glossary */
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "note": "Question-mark help. Terms here merge over the built-in glossary by id. Fields: id, title, group, alsoCalled, meaning, impact.",
+  "terms": [
+    {
+      "id": "pickNeed",
+      "title": "Habitat need",
+      "group": "Factions",
+      "alsoCalled": "how they pick stars, climate taste",
+      "meaning": "What kind of world this culture wants: humanlike carbon-band, sulfur-band, methane/gas-giant, high-sky, rim/poor, or any catalog star. This is not the culture’s name.",
+      "impact": "Combined with start/direction bias. Save factions before you generate; generate can paint the map from these rules."
+    },
+    {
+      "id": "pickBias",
+      "title": "Start / direction bias",
+      "group": "Factions",
+      "alsoCalled": "selection bias, home wedge, near/far host",
+      "meaning": "Where they start looking: nowhere in particular, a wedge from a home star, a pocket around a star, the rim, or a sky quarter. Independent of the culture’s display name.",
+      "impact": "A methane-breather can still start near Tau Ceti. Bias without a need just means ‘that patch of sky, any habitat.’"
+    },
+    {
+      "id": "gapFillScan",
+      "title": "Gap-fill (bodies)",
+      "group": "Setting",
+      "meaning": "Reality 1 lets you invent stub moons and similar bodies. It is not a jump-range tool and it does not add stars or roads.",
+      "impact": "Use Scan jump gaps on Generate map to find holes larger than Longest single jump."
+    },
+    {
+      "id": "jumpGapScan",
+      "title": "Jump gaps",
+      "group": "Network",
+      "alsoCalled": "holes, too far to hop",
+      "meaning": "A jump gap is two qualified planet-hosts farther apart than Longest single jump. That 16.4 ly is to the nearest Goldilocks/planet star, not necessarily to any star. Filling looks first for a real catalog object within hop range of both ends, then places a 0.25 M☉ star on the line if none exists.",
+      "impact": "The NASA exoplanet archive only includes stars with confirmed or suspected planets. A Gaia/Hipparcos stellar catalog is the missing dataset for dim real bridges. Until that ingest exists, midpoint 0.25 M☉ stars are the fill. Persisting them as setting documents needs reality 4."
+    },
+    {
+      "id": "stellarCatalog",
+      "title": "Stellar catalog vs exoplanet archive",
+      "group": "Catalog",
+      "alsoCalled": "Gaia, Hipparcos, all stars",
+      "meaning": "Jumpgate’s shipped list is NASA’s exoplanet archive: hosts that already have planets. Most nearby M-dwarfs with no known planets are absent. A stellar catalog (Gaia DR3 / Hipparcos) lists those objects by XYZ so a gap-fill can pick a real dim star before inventing a 0.25 M☉ placeholder.",
+      "impact": "Until that file is ingested, scans can only search planet-hosts. Isolated 16.4 ly holes in this list usually have no real first hop."
+    }
+  ]
+}

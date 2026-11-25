@@ -7,15 +7,31 @@
       "kind": "species",
       "count": 20,
       "prefix": "KS",
-      "label": "Kessari — hot, high-pressure worlds (Hail Mary–style)",
+      "label": "Kessari \u2014 hot, high-pressure worlds (Hail Mary\u2013style)",
       "description": "A people at home in sulfur-band climates and around Jupiter-like gas giants. They overlap humans only where a star has both a rocky Goldilocks world and a giant.",
-      "filters": [{
-        "any": [
-          { "column": "sulfur_ranking", "op": "gt", "value": 0 },
-          { "column": "gas_giant_count", "op": "gt", "value": 0 }
-        ]
-      }],
-      "sort": { "column": "sulfur_ranking", "ascending": false }
+      "filters": [
+        {
+          "any": [
+            {
+              "column": "sulfur_ranking",
+              "op": "gt",
+              "value": 0
+            },
+            {
+              "column": "gas_giant_count",
+              "op": "gt",
+              "value": 0
+            }
+          ]
+        }
+      ],
+      "sort": {
+        "column": "sulfur_ranking",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_sulfur_or_giant",
+      "bias": "bias_none"
     },
     {
       "id": "methan",
@@ -23,10 +39,22 @@
       "kind": "species",
       "count": 100,
       "prefix": "ME",
-      "label": "Methan — gas-giant station dwellers",
+      "label": "Methan \u2014 gas-giant station dwellers",
       "description": "Methane-breathers. They live in stations and structures inside or around Jupiter-like gas giants, not on rocky ground.",
-      "filters": [{ "column": "gas_giant_count", "op": "gt", "value": 0 }],
-      "sort": { "column": "gas_giant_count", "ascending": false }
+      "filters": [
+        {
+          "column": "gas_giant_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": {
+        "column": "gas_giant_count",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_methane",
+      "bias": "bias_none"
     },
     {
       "id": "crystomorphs",
@@ -34,10 +62,23 @@
       "kind": "species",
       "count": 101,
       "prefix": "CR",
-      "label": "Crystomorphs — living crystal, high on the sky",
+      "label": "Crystomorphs \u2014 living crystal, high on the sky",
       "description": "Beings that look like living crystal. They prefer stars far from the celestial equator (high north or south on the sky), away from the thickest human traffic.",
-      "filters": [{ "column": "dec", "op": "abs_gt", "value": 45 }],
-      "sort": { "column": "dec", "ascending": false, "key": "abs" }
+      "filters": [
+        {
+          "column": "dec",
+          "op": "abs_gt",
+          "value": 45
+        }
+      ],
+      "sort": {
+        "column": "dec",
+        "ascending": false,
+        "key": "abs"
+      },
+      "use": "template",
+      "need": "need_high_sky",
+      "bias": "bias_none"
     },
     {
       "id": "echryon",
@@ -45,14 +86,32 @@
       "kind": "species",
       "count": 61,
       "prefix": "EC",
-      "label": "Echryon & Echtol — one sky quarter (northeast)",
-      "description": "Defined by starting location: the first quarter of the sky (east of Sol’s zero line and north). A regional people, not a habitat type.",
+      "label": "Echryon & Echtol \u2014 one sky quarter (northeast)",
+      "description": "Defined by starting location: the first quarter of the sky (east of Sol\u2019s zero line and north). A regional people, not a habitat type.",
       "filters": [
-        { "column": "ra", "op": "gt", "value": 0 },
-        { "column": "ra", "op": "lt", "value": 90 },
-        { "column": "dec", "op": "gt", "value": 0 }
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 0
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 90
+        },
+        {
+          "column": "dec",
+          "op": "gt",
+          "value": 0
+        }
       ],
-      "sort": { "column": "carbon_ranking", "ascending": false }
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_any",
+      "bias": "bias_ne"
     },
     {
       "id": "aboreals",
@@ -60,14 +119,32 @@
       "kind": "species",
       "count": 25,
       "prefix": "AB",
-      "label": "Aboreals — sky quarter (southeast)",
+      "label": "Aboreals \u2014 sky quarter (southeast)",
       "description": "Defined by starting location: the next sky quarter, south of the celestial equator.",
       "filters": [
-        { "column": "ra", "op": "gt", "value": 90 },
-        { "column": "ra", "op": "lt", "value": 180 },
-        { "column": "dec", "op": "lt", "value": 0 }
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 90
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 180
+        },
+        {
+          "column": "dec",
+          "op": "lt",
+          "value": 0
+        }
       ],
-      "sort": { "column": "carbon_ranking", "ascending": false }
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_any",
+      "bias": "bias_se"
     },
     {
       "id": "bazzar",
@@ -75,14 +152,32 @@
       "kind": "species",
       "count": 25,
       "prefix": "BA",
-      "label": "Bazzar — sky quarter (southwest)",
+      "label": "Bazzar \u2014 sky quarter (southwest)",
       "description": "Defined by starting location: the third sky quarter, south of the equator.",
       "filters": [
-        { "column": "ra", "op": "gt", "value": 180 },
-        { "column": "ra", "op": "lt", "value": 270 },
-        { "column": "dec", "op": "lt", "value": 0 }
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 180
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 270
+        },
+        {
+          "column": "dec",
+          "op": "lt",
+          "value": 0
+        }
       ],
-      "sort": { "column": "carbon_ranking", "ascending": false }
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_any",
+      "bias": "bias_sw"
     },
     {
       "id": "schettel",
@@ -90,17 +185,31 @@
       "kind": "species",
       "count": 12,
       "prefix": "SC",
-      "label": "Schettel — rim / poor worlds",
-      "description": "Edge-of-the-sphere people. They take leftover, low-score systems or stars far from Sol — the rim of human-explored space.",
+      "label": "Schettel \u2014 rim / poor worlds",
+      "description": "Edge-of-the-sphere people. They take leftover, low-score systems or stars far from Sol \u2014 the rim of human-explored space.",
       "filters": [
         {
           "any": [
-            { "column": "combined_score", "op": "lt_quantile", "value": 0.25 },
-            { "column": "distance_from_sol_ly", "op": "gt", "value": 900 }
+            {
+              "column": "combined_score",
+              "op": "lt_quantile",
+              "value": 0.25
+            },
+            {
+              "column": "distance_from_sol_ly",
+              "op": "gt",
+              "value": 900
+            }
           ]
         }
       ],
-      "sort": { "column": "combined_score", "ascending": true }
+      "sort": {
+        "column": "combined_score",
+        "ascending": true
+      },
+      "use": "template",
+      "need": "need_rim",
+      "bias": "bias_none"
     },
     {
       "id": "turquenish",
@@ -108,13 +217,29 @@
       "kind": "nation",
       "count": 39,
       "prefix": "TU",
-      "label": "Turquenish Empire — Sol’s human wedge",
+      "label": "Turquenish Empire \u2014 Sol\u2019s human wedge",
       "description": "The human polity that starts at Sol and claims the first third of the sky around it.",
       "filters": [
-        { "column": "ra", "op": "gte", "value": 0 },
-        { "column": "ra", "op": "lt", "value": 120 }
+        {
+          "column": "ra",
+          "op": "gte",
+          "value": 0
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 120
+        }
       ],
-      "sort": { "column": "combined_score", "ascending": false, "key": "prefer_hostname", "hostname": "Sol" }
+      "sort": {
+        "column": "combined_score",
+        "ascending": false,
+        "key": "prefer_hostname",
+        "hostname": "Sol"
+      },
+      "use": "template",
+      "need": "need_humanlike",
+      "bias": "bias_ra_0_120"
     },
     {
       "id": "mardat",
@@ -122,13 +247,27 @@
       "kind": "nation",
       "count": 38,
       "prefix": "MA",
-      "label": "Mardat Coalition — next human wedge",
+      "label": "Mardat Coalition \u2014 next human wedge",
       "description": "Human nation on the next slice of sky after the Empire.",
       "filters": [
-        { "column": "ra", "op": "gt", "value": 120 },
-        { "column": "ra", "op": "lt", "value": 240 }
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 120
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 240
+        }
       ],
-      "sort": { "column": "combined_score", "ascending": false }
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_humanlike",
+      "bias": "bias_ra_120_240"
     },
     {
       "id": "hegemony",
@@ -136,13 +275,27 @@
       "kind": "nation",
       "count": 11,
       "prefix": "IN",
-      "label": "Industrial Hegemony — industrial sky slice",
+      "label": "Industrial Hegemony \u2014 industrial sky slice",
       "description": "A smaller human bloc on a later sky wedge.",
       "filters": [
-        { "column": "ra", "op": "gt", "value": 240 },
-        { "column": "ra", "op": "lt", "value": 300 }
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 240
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 300
+        }
       ],
-      "sort": { "column": "combined_score", "ascending": false }
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_humanlike",
+      "bias": "bias_ra_240_300"
     },
     {
       "id": "faithful",
@@ -150,13 +303,27 @@
       "kind": "nation",
       "count": 3,
       "prefix": "LE",
-      "label": "League of The Faithful — far-sky human slice",
+      "label": "League of The Faithful \u2014 far-sky human slice",
       "description": "A tiny human league on the last sky wedge.",
       "filters": [
-        { "column": "ra", "op": "gt", "value": 300 },
-        { "column": "ra", "op": "lt", "value": 360 }
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 300
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 360
+        }
       ],
-      "sort": { "column": "combined_score", "ascending": false }
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_humanlike",
+      "bias": "bias_ra_300_360"
     },
     {
       "id": "other_human",
@@ -164,10 +331,16 @@
       "kind": "nation",
       "count": 9,
       "prefix": "OH",
-      "label": "Other Human — leftovers",
+      "label": "Other Human \u2014 leftovers",
       "description": "Independent or mixed human holdings. Takes whatever good systems remain after the other cultures pick.",
       "filters": [],
-      "sort": { "column": "combined_score", "ascending": false }
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_any",
+      "bias": "bias_none"
     },
     {
       "id": "from_host",
@@ -175,10 +348,23 @@
       "kind": "species",
       "count": 20,
       "prefix": "WH",
-      "label": "Direction from a home star — 15° sky slices",
-      "description": "Starts at a chosen star (not the edge of the map) and claims systems in one 15° slice around it. Widen the slice if you want a bigger nation.",
-      "filters": [{ "op": "from_host", "host": "Sol", "bearing_deg": 0, "wedge_deg": 15 }],
-      "sort": { "column": "combined_score", "ascending": false }
+      "label": "Direction from a home star \u2014 15\u00b0 sky slices",
+      "description": "Starts at a chosen star (not the edge of the map) and claims systems in one 15\u00b0 slice around it. Widen the slice if you want a bigger nation.",
+      "filters": [
+        {
+          "op": "from_host",
+          "host": "Sol",
+          "bearing_deg": 0,
+          "wedge_deg": 15
+        }
+      ],
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      },
+      "use": "bias",
+      "need": "need_any",
+      "bias": "from_host"
     },
     {
       "id": "near_host",
@@ -186,10 +372,22 @@
       "kind": "nation",
       "count": 20,
       "prefix": "NH",
-      "label": "Near a home star — a pocket around one system",
+      "label": "Near a home star \u2014 a pocket around one system",
       "description": "Claims stars close to a chosen host. Use this for a culture that starts at Tau Ceti (or Sol) and holds the local pocket, not a far rim.",
-      "filters": [{ "op": "near_host", "host": "Sol", "max_ly": 80 }],
-      "sort": { "column": "combined_score", "ascending": false }
+      "filters": [
+        {
+          "op": "near_host",
+          "host": "Sol",
+          "max_ly": 80
+        }
+      ],
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      },
+      "use": "bias",
+      "need": "need_any",
+      "bias": "near_host"
     },
     {
       "id": "far_host",
@@ -197,10 +395,22 @@
       "kind": "species",
       "count": 12,
       "prefix": "RM",
-      "label": "Far from a home star — rim of that star’s neighborhood",
+      "label": "Far from a home star \u2014 rim of that star\u2019s neighborhood",
       "description": "The old Schettel idea, but measured from any host you pick: far from that starting star, on the edge of its explored sphere.",
-      "filters": [{ "op": "far_host", "host": "Sol", "min_ly": 400 }],
-      "sort": { "column": "combined_score", "ascending": true }
+      "filters": [
+        {
+          "op": "far_host",
+          "host": "Sol",
+          "min_ly": 400
+        }
+      ],
+      "sort": {
+        "column": "combined_score",
+        "ascending": true
+      },
+      "use": "bias",
+      "need": "need_any",
+      "bias": "far_host"
     },
     {
       "id": "custom_species",
@@ -208,10 +418,16 @@
       "kind": "species",
       "count": 10,
       "prefix": "NP",
-      "label": "Custom species — you name them",
+      "label": "Custom species \u2014 you name them",
       "description": "A new non-human culture. Rename them, then pick a placement rule (gas giants, crystal skies, a sky quarter, or the rim).",
       "filters": [],
-      "sort": { "column": "combined_score", "ascending": false }
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_any",
+      "bias": "bias_none"
     },
     {
       "id": "custom_nation",
@@ -219,10 +435,419 @@
       "kind": "nation",
       "count": 10,
       "prefix": "NH",
-      "label": "Custom human nation — you name them",
+      "label": "Custom human nation \u2014 you name them",
       "description": "A new human polity. Rename them, then pick which slice of leftover stars they prefer.",
       "filters": [],
-      "sort": { "column": "combined_score", "ascending": false }
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      },
+      "use": "template",
+      "need": "need_humanlike",
+      "bias": "bias_none"
+    },
+    {
+      "id": "need_any",
+      "use": "need",
+      "name": "Any catalog star",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Any catalog star",
+      "description": "No habitat filter. Placement bias (if any) still applies.",
+      "filters": [],
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      }
+    },
+    {
+      "id": "need_humanlike",
+      "use": "need",
+      "name": "Humanlike worlds",
+      "kind": "nation",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Humanlike \u2014 rocky Goldilocks / carbon band",
+      "description": "Prefers stars with rocky worlds in the carbon (Earth-like) temperature band.",
+      "filters": [
+        {
+          "column": "carbon_ranking",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false
+      }
+    },
+    {
+      "id": "need_sulfur",
+      "use": "need",
+      "name": "Sulfur-band worlds",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Sulfur-band climates",
+      "description": "Prefers sulfur-band (hot/high-pressure) worlds.",
+      "filters": [
+        {
+          "column": "sulfur_ranking",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": {
+        "column": "sulfur_ranking",
+        "ascending": false
+      }
+    },
+    {
+      "id": "need_methane",
+      "use": "need",
+      "name": "Gas-giant / methane",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Methane / gas-giant stations",
+      "description": "Prefers systems that have at least one Jupiter-like gas giant.",
+      "filters": [
+        {
+          "column": "gas_giant_count",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": {
+        "column": "gas_giant_count",
+        "ascending": false
+      }
+    },
+    {
+      "id": "need_sulfur_or_giant",
+      "use": "need",
+      "name": "Sulfur or gas giant",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Sulfur-band or gas giant",
+      "description": "Sulfur-band climates and/or Jupiter-like giants.",
+      "filters": [
+        {
+          "any": [
+            {
+              "column": "sulfur_ranking",
+              "op": "gt",
+              "value": 0
+            },
+            {
+              "column": "gas_giant_count",
+              "op": "gt",
+              "value": 0
+            }
+          ]
+        }
+      ],
+      "sort": {
+        "column": "sulfur_ranking",
+        "ascending": false
+      }
+    },
+    {
+      "id": "need_high_sky",
+      "use": "need",
+      "name": "High sky",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "High on the sky (far from the equator)",
+      "description": "Prefers stars well north or south of the celestial equator.",
+      "filters": [
+        {
+          "column": "dec",
+          "op": "abs_gt",
+          "value": 45
+        }
+      ],
+      "sort": {
+        "column": "dec",
+        "ascending": false,
+        "key": "abs"
+      }
+    },
+    {
+      "id": "need_rim",
+      "use": "need",
+      "name": "Rim / poor worlds",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Rim or low-score worlds",
+      "description": "Leftover, low-score systems or stars far from Sol.",
+      "filters": [
+        {
+          "any": [
+            {
+              "column": "combined_score",
+              "op": "lt_quantile",
+              "value": 0.25
+            },
+            {
+              "column": "distance_from_sol_ly",
+              "op": "gt",
+              "value": 900
+            }
+          ]
+        }
+      ],
+      "sort": {
+        "column": "combined_score",
+        "ascending": true
+      }
+    },
+    {
+      "id": "bias_none",
+      "use": "bias",
+      "name": "No start bias",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "No start / direction bias",
+      "description": "Pick anywhere the habitat need matches.",
+      "filters": [],
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      }
+    },
+    {
+      "id": "bias_ne",
+      "use": "bias",
+      "name": "Northeast sky",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Northeast sky quarter",
+      "description": "RA 0\u201390\u00b0, north of the equator.",
+      "filters": [
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 0
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 90
+        },
+        {
+          "column": "dec",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false
+      }
+    },
+    {
+      "id": "bias_se",
+      "use": "bias",
+      "name": "Southeast sky",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Southeast sky quarter",
+      "description": "RA 90\u2013180\u00b0, south of the equator.",
+      "filters": [
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 90
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 180
+        },
+        {
+          "column": "dec",
+          "op": "lt",
+          "value": 0
+        }
+      ],
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false
+      }
+    },
+    {
+      "id": "bias_sw",
+      "use": "bias",
+      "name": "Southwest sky",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Southwest sky quarter",
+      "description": "RA 180\u2013270\u00b0, south of the equator.",
+      "filters": [
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 180
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 270
+        },
+        {
+          "column": "dec",
+          "op": "lt",
+          "value": 0
+        }
+      ],
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false
+      }
+    },
+    {
+      "id": "bias_nw",
+      "use": "bias",
+      "name": "Northwest sky",
+      "kind": "species",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Northwest sky quarter",
+      "description": "RA 270\u2013360\u00b0, north of the equator.",
+      "filters": [
+        {
+          "column": "ra",
+          "op": "gte",
+          "value": 270
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 360
+        },
+        {
+          "column": "dec",
+          "op": "gt",
+          "value": 0
+        }
+      ],
+      "sort": {
+        "column": "carbon_ranking",
+        "ascending": false
+      }
+    },
+    {
+      "id": "bias_ra_0_120",
+      "use": "bias",
+      "name": "Sky slice 0\u2013120\u00b0",
+      "kind": "nation",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Sky slice RA 0\u2013120\u00b0",
+      "description": "A 120\u00b0 wedge of right ascension from Sol\u2019s zero line.",
+      "filters": [
+        {
+          "column": "ra",
+          "op": "gte",
+          "value": 0
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 120
+        }
+      ],
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      }
+    },
+    {
+      "id": "bias_ra_120_240",
+      "use": "bias",
+      "name": "Sky slice 120\u2013240\u00b0",
+      "kind": "nation",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Sky slice RA 120\u2013240\u00b0",
+      "description": "The next 120\u00b0 of right ascension.",
+      "filters": [
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 120
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 240
+        }
+      ],
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      }
+    },
+    {
+      "id": "bias_ra_240_300",
+      "use": "bias",
+      "name": "Sky slice 240\u2013300\u00b0",
+      "kind": "nation",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Sky slice RA 240\u2013300\u00b0",
+      "description": "A later 60\u00b0 slice of sky.",
+      "filters": [
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 240
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 300
+        }
+      ],
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      }
+    },
+    {
+      "id": "bias_ra_300_360",
+      "use": "bias",
+      "name": "Sky slice 300\u2013360\u00b0",
+      "kind": "nation",
+      "count": 10,
+      "prefix": "XX",
+      "label": "Sky slice RA 300\u2013360\u00b0",
+      "description": "The last slice of sky around Sol.",
+      "filters": [
+        {
+          "column": "ra",
+          "op": "gt",
+          "value": 300
+        },
+        {
+          "column": "ra",
+          "op": "lt",
+          "value": 360
+        }
+      ],
+      "sort": {
+        "column": "combined_score",
+        "ascending": false
+      }
     }
   ]
 }
